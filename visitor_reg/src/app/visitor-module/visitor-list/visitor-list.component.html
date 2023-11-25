@@ -1,0 +1,95 @@
+<div class="container-fluid primary-bg p-4">
+  <div class="row">
+    <div class="col-6">
+      <h3 class="title-primary">All Visitors List</h3>
+    </div>
+    <div class="col-6 mb-3 text-end">
+      <button class="btn btn-link" (click)="goBack()">
+        <i class="bi bi-arrow-left title-primary mx-2"></i>Back
+      </button>
+    </div>
+    <hr />
+  </div>
+  <div class="row my-3">
+    <div class="col-3">
+      <div class="form-group">
+        <label for="">From Date</label>
+        <input class="form-control" placeholder="yyyy-mm-dd" name="dp" ngbDatepicker #fromDate="ngbDatepicker"
+          (click)="fromDate.toggle()" [(ngModel)]="fromDatePiker" />
+      </div>
+    </div>
+
+    <div class="col-3">
+      <div class="form-group">
+        <label for="">To Date</label>
+        <input class="form-control" placeholder="yyyy-mm-dd" name="dp" ngbDatepicker #toDate="ngbDatepicker"
+          (click)="toDate.toggle()" [(ngModel)]="toDatePiker" />
+      </div>
+    </div>
+    <div class="col-3 pt-4">
+      <button class="btn btn-primary" (click)="resetFilter()">
+        Reset Filter
+      </button>
+    </div>
+  </div>
+
+  <div class="row mt-3">
+    <div class="col-12">
+      <div class="table-responsive">
+        <table class="table table-striped">
+          <thead>
+            <tr class="text-center">
+              <!-- <th>Sr. No</th> -->
+              <!-- <th>Visitor ID</th> -->
+              <th>Visitor Name</th>
+              <th>Purpose</th>
+              <th>Contact No</th>
+              <th>Contact Person</th>
+              <th>Check-in time</th>
+              <th>Check-out time</th>
+              <!-- <th>Number of Person</th> -->
+              <th>Approval Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <ng-container *ngIf="
+                visitorsList | search : fromDatePiker : toDatePiker as result
+              ">
+              <tr *ngFor="let data of result; let i = index">
+                <!-- <td>{{ i + 1 }}</td> -->
+                <!-- <td>{{ data.visitorId }}</td> -->
+                <td>{{ data.visitorName }}</td>
+                <td>{{ data.purpose }}</td>
+                <td>{{ data.contactNo }}</td>
+                <td>{{ data.contactPerson }}</td>
+                <td>{{ data.checkInTime | date : "M/d/yyyy hh:MM" }}</td>
+                <td>{{data.checkOutTime |  date : 'M/d/yy, h:mm a'}}</td>
+                <!-- <td>{{ data.numberPerson }}</td> -->
+                <td>{{ data.approvalStatus }}</td>
+                <td>
+                  <i class="bi bi-pencil-square mx-1 title-primary pointer" (click)="editVisitor(data)"
+                    data-toggle="tooltip" data-placement="top" title="Edit" 
+                    [ngClass]="{'disabled-icons':isEdit(data)}"></i>
+                  <i class="bi bi-check-circle mx-1 text-success pointer" (click)="approveVisitor(data)"
+                    data-toggle="tooltip" data-placement="top" title="Approve"
+                    [ngClass]="{'disabled-icons':isApproved(data)}"></i>
+                  <i class="bi bi-x-circle mx-1 text-danger pointer" (click)="rejectVisitor(data)" data-toggle="tooltip"
+                    data-placement="top" title="Reject"
+                    [ngClass]="{'disabled-icons':isRejected(data)}"></i>
+                  <i class="bi bi-arrow-right-circle mx-1 title-primary pointer" data-toggle="tooltip"
+                    data-placement="top" title="Check Out" (click)="checkOutVisitor(data)"
+                    [ngClass]="{'disabled-icons':!isCheckOut(data)}"></i>
+                </td>
+                <!-- [ngClass]="{'disabled-icons':!(data?.updateStatus == 'Approved')}" -->
+              </tr>
+              <tr *ngIf="result.length == 0">
+                <td colspan="9">No Records Found</td>
+              </tr>
+            </ng-container>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

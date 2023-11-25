@@ -1,0 +1,112 @@
+{
+  "Visitors": [
+    {
+      "visitorId": "1111",
+      "visitorName": "Anil Gauda",
+      "purpose": "2",
+      "contactNo": "+919776889842",
+      "contactPerson": "Anil",
+      "numberPerson": 1,
+      "cardType": "Aadhaar card",
+      "cardNumber": "11111111111111111111111",
+      "updateStatus": "Approved",
+      "checkIn": null,
+      "checkOut": "11/23/2023",
+      "id": 1
+    },
+    {
+      "visitorId": "11",
+      "visitorName": "Jaga",
+      "purpose": "1",
+      "contactNo": "11",
+      "contactPerson": "Sanjay",
+      "numberPerson": 11,
+      "cardType": "Aadhaar card",
+      "cardNumber": "1234567890",
+      "updateStatus": "Approved",
+      "checkIn": null,
+      "checkOut": "11/23/2023",
+      "id": 2
+    },
+    {
+      "visitorId": "123",
+      "visitorName": "Asutosh",
+      "purpose": "1",
+      "contactNo": "1223344",
+      "contactPerson": "Sanjay",
+      "numberPerson": 2,
+      "cardType": "Pan card",
+      "cardNumber": "1111",
+      "updateStatus": "Rejected",
+      "checkIn": "11/22/2023",
+      "checkOut": null,
+      "id": 3
+    },
+    {
+      "visitorId": "11",
+      "visitorName": "Pabi",
+      "purpose": "1",
+      "contactNo": "1223344",
+      "contactPerson": "Sanjay",
+      "numberPerson": 2,
+      "cardType": "Pan card",
+      "cardNumber": "1111",
+      "updateStatus": null,
+      "checkIn": "11/23/2023",
+      "checkOut": null,
+      "id": 4
+    },
+    {
+      "visitorId": "121",
+      "visitorName": "Anil",
+      "purpose": "2",
+      "contactNo": "+919776889842",
+      "contactPerson": "Sanjay",
+      "numberPerson": 1,
+      "cardType": "Aadhaar card",
+      "cardNumber": "34324332425",
+      "updateStatus": null,
+      "checkIn": "11/23/2023",
+      "checkOut": null,
+      "id": 5
+    },
+    {
+      "visitorId": "1",
+      "visitorName": "Test1",
+      "purpose": "1",
+      "contactNo": "8904576043",
+      "contactPerson": "Sanjay",
+      "numberPerson": 1,
+      "cardType": "Aadhaar card",
+      "cardNumber": "1",
+      "updateStatus": null,
+      "checkIn": "24/11/2023",
+      "checkOut": null,
+      "id": 6
+    }
+  ],
+  "AptMembers": [
+    {
+      "memberName": "Sanjay",
+      "memberId": 1
+    },
+    {
+      "memberName": "Anil",
+      "memberId": 2
+    },
+    {
+      "memberName": "Amir",
+      "memberId": 3
+    },
+    {
+      "memberName": "Jagannath",
+      "memberId": 4
+    }
+  ],
+  "headerInfo": [
+    {
+      "logo_url": "./../../../assets/img/logo.png",
+      "title": "VISITOR REG"
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+.back-bg{
+background-image: url("./../../../assets/img/bg.jpg");
+width: 100%;
+max-height: 900px;
+background-repeat: no-repeat;
+background-size: cover;
+}

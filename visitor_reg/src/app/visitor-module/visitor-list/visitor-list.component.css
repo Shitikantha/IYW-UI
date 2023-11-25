@@ -1,0 +1,7 @@
+table ,tbody, th{
+    text-align: center;
+    color:#1d5e8b !important;
+}
+table tbody td{
+    text-align: center;
+}
