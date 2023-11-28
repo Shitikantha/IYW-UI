@@ -16,8 +16,8 @@ export class AddVisitorsService extends BaseService{
   addVisitors(payload:any){
     return this.post(`${this.visitorApiUrl}addVisitor`,payload);
   }
-  getAllVisitors(){
-    return this.get(`${this.visitorApiUrl}listAllVisitor`);
+  getAllVisitors(payload:any){
+    return this.get(`${this.visitorApiUrl}listAllVisitor?endDate=${payload.toDate}&startDate=${payload.formDate}&userName=${payload.userName}`);
   }
   updateVisitors(payload:any):Observable<any>{
     // return this.patch(`${this.apiUrl}Visitors/${payload.id}`,payload);
@@ -32,8 +32,8 @@ export class AddVisitorsService extends BaseService{
     // return this.patch(`${this.apiUrl}Visitors/${payload.id}`,payload);
     return this.patch(`${this.visitorApiUrl}checkout${payload.visitorId}`,payload);
   }
-  getAptMembers(){
-    return this.get(`${this.userApiUrl}listUserByName?name=`);
+  getAptMembers(name:string){
+    return this.get(`${this.userApiUrl}listUserByName?name=${name}`);
   }
   getHeaderInfo(){
     return this.get(`${this.apiUrl}headerInfo`);

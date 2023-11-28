@@ -47,13 +47,13 @@ export class WebCamComponent {
   }
 
   public handleImage(webcamImage: WebcamImage): void {
-    console.info('received webcam image', webcamImage);
+    // console.info('received webcam image', webcamImage);
     // this.pictureTaken.emit(webcamImage);
     this.activeModal.close(webcamImage);
   }
 
   public cameraWasSwitched(deviceId: string): void {
-    console.log('active device: ' + deviceId);
+    // console.log('active device: ' + deviceId);
     this.deviceId = deviceId;
   }
 

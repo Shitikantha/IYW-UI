@@ -1,145 +1,156 @@
 <div class="container-fluid primary-bg mt-2 p-4">
   <div class="row">
     <div class="col-6 mb-3">
-      <h3 class="title-primary">Register Visitor </h3>
+      <h3 class="title-primary">Register Visitor</h3>
     </div>
     <div class="col-6 mb-3 text-end">
-      <button class="btn btn-link" (click)="goBack()"> <i class="bi bi-arrow-left title-primary mx-2"></i>Back</button>
+      <button class="btn btn-link" (click)="goBack()">
+        <i class="bi bi-arrow-left title-primary mx-2"></i>Back
+      </button>
     </div>
-    <hr/>
+    <hr />
   </div>
   <div class="row">
     <div class="col-12">
       <form [formGroup]="registrationForm" (ngSubmit)="onSubmit()">
-       <div class="row">
-        <!-- <div class="col-6 mb-2">
-          <div class="form-group ">
-            <label for="visitorid">Visitor ID <span class="title-primary">*</span> </label>
-            <input
-              type="text"
-              class="form-control input-sm"
-              id="visitorid"
-              placeholder="Please enter visitor id"
-              formControlName="visitorId"
-            />
-          </div>
-          <div *ngIf="submitted && f['visitorId'].errors">
-            <div *ngIf="f['visitorId'].errors['required']" class="error">
-              Please enter visitor id
-            </div>
-          </div>
-        </div> -->
-        <div class="col-6 mb-2">
-          <div class="form-group">
-            <label for="name">Visitor Name <span class="title-primary">*</span></label>
-            <input
-              type="text"
-              class="form-control input-sm"
-              id="name"
-              placeholder="Please enter visitor name"
-              formControlName="visitorName"
-            />
-          </div>
-          <div *ngIf="submitted && f['visitorName'].errors">
-            <div *ngIf="f['visitorName'].errors['required']" class="error">
-              Please enter visitor name
-            </div>
-          </div>
-        </div>
-       </div>
-       <div class="row">
-        <div class="col-6 mb-2">
-          <div class="form-group">
-            <label> Select Purpose <span class="title-primary">*</span></label>
-            <input
-              type="text"
-              class="form-control input-sm"
-              id="purpose"
-              placeholder="Please enter purpose"
-              formControlName="purpose"
-            />
-          </div>
-          <div *ngIf="submitted && f['purpose'].errors">
-            <div *ngIf="f['purpose'].errors['required']" class="error">
-              Please Select a purpose
-            </div>
-          </div>
-        </div>
-        <div class="col-6 mb-2">
-          <div class="form-group">
-            <label for="mobile">Contact No <span class="title-primary">*</span></label>
-            <input
-              type="text"
-              class="form-control input-sm"
-              id="mobile"
-              placeholder="Please enter contact number"
-              formControlName="contactNo"
-            />
-          </div>
-          <div *ngIf="submitted && f['contactNo'].errors">
-            <div *ngIf="f['contactNo'].errors['required']" class="error">
-              Please enter contact number
-            </div>
-          </div>
-        </div>
-       </div>
-       <div class="row">
-        <div class="col-6 mb-2">
-          <div class="form-group">
-            <label for="mobile">Contact Person <span class="title-primary">*</span></label>
-            <select
-              class="form-select"
-              aria-label="Default select example"
-              formControlName="contactPerson">
-              <option selected>select menu</option>
-              <option value="{{member.userDisplayName}}" *ngFor="let member of aptMembers">{{member.userDisplayName}}</option>
-            </select>
-          </div>
-          <div *ngIf="submitted && f['contactPerson'].errors">
-            <div *ngIf="f['contactPerson'].errors['required']" class="error">
-              Please enter contact person.
-            </div>
-          </div>
-        </div>
-        <div class="col-6 mb-2">
-          <div class="form-group">
-            <label for="noOfPerson">Number of person <span class="title-primary">*</span></label>
-            <input
-              type="number"
-              class="form-control input-sm"
-              id="noOfPerson"
-              placeholder="Please enter number of person"
-              formControlName="noOfPerson"
-            />
-          </div>
-          <div *ngIf="submitted && f['noOfPerson'].errors">
-            <div *ngIf="f['noOfPerson'].errors['required']" class="error">
-              Please enter number of person
-            </div>
-          </div>
-        </div>
-       </div>
         <div class="row">
           <div class="col-6 mb-2">
             <div class="form-group">
-              <label for="mobile">Select ID Proof<span class="title-primary">*</span></label>
-              <select
-                class="form-select"
-                aria-label="Default select example"
-                formControlName="idType">
-                <option selected>select menu</option>
-                <option value="{{type.name}}" *ngFor="let type of idType">{{type.name}}</option>
-              </select>
+              <label for="name"
+                >Visitor Name <span class="title-primary">*</span></label
+              >
+              <input
+                type="text"
+                class="form-control input-sm"
+                id="name"
+                placeholder="Please enter visitor name"
+                formControlName="visitorName"
+              />
             </div>
-            <div *ngIf="submitted && f['idType'].errors">
-              <div *ngIf="f['idType'].errors['required']" class="error">
-                Please enter contact person number
+            <div *ngIf="submitted && f['visitorName'].errors">
+              <div *ngIf="f['visitorName'].errors['required']" class="error">
+                Please enter visitor name
+              </div>
+              <div *ngIf="f['visitorName'].errors['maxlength']" class="error">
+                Max length can't be less then 25
               </div>
             </div>
           </div>
           <div class="col-6 mb-2">
             <div class="form-group">
-              <label for="idValue">{{registrationForm.controls['idType'].value}} Number<span class="title-primary">*</span></label>
+              <label>
+                Select Purpose <span class="title-primary">*</span></label
+              >
+              <input
+                type="text"
+                class="form-control input-sm"
+                id="purpose"
+                placeholder="Please enter purpose"
+                formControlName="purpose"
+              />
+            </div>
+            <div *ngIf="submitted && f['purpose'].errors">
+              <div *ngIf="f['purpose'].errors['required']" class="error">
+                Please Select a purpose
+              </div>
+              <div *ngIf="f['purpose'].errors['maxlength']" class="error">
+                Max length can't be less then 25
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-6 mb-2">
+            <div class="form-group">
+              <label for="mobile"
+                >Contact Person <span class="title-primary">*</span></label
+              >
+              <!-- <input
+                type="text"
+                formControlName="contactPerson" class="form-control"
+                (keyup)="eachPerson($event)"
+              />
+              <select
+              class="form-select"
+              aria-label="Default select example"
+              formControlName="contactPerson">
+              <option selected>select menu</option>
+              <option value="{{member.userDisplayName}}" *ngFor="let member of aptMembers">{{member.userDisplayName}}</option>
+            </select> -->
+              <input
+                type="text"
+                list="person"
+                formControlName="contactPerson"
+                class="form-control"
+                (keyup)="eachPerson($event)"
+              />
+              <datalist id="person" *ngIf="aptMembers">
+                <option
+                  *ngFor="let member of aptMembers"
+                  [value]="member.userDisplayName"
+                ></option>
+              </datalist>
+            </div>
+            <div *ngIf="submitted && f['contactPerson'].errors">
+              <div *ngIf="f['contactPerson'].errors['required']" class="error">
+                Please enter contact person.
+              </div>
+            </div>
+          </div>
+          <div class="col-6 mb-2">
+            <div class="form-group">
+              <label for="mobile"
+                >Contact No <span class="title-primary">*</span></label
+              >
+              <input
+                type="text"
+                class="form-control input-sm"
+                id="mobile"
+                placeholder="Please enter contact number"
+                formControlName="contactNo"
+              />
+            </div>
+            <div *ngIf="submitted && f['contactNo'].errors">
+              <div *ngIf="f['contactNo'].errors['required']" class="error">
+                Please enter contact number
+              </div>
+              <div *ngIf="f['contactNo'].errors['maxlength']" class="error">
+                Max length can't be less then 10
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-6 mb-2">
+            <div class="form-group">
+              <label for="mobile"
+                >Select ID Proof<span class="title-primary">*</span></label
+              >
+              <select
+                class="form-select"
+                aria-label="Default select example"
+                formControlName="idType"
+              >
+                <option selected>select menu</option>
+                <option value="{{ type.name }}" *ngFor="let type of idType">
+                  {{ type.name }}
+                </option>
+              </select>
+            </div>
+            <div *ngIf="submitted && f['idType'].errors">
+              <div *ngIf="f['idType'].errors['required']" class="error">
+                Please select a ID Proof
+              </div>
+            </div>
+          </div>
+          <div class="col-6 mb-2">
+            <div class="form-group">
+              <label for="idValue"
+                >{{ registrationForm.controls["idType"].value }} Number<span
+                  class="title-primary"
+                  >*</span
+                ></label
+              >
               <input
                 type="text"
                 class="form-control input-sm"
@@ -150,39 +161,73 @@
             </div>
             <div *ngIf="submitted && f['idValue'].errors">
               <div *ngIf="f['idValue'].errors['required']" class="error">
-                Please enter number of person
+                Please enter a ID Proof Number
               </div>
             </div>
           </div>
         </div>
-       <div class="row">
-        <div class="col-6 mb-2">
-          <div class="form-group">
-            <label for="address">Comment</label>
-            <textarea
-              formControlName="comments"
-              class="form-control input-sm"
-              id="address"
-              rows="2"
-            ></textarea>
+        <div class="row">
+         
+          <div class="col-6 mb-2">
+            <div class="form-group">
+              <label for="noOfPerson"
+                >Number of person <span class="title-primary">*</span></label
+              >
+              <input
+                type="number"
+                class="form-control input-sm"
+                id="noOfPerson"
+                placeholder="Please enter number of person"
+                formControlName="noOfPerson"
+              />
+            </div>
+            <div *ngIf="submitted && f['noOfPerson'].errors">
+              <div *ngIf="f['noOfPerson'].errors['required']" class="error">
+                Please enter number of person
+              </div>
+            </div>
           </div>
-        </div>
-        <div class="col-6 mb-2">
-          <div class="row mt-4">
+          <div class="col-6 mb-2">
+            <div class="row mt-4">
               <div class="col-3">
-                <button class="btn btn-primary" type="button" (click)="captureImage()">Capture Image</button>
+                <button
+                  class="btn btn-primary"
+                  type="button"
+                  (click)="captureImage()"
+                >
+                  Capture Image
+                </button>
               </div>
               <div class="col-8">
                 <div class="snapshot text-center" *ngIf="webcamImage">
-                  <img [src]="webcamImage.imageAsDataUrl" height="50%" width="30%"/>
+                  <img
+                    [src]="webcamImage.imageAsDataUrl"
+                    height="50%"
+                    width="30%"
+                  />
                 </div>
               </div>
+            </div>
           </div>
         </div>
-       </div>
         <div class="row">
+          <div class="col-6 mb-2">
+            <div class="form-group">
+              <label for="address">Comment</label>
+              <textarea
+                formControlName="comments"
+                class="form-control input-sm"
+                id="address"
+                rows="2"
+              ></textarea>
+            </div>
+          </div>
+        </div>
+        <div class="row mt-4">
           <div class="col-12">
-            <button class="btn btn-primary w-10" type="submit">Create Visitor</button>
+            <button class="btn btn-primary w-10" type="submit">
+              Create Visitor
+            </button>
           </div>
         </div>
       </form>

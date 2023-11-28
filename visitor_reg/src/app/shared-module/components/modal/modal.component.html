@@ -2,17 +2,19 @@
 		<h4 class="modal-title" id="modal-basic-title">{{AlertData.name}}</h4>
 		<button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
 	</div>
-	<div class="modal-body">
+	<div class="modal-body p-0">
    <ng-container *ngIf="AlertData?.data == '1'">
     <app-update-visitor-profile [updateData]="AlertData.Data"></app-update-visitor-profile>
   </ng-container>
   <ng-container *ngIf="AlertData?.data == '2'">
     <app-web-cam ></app-web-cam>
-	<!-- (pictureTaken)="handleImage($event)" -->
+  </ng-container>
+  <ng-container *ngIf="AlertData?.data == '3'">
+	<app-view-visitor [viewData]="AlertData.Data"></app-view-visitor>
   </ng-container>
 	</div>
 	<div class="modal-footer" *ngIf="AlertData?.isFooter">
-		<button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Cancel</button>
+		<button type="button" class="btn btn-danger" (click)="modal.close('Save click')">Cancel</button>
 	</div>
 
   

@@ -31,14 +31,9 @@ export class LoginComponent implements OnInit {
 
   onSubmit(){
     this.submitted = true;
-    this.getUserDetails();
-    if(this.userDetail!=null){
+    if(this.loginForm.valid){
       //sessionStorage.setItem('userName', this.loginForm.controls['Email'].value);
-      sessionStorage.setItem('userName', this.userDetail.userDisplayName);
-      this.alertService.showSuccessToast({msg:'Login has been successfully'});
-      this.router.navigate(['/visitor']);
-    }else{
-    this.alertService.showErrorToast({msg:'Login Failed'});
+      this.getUserDetails();
     }
   }
 
@@ -47,8 +42,20 @@ export class LoginComponent implements OnInit {
       "password": this.loginForm.controls['Pwd'].value,
         "userName": this.loginForm.controls['Email'].value
     }
-      this.loginService.signIn(payload).subscribe((res:any)=>{
+    //   this.loginService.signIn(payload).subscribe((res:any)=>{
+    //   this.userDetail = res.data;
+    // });
+    this.loginService.signIn(payload).subscribe({
+      next:(res:any)=>{
       this.userDetail = res.data;
+      sessionStorage.setItem('userName', this.userDetail.userDisplayName);
+      sessionStorage.setItem('userRole', this.userDetail.role);
+      this.router.navigate(['/visitor']);
+      this.alertService.showSuccessToast({msg:'Login has been successfully'});
+      },
+      error:()=>{
+      this.alertService.showErrorToast({msg:'Login Failed'});
+      }
     });
   }
 }

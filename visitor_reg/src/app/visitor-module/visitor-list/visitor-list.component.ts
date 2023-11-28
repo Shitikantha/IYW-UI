@@ -4,6 +4,7 @@ import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ModalComponent } from 'src/app/shared-module/components/modal/modal.component';
 import { AlertService } from 'src/app/services/alert.service';
 import { Router } from '@angular/router';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-visitor-list',
@@ -25,8 +26,33 @@ export class VisitorListComponent implements OnInit {
     this.allVisitorsList();
   }
 
-  allVisitorsList() {
-    this.addVisitorsService.getAllVisitors().subscribe((res: any) => {
+  allVisitorsList(isReset:boolean=false) {
+    let payload = {};
+    let user:any = sessionStorage.getItem("userRole");
+    if(isReset){
+      this.fromDatePiker= null;
+      this.toDatePiker=null;
+      payload = {
+        userName: user =='Security' ? '':sessionStorage.getItem("userName"),
+        formDate:'',
+        toDate:''
+      }
+    }else{
+      let fromdate:any ='';
+      let todate:any = '';
+      if(this.fromDatePiker && this.toDatePiker){
+        let date1 = new Date(this.fromDatePiker.year,this.fromDatePiker.month-1,this.fromDatePiker.day);
+        let date2 = new Date(this.toDatePiker.year,this.toDatePiker.month-1,this.toDatePiker.day)
+        fromdate = new DatePipe('en-US').transform(date1, 'yyyy-MM-dd');
+        todate = new DatePipe('en-US').transform(date2, 'yyyy-MM-dd');
+      }
+      payload = {
+       userName: user =='Security' ? '':sessionStorage.getItem("userName"),
+        formDate:fromdate,
+        toDate:todate
+      }
+    }
+    this.addVisitorsService.getAllVisitors(payload).subscribe((res: any) => {
       this.visitorsList = res.data;
     });
   }
@@ -34,7 +60,7 @@ export class VisitorListComponent implements OnInit {
   editVisitor(data: any) {
     const modalRef = this.modalService.open(ModalComponent, {
       backdrop: 'static',
-      keyboard: false,
+      keyboard: true,
       size: 'lg',
     });
     modalRef.componentInstance.AlertData = {
@@ -126,8 +152,21 @@ export class VisitorListComponent implements OnInit {
     // return data?.approvalStatus === 'Rejected' || !!data?.checkOut;
   }
 
-  resetFilter() {
-    this.fromDatePiker = null;
-    this.toDatePiker = null;
+  changeDate(event: any) {
+    this.allVisitorsList(false);
+  }
+
+  viewVisitor(data: any) {
+    const modalRef = this.modalService.open(ModalComponent, {
+      backdrop: 'static',
+      keyboard: true,
+      size: 'lg',
+    });
+    modalRef.componentInstance.AlertData = {
+      data: '3',
+      name: 'View Visitor',
+      isFooter: false,
+      Data: data,
+    };
   }
 }

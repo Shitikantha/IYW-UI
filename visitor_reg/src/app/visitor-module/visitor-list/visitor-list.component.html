@@ -1,4 +1,4 @@
-<div class="container-fluid primary-bg p-4">
+<div class="container-fluid primary-bg p-4 noPrint">
   <div class="row">
     <div class="col-6">
       <h3 class="title-primary">All Visitors List</h3>
@@ -23,11 +23,11 @@
       <div class="form-group">
         <label for="">To Date</label>
         <input class="form-control" placeholder="yyyy-mm-dd" name="dp" ngbDatepicker #toDate="ngbDatepicker"
-          (click)="toDate.toggle()" [(ngModel)]="toDatePiker" />
+          (click)="toDate.toggle()" [(ngModel)]="toDatePiker" (ngModelChange)="changeDate($event)"/>
       </div>
     </div>
     <div class="col-3 pt-4">
-      <button class="btn btn-primary" (click)="resetFilter()">
+      <button class="btn btn-primary" (click)="allVisitorsList(true)">
         Reset Filter
       </button>
     </div>
@@ -53,10 +53,10 @@
             </tr>
           </thead>
           <tbody>
-            <ng-container *ngIf="
+            <!-- <ng-container *ngIf="
                 visitorsList | search : fromDatePiker : toDatePiker as result
-              ">
-              <tr *ngFor="let data of result; let i = index">
+              "> -->
+              <tr *ngFor="let data of visitorsList; let i = index">
                 <!-- <td>{{ i + 1 }}</td> -->
                 <!-- <td>{{ data.visitorId }}</td> -->
                 <td>{{ data.visitorName }}</td>
@@ -80,13 +80,14 @@
                   <i class="bi bi-arrow-right-circle mx-1 title-primary pointer" data-toggle="tooltip"
                     data-placement="top" title="Check Out" (click)="checkOutVisitor(data)"
                     [ngClass]="{'disabled-icons':!isCheckOut(data)}"></i>
+                  <i class="bi bi-eye mx-1 title-primary pointer" data-toggle="tooltip"
+                    data-placement="top" title="View details" (click)="viewVisitor(data)" ></i>
                 </td>
-                <!-- [ngClass]="{'disabled-icons':!(data?.updateStatus == 'Approved')}" -->
-              </tr>
-              <tr *ngIf="result.length == 0">
+                
+              <tr *ngIf="visitorsList.length == 0">
                 <td colspan="9">No Records Found</td>
               </tr>
-            </ng-container>
+            <!-- </ng-container> -->
           </tbody>
         </table>
       </div>

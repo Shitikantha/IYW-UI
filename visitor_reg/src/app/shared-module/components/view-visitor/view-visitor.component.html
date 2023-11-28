@@ -1,0 +1,86 @@
+<div class="container">
+  <div class="card p-3 text-center">
+    <div class="row">
+      <div class="col-12">
+        <div class="mb-3">
+          <div class="image"><img [src]="imagePath" class="img" /></div>
+        </div>
+        <hr />
+      </div>
+    </div>
+    <!-- <h4>Edit Profile</h4> -->
+    <div class="row">
+      <div class="col-md-12"></div>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        <div class="inputs">
+          <label>Name</label>
+          <label class="fw-bold">{{ viewData.visitorName }}</label>
+        </div>
+        <hr />
+      </div>
+      <div class="col-md-6">
+        <div class="inputs">
+          <label>Visit Purpose</label>
+          <label class="fw-bold">{{ viewData.purpose }} </label>
+        </div>
+        <hr />
+      </div>
+      <div class="col-md-6">
+        <div class="inputs">
+          <label>Contact Person</label>
+          <label class="fw-bold">{{ viewData.contactPerson }} </label>
+        </div>
+        <hr />
+      </div>
+      <div class="col-md-6">
+        <div class="inputs">
+          <label>Contact Number</label>
+          <label class="fw-bold">{{ viewData.contactNo }} </label>
+        </div>
+        <hr />
+      </div>
+      <div class="col-md-6">
+        <div class="inputs">
+          <label>Id Type</label>
+          <label class="fw-bold">{{ viewData.idType }} </label>
+        </div>
+        <hr />
+      </div>
+      <div class="col-md-6">
+        <div class="inputs">
+          <label>Id Number</label>
+          <label class="fw-bold">{{ viewData.idValue }} </label>
+        </div>
+        <hr />
+      </div>
+      <div class="col-md-6">
+        <div class="inputs">
+          <label>CheckIn Time</label>
+          <label class="fw-bold" *ngIf="viewData.checkInTime"
+            >{{ viewData.checkInTime | date : "M/d/yyyy" }}
+          </label>
+          <label class="fw-bold" *ngIf="!viewData.checkInTime">--:-- --</label>
+        </div>
+        <hr />
+      </div>
+      <div class="col-md-6">
+        <div class="inputs">
+          <label>CheckOut Time</label>
+          <label class="fw-bold" *ngIf="viewData.checkOutTime"
+            >{{ viewData.checkOutTime | date : "M/d/yyyy" }}
+          </label>
+          <label class="fw-bold" *ngIf="!viewData.checkOutTime">--:-- --</label>
+        </div>
+        <hr />
+      </div>
+    </div>
+    <div class="row noPrint">
+      <div class="col-12 d-flex justify-content-end">
+          <button type="button" class="btn btn-primary mx-2" (click)="print()">Print</button>
+        <button type="button" class="btn btn-danger mx-2" (click)="modal.close('Save click')">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>

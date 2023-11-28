@@ -8,13 +8,15 @@ import { ToastrModule } from 'ngx-toastr';
 import { WebcamModule } from 'ngx-webcam';
 import { WebCamComponent } from '../visitor-module/web-cam/web-cam.component';
 import { NgbDatepickerModule } from '@ng-bootstrap/ng-bootstrap';
+import { ViewVisitorComponent } from './components/view-visitor/view-visitor.component';
 
 
 @NgModule({
   declarations: [
     ModalComponent,
     UpdateVisitorProfileComponent,
-    WebCamComponent
+    WebCamComponent,
+    ViewVisitorComponent
   ],
   imports: [
     CommonModule,
@@ -23,7 +25,7 @@ import { NgbDatepickerModule } from '@ng-bootstrap/ng-bootstrap';
     FormsModule,
     ToastrModule.forRoot(),
     WebcamModule,
-    NgbDatepickerModule
+    NgbDatepickerModule,
   ],
   exports:[
     HttpClientModule,

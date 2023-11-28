@@ -17,9 +17,9 @@ export class UpdateVisitorProfileComponent implements OnInit {
     private visitorService:AddVisitorsService,
     private alertService:AlertService) { 
     this.updateProfile = this.fb.group({
-      name:['',Validators.required],
-      contactPerson:['',Validators.required],
-      contactNumber:['',Validators.required],
+      name:['',[Validators.required,Validators.maxLength(25)]],
+      contactPerson:['',[Validators.required,Validators.maxLength(25)]],
+      contactNumber:['',[Validators.required,Validators.maxLength(10)]],
       approvalStatus:['',Validators.required]
     })
   }

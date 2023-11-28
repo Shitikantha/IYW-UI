@@ -56,3 +56,8 @@ hr{
     color:#1d5e8b !important;
     font-weight: bold;
 }
+@media print {
+    .noPrint{
+      display:none;
+    }
+  }
