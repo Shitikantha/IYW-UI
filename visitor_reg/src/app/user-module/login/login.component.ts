@@ -50,6 +50,7 @@ export class LoginComponent implements OnInit {
       this.userDetail = res.data;
       sessionStorage.setItem('userName', this.userDetail.userDisplayName);
       sessionStorage.setItem('userRole', this.userDetail.role);
+      sessionStorage.setItem('orgId', this.userDetail.orgId);
       this.router.navigate(['/visitor']);
       this.alertService.showSuccessToast({msg:'Login has been successfully'});
       },

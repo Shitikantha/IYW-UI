@@ -7,10 +7,13 @@ import { Observable } from 'rxjs';
 })
 export class AddVisitorsService extends BaseService{
   apiUrl:string ='http://localhost:3000/'
-  #visitorApiUrl:string ='http://localhost:8080/api/visitor/'
-  #userApiUrl:string ='http://localhost:8080/api/user/'
-  visitorApiUrl:string ='http://ec2-user@ec2-13-232-2-230.ap-south-1.compute.amazonaws.com:8080/api/visitor/'
-  userApiUrl:string ='http://ec2-user@ec2-13-232-2-230.ap-south-1.compute.amazonaws.com:8080/api/user/'
+  visitorApiUrl:string ='http://localhost:8080/api/visitor/'
+  userApiUrl:string ='http://localhost:8080/api/user/'
+  orgApiUrl:string ='http://localhost:8080/api/org/'
+  
+  #visitorApiUrl:string ='http://ec2-user@ec2-13-232-2-230.ap-south-1.compute.amazonaws.com:8080/api/visitor/'
+  #userApiUrl:string ='http://ec2-user@ec2-13-232-2-230.ap-south-1.compute.amazonaws.com:8080/api/user/'
+  
 
 
   addVisitors(payload:any){
@@ -32,10 +35,10 @@ export class AddVisitorsService extends BaseService{
     // return this.patch(`${this.apiUrl}Visitors/${payload.id}`,payload);
     return this.patch(`${this.visitorApiUrl}checkout${payload.visitorId}`,payload);
   }
-  getAptMembers(name:string){
-    return this.get(`${this.userApiUrl}listUserByName?name=${name}`);
+  getAptMembers(orgId:string,name:string){
+    return this.get(`${this.userApiUrl}listUserByName?orgId=${orgId}&name=${name}`);
   }
-  getHeaderInfo(){
-    return this.get(`${this.apiUrl}headerInfo`);
+  getHeaderInfo(orgId:string){
+    return this.get(`${this.orgApiUrl}getOrgByOrgId?orgId=${orgId}`);
   }
 }

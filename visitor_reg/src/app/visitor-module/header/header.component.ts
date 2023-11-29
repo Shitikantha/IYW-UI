@@ -20,8 +20,9 @@ export class HeaderComponent implements OnInit {
     this.getHeaderInfo();
   }
   getHeaderInfo(){
-    this.addVisitorsService.getHeaderInfo().subscribe((res:any)=>{
-      this.headerInfo = res;
+    let orgId:any = sessionStorage.getItem("orgId");
+    this.addVisitorsService.getHeaderInfo(orgId).subscribe((res:any)=>{
+      this.headerInfo = res.data;
     })
   }
 logout(){

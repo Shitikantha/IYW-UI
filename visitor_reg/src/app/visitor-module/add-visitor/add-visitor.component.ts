@@ -72,10 +72,11 @@ export class AddVisitorComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    let orgId:any = sessionStorage.getItem("orgId");
     this.searchSubject
       .pipe(debounceTime(this.debounceTimeMs))
       .subscribe((searchValue) => {
-        this.getAllAptMember(searchValue);
+        this.getAllAptMember(orgId,searchValue);
       });
   }
   visitorDetails(payload: any) {
@@ -95,8 +96,8 @@ export class AddVisitorComponent implements OnInit, OnDestroy {
     this.router.navigate(['/visitor']);
   }
 
-  getAllAptMember(name: string) {
-    this.visitorService.getAptMembers(name).subscribe({
+  getAllAptMember(orgId:string,name: string) {
+    this.visitorService.getAptMembers(orgId,name).subscribe({
       next: (result: any) => {
         this.aptMembers = result.data;
       },
