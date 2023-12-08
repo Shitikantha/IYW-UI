@@ -7,12 +7,13 @@ import { Observable } from 'rxjs';
 })
 export class AddVisitorsService extends BaseService{
   apiUrl:string ='http://localhost:3000/'
-  visitorApiUrl:string ='http://localhost:8080/api/visitor/'
-  userApiUrl:string ='http://localhost:8080/api/user/'
-  orgApiUrl:string ='http://localhost:8080/api/org/'
+  #visitorApiUrl:string ='http://localhost:8080/api/visitor/'
+  #userApiUrl:string ='http://localhost:8080/api/user/'
+  #orgApiUrl:string ='http://localhost:8080/api/org/'
   
-  #visitorApiUrl:string ='http://ec2-user@ec2-13-232-2-230.ap-south-1.compute.amazonaws.com:8080/api/visitor/'
-  #userApiUrl:string ='http://ec2-user@ec2-13-232-2-230.ap-south-1.compute.amazonaws.com:8080/api/user/'
+  visitorApiUrl:string ='http://ec2-user@ec2-13-232-2-230.ap-south-1.compute.amazonaws.com:8080/api/visitor/'
+  userApiUrl:string ='http://ec2-user@ec2-13-232-2-230.ap-south-1.compute.amazonaws.com:8080/api/user/'
+  orgApiUrl:string ='http://ec2-user@ec2-13-232-2-230.ap-south-1.compute.amazonaws.com:8080/api/org/'
   
 
 

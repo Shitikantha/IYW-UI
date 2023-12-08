@@ -7,8 +7,8 @@ import { Observable } from 'rxjs';
 })
 export class LoginService extends BaseService{
   
-  userApiUrl:string ='http://localhost:8080/api/user/'
-  // userApiUrl:string ='http://ec2-user@ec2-13-232-2-230.ap-south-1.compute.amazonaws.com:8080/api/user/'
+  // userApiUrl:string ='http://localhost:8080/api/user/'
+   userApiUrl:string ='http://ec2-user@ec2-13-232-2-230.ap-south-1.compute.amazonaws.com:8080/api/user/'
 
 
   signIn(payload:any):Observable<any>{
