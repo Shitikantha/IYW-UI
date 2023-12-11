@@ -1,5 +1,12 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+  AbstractControl,
+  FormBuilder,
+  FormGroup,
+  ValidationErrors,
+  ValidatorFn,
+  Validators,
+} from '@angular/forms';
 import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Subject, debounceTime } from 'rxjs';
@@ -38,7 +45,7 @@ export class AddVisitorComponent implements OnInit, OnDestroy {
       visitorName: ['', [Validators.required, Validators.maxLength(25)]],
       purpose: ['', [Validators.required, Validators.maxLength(25)]],
       contactNo: ['', [Validators.required, Validators.maxLength(10)]],
-      contactPerson: ['', Validators.required],
+      contactPerson: ['', [Validators.required]],
       noOfPerson: ['', Validators.required],
       comments: [''],
       idType: ['Aadhaar card', Validators.required],
@@ -69,16 +76,18 @@ export class AddVisitorComponent implements OnInit, OnDestroy {
       };
       this.visitorDetails(payload);
     }
+    console.log(this.registrationForm);
   }
 
   ngOnInit(): void {
-    let orgId:any = sessionStorage.getItem("orgId");
+    let orgId: any = sessionStorage.getItem('orgId');
     this.searchSubject
       .pipe(debounceTime(this.debounceTimeMs))
       .subscribe((searchValue) => {
-        this.getAllAptMember(orgId,searchValue);
+        this.getAllAptMember(orgId, searchValue);
       });
   }
+
   visitorDetails(payload: any) {
     this.visitorService.addVisitors(payload).subscribe({
       next: (result: any) => {
@@ -96,10 +105,16 @@ export class AddVisitorComponent implements OnInit, OnDestroy {
     this.router.navigate(['/visitor']);
   }
 
-  getAllAptMember(orgId:string,name: string) {
-    this.visitorService.getAptMembers(orgId,name).subscribe({
+  getAllAptMember(orgId: string, name: string) {
+    this.visitorService.getAptMembers(orgId, name).subscribe({
       next: (result: any) => {
         this.aptMembers = result.data;
+        result.data.length > 0
+          ? this.registrationForm.controls['contactPerson'].setErrors(null)
+          : this.registrationForm.controls['contactPerson'].setErrors({
+              inValidMember: true,
+            });
+        // console.log(this.aptMembers);
       },
     });
   }
@@ -126,6 +141,26 @@ export class AddVisitorComponent implements OnInit, OnDestroy {
   eachPerson(event: any) {
     this.searchValue = event.target.value;
     this.searchSubject.next(this.searchValue);
+  }
+
+  numberOnly(event: any): boolean {
+    const charCode = event.which ? event.which : event.keyCode;
+    if (charCode < 48 || charCode > 57) {
+      return false;
+    }
+    return true;
+  }
+
+  textOnly(event: any): boolean {
+    const charCode = event.which ? event.which : event.keyCode;
+    if (
+      (charCode > 64 && charCode < 91) ||
+      (charCode > 96 && charCode < 123) ||
+      charCode == 32
+    ) {
+      return true;
+    }
+    return false;
   }
 
   ngOnDestroy() {

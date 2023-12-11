@@ -24,10 +24,10 @@
                 class="form-control input-sm"
                 id="name"
                 placeholder="Please enter visitor name"
-                formControlName="visitorName"
+                formControlName="visitorName" (keypress)="textOnly($event)"
               />
             </div>
-            <div *ngIf="submitted && f['visitorName'].errors">
+            <div *ngIf="(f['visitorName'].touched || submitted) && f['visitorName'].errors">
               <div *ngIf="f['visitorName'].errors['required']" class="error">
                 Please enter visitor name
               </div>
@@ -46,10 +46,10 @@
                 class="form-control input-sm"
                 id="purpose"
                 placeholder="Please enter purpose"
-                formControlName="purpose"
+                formControlName="purpose" (keypress)="textOnly($event)"
               />
             </div>
-            <div *ngIf="submitted && f['purpose'].errors">
+            <div *ngIf="(f['purpose'].touched || submitted) && f['purpose'].errors">
               <div *ngIf="f['purpose'].errors['required']" class="error">
                 Please Select a purpose
               </div>
@@ -91,9 +91,12 @@
                 ></option>
               </datalist>
             </div>
-            <div *ngIf="submitted && f['contactPerson'].errors">
+            <div *ngIf="(f['contactPerson'].touched || submitted) && f['contactPerson'].errors">
               <div *ngIf="f['contactPerson'].errors['required']" class="error">
                 Please enter contact person.
+              </div>
+              <div *ngIf="f['contactPerson'].errors['inValidMember']" class="error">
+                person doesn't exceed.
               </div>
             </div>
           </div>
@@ -107,10 +110,10 @@
                 class="form-control input-sm"
                 id="mobile"
                 placeholder="Please enter contact number"
-                formControlName="contactNo"
+                formControlName="contactNo" (keypress)="numberOnly($event)"
               />
             </div>
-            <div *ngIf="submitted && f['contactNo'].errors">
+            <div *ngIf="(f['contactNo'].touched || submitted) && f['contactNo'].errors">
               <div *ngIf="f['contactNo'].errors['required']" class="error">
                 Please enter contact number
               </div>
@@ -137,7 +140,7 @@
                 </option>
               </select>
             </div>
-            <div *ngIf="submitted && f['idType'].errors">
+            <div *ngIf="(f['idType'].touched || submitted) && f['idType'].errors">
               <div *ngIf="f['idType'].errors['required']" class="error">
                 Please select a ID Proof
               </div>
@@ -159,7 +162,7 @@
                 formControlName="idValue"
               />
             </div>
-            <div *ngIf="submitted && f['idValue'].errors">
+            <div *ngIf="(f['idValue'].touched || submitted) && f['idValue'].errors">
               <div *ngIf="f['idValue'].errors['required']" class="error">
                 Please enter a ID Proof Number
               </div>
@@ -178,10 +181,9 @@
                 class="form-control input-sm"
                 id="noOfPerson"
                 placeholder="Please enter number of person"
-                formControlName="noOfPerson"
-              />
+                formControlName="noOfPerson" oninput="parseInt(value) > 0 ||(value='')"/>
             </div>
-            <div *ngIf="submitted && f['noOfPerson'].errors">
+            <div *ngIf="(f['noOfPerson'].touched || submitted) && f['noOfPerson'].errors">
               <div *ngIf="f['noOfPerson'].errors['required']" class="error">
                 Please enter number of person
               </div>
