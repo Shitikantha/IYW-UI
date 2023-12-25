@@ -1,0 +1,61 @@
+/* You can add global styles to this file, and also import other style files */
+body{
+    background-color: #83a2b7 !important;
+}
+.primary-bg{
+    background-color: #fff !important;
+}
+.error{
+    color:#ff6219;
+}
+.pointer{
+    cursor: pointer;
+}
+.logo{
+    height: 70px;
+    width: 153px
+}
+a{
+color:#1d5e8b  !important;
+}
+
+.btn-primary{
+    background-color: #1d5e8b  !important;
+}
+.title-primary{
+    color:#1d5e8b  !important;
+}
+.btn-link{
+    color:#1d5e8b  !important;
+    text-decoration: none !important;
+}
+label{
+    font-size: smaller !important;
+    margin-bottom: 3px !important;
+    color: #000 !important;
+    font-weight: 400 !important;
+}
+tr:nth-child(even) {
+    background-color: #8cc3ea !important;
+}
+hr{
+    color:#1d5e8b  !important;
+}
+.modal-primary{
+    background-color:#1d5e8b  !important;
+    color: #fff !important;
+}
+.form-control:focus,.form-select:focus{
+    box-shadow: 0 0 0 0.1rem #1d5e8b  !important;
+}
+.disabled-icons{
+    pointer-events: none;
+    opacity: .5;
+}
+.ngb-dp-weekday{
+    color:#1d5e8b  !important;
+    font-weight: bold;
+}
+.w-10{
+    width: 10% !important;
+}

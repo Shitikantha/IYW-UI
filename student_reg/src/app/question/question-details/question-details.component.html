@@ -1,0 +1,75 @@
+<div class="container-fluid primary-bg p-4">
+    <div class="row">
+        <div class="col-6">
+          <h3 class="title-primary">Question Details</h3>
+        </div>
+        <div class="col-6 mb-3 text-end">
+          <button class="btn btn-link" (click)="goBack()">
+            <i class="bi bi-arrow-left title-primary mx-2"></i>Back
+          </button>
+        </div>
+        <hr />
+      </div>
+      <form [formGroup]="questionDetailsForm" (ngSubmit)="onSubmit()">
+      <div class="row">
+        <div class="col-3 mb-2">
+          <div class="form-group d-flex">
+            <label for="mobile" class="p-2">Class</label>
+            <select
+              class="form-select"
+              aria-label="Default select example" 
+              (ngModelChange)="selectedClass($event)"   
+              formControlName="className"    
+            >
+              <option value="" selected disabled>select class</option>
+              <option value="{{ cla.dropdownKey }}" *ngFor="let cla of allClasses">
+                {{ cla.dropdownValue }}
+              </option>
+            </select>
+          </div>
+        </div>
+          <div class="col-3 mb-2">
+            <div class="form-group d-flex">
+              <label for="mobile" class="p-2">Subject</label>
+              <select
+                class="form-select"
+                aria-label="Default select example"    
+                (ngModelChange)="selectedSubject($event)"   
+                formControlName="subject"   
+              >
+                <option value="" selected disabled>select subject</option>
+                <option value="{{ cla.dropdownKey }}" *ngFor="let cla of subjectList">
+                  {{ cla.dropdownValue }}
+                </option>
+              </select>
+            </div>
+          </div>
+          <div class="col-3 mb-2">
+            <div class="form-group d-flex">
+              <label for="mobile" class="p-2">Chapter</label>
+              <select
+                class="form-select"
+                aria-label="Default select example"    
+                formControlName="chapterName"      
+              >
+                <option value="" selected disabled>select chapter</option>
+                <option value="{{ cla.dropdownKey }}" *ngFor="let cla of chapterDetails">
+                  {{ cla.dropdownValue }}
+                </option>
+              </select>
+            </div>
+          </div>
+          <div class="col-3 mb-2">
+            <button class="btn btn-primary mx-2" type="submit" [disabled]="!questionDetailsForm.valid">Get Records</button>
+          </div>
+        </div>
+        </form>
+    <app-data-table [tableHeader]="questionHeader" [tableData]="questionData"  (emitAction)="getAction($event)"></app-data-table>
+</div>
+
+<app-modal
+  [modalSetting]="editQuestionSetting"
+  (close)="closeModal($event)"
+  *ngIf="editQuestionSetting?.isOpen">
+  <app-add-question [editRecords]="editItem" (close)="closeModal($event)"></app-add-question>
+</app-modal>

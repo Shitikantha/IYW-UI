@@ -1,0 +1,16 @@
+.active{
+    background-color: #1d5e8b  !important;
+    color:#ffffff !important
+}
+.nav-link{
+ text-align: center !important;
+ color:#000 !important
+}
+.custom-scroll{
+    max-height: 407px;
+    overflow: auto;
+}
+.completed{
+    background-color: #198754;
+    color:#ffffff !important
+}

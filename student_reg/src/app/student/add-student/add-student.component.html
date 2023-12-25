@@ -1,0 +1,307 @@
+<div class="container-fluid primary-bg mt-2 p-4">
+    <div class="row">
+      <div class="col-6 mb-3">
+        <h3 class="title-primary">Register Student </h3>
+      </div>
+      <div class="col-6 mb-3 text-end">
+        <button class="btn btn-link" (click)="goBack()"> <i class="bi bi-arrow-left title-primary mx-2"></i>Back</button>
+      </div>
+      <hr/>
+    </div>
+    <div class="row">
+      <div class="col-12">
+        <form [formGroup]="registrationForm" (ngSubmit)="onSubmit()">
+         <div class="row">
+          <div class="col-6 mb-2">
+            <div class="form-group">
+              <label for="name">Full Name <span class="title-primary">*</span></label>
+              <input
+                type="text"
+                class="form-control input-sm"
+                id="name"
+                placeholder="Please enter full name"
+                formControlName="name"
+                (keypress)="textOnly($event)"
+              />
+            </div>
+            <div *ngIf="(f['name'].touched || submitted) && f['name'].errors">
+              <div *ngIf="f['name'].errors['required']" class="error">
+                Please enter name
+              </div>
+              <div *ngIf="f['name'].errors['maxlength']" class="error">
+                Max length can't be less then 25
+              </div>
+            </div>
+          </div>
+          <div class="col-6 mb-2">
+            <div class="form-group">
+              <label for="name"
+                >Email Id<span class="title-primary">*</span></label
+              >
+              <input
+                type="email"
+                class="form-control input-sm"
+                placeholder="Please enter email"
+                formControlName="email"
+                id="email"
+                name="email"
+              />
+            </div>
+            <div *ngIf="(f['email'].touched || submitted) && f['email'].errors">
+              <div *ngIf="f['email'].errors['required']" class="error">
+                Please enter email
+              </div>
+              <div *ngIf="f['email'].errors['pattern']" class="error">Email is not Valid</div>
+              <div *ngIf="f['email'].errors['maxlength']" class="error">
+                Max length can't be less then 25
+              </div>
+            </div>
+          </div>
+         </div>
+         <div class="row">
+          <div class="col-6 mb-2">
+            <div class="form-group">
+              <label> Roll Number <span class="title-primary">*</span></label>
+              <input
+              type="text"
+              class="form-control input-sm"
+              id="rollNum"
+              placeholder="Please enter Roll Number"
+              formControlName="rollNum"
+            />
+            </div>
+            <div *ngIf="(f['rollNum'].touched || submitted) && f['rollNum'].errors">
+              <div *ngIf="f['rollNum'].errors['required']" class="error">
+                Please Enter a rollNum
+              </div>
+              <div *ngIf="f['rollNum'].errors['maxlength']" class="error">
+                Max length can't be less then 15
+              </div>
+            </div>
+          </div>
+          <div class="col-6 mb-2">
+            <div class="form-group">
+              <label for="mobile"
+                >Select a Class<span class="title-primary">*</span></label
+              >
+              <select
+                class="form-select"
+                aria-label="Default select example"
+                formControlName="className"
+                (ngModelChange)="selectedClass($event)"
+              >
+                <option value="" selected disabled>select class</option>
+                <option value="{{ cla.dropdownKey }}" *ngFor="let cla of allClasses">
+                  {{ cla.dropdownValue }}
+                </option>
+              </select>
+            </div>
+            <div *ngIf="(f['className'].touched || submitted) && f['className'].errors">
+              <div *ngIf="f['className'].errors['required']" class="error">
+                Please select a class
+              </div>
+            </div>
+          </div>
+         </div>
+
+         <div class="row" *ngIf="t.length">
+          <div class="col-6">
+            <div class="button-group">
+                <label for="mobile">Select a Subject<span class="title-primary">*</span></label>
+                <button class="btn btn-primary btn-sm" type="button" (click)="selectDeselect(true)">Select All</button>
+                <button class="btn btn-primary btn-sm" type="button" (click)="selectDeselect(false)">Deselect All</button>
+              </div>
+            <ng-container formArrayName="subject" *ngFor="let order of t.controls; let i = index"> 
+            <div class="form-check">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    id="flexCheckDefault"
+                    [formControlName]="i"
+                  />
+                  <label class="form-check-label" for="flexCheckDefault">
+                    {{subjectList[i].dropdownValue}}
+                  </label>
+                </div>
+            </ng-container>
+            <div *ngIf="submitted && f['subject'].errors">
+              <div *ngIf="f['subject'].errors['required']" class="error">select a subject</div>
+            </div>
+          </div>
+          <div class="col-6">
+            <label for="mobile">Select a Relation<span class="title-primary">*</span></label>
+            <div class="form-check" *ngFor="let rel of relationArray">
+              <input class="form-check-input" type="checkbox" [value]="rel.relationshipType" (change)="onCheckboxChange($event)">
+              <label class="form-check-label" for="{{rel.id}}">
+                {{rel.relationshipType}}
+              </label>
+            </div>
+            <div *ngIf="submitted && f['relationStatus'].errors">
+              <div *ngIf="f['relationStatus'].errors['required']" class="error">Relation is required, select at least one value.</div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="row" *ngIf="t.length && getFormGroup('Father')" formGroupName="fatherGroup">
+          <div class="col-4">
+            <div class="form-group">
+              <label>Father Name<span class="title-primary">*</span></label>
+              <input
+                type="text"
+                class="form-control input-sm"
+                placeholder="Please enter Name"
+                formControlName="name"
+                (keypress)="textOnly($event)"
+              />
+            </div>
+            <div *ngIf="(validationGroup('fatherGroup')['name'].touched || submitted) && validationGroup('fatherGroup')['name'].errors">
+              <div *ngIf="validationGroup('fatherGroup')['name'].errors['required']" class="error">Father Name is required</div>
+              <div *ngIf="validationGroup('fatherGroup')['name'].errors['maxlength']" class="error"> Max length can't be less then 25</div>
+            </div>
+          </div>
+          <div class="col-4">
+            <div class="form-group">
+              <label >Email Id<span class="title-primary">*</span></label>
+              <input
+                type="email"
+                class="form-control input-sm"
+                placeholder="Please enter email"
+                formControlName="email"
+              />
+            </div>
+            <div *ngIf="(validationGroup('fatherGroup')['email'].touched || submitted) && validationGroup('fatherGroup')['email']?.errors">
+              <div *ngIf="validationGroup('fatherGroup')['email']?.errors['required']" class="error">Email is required</div>
+              <div *ngIf="validationGroup('fatherGroup')['email'].errors['maxlength']" class="error"> Max length can't be less then 25</div>
+              <div *ngIf="validationGroup('fatherGroup')['email']?.errors['pattern']" class="error">Email is not Valid</div>
+            </div>
+          </div>
+          <div class="col-4">
+            <div class="form-group">
+              <label>Phone Number<span class="title-primary">*</span></label>
+              <input
+                type="text"
+                class="form-control input-sm"
+                placeholder="Please enter mobile Number"
+                formControlName="pno"
+                (keypress)="numberOnly($event)"
+              />
+            </div>
+            <div *ngIf="(validationGroup('fatherGroup')['pno'].touched || submitted) && validationGroup('fatherGroup')['pno'].errors">
+              <div *ngIf="validationGroup('fatherGroup')['pno'].errors['required']" class="error">Phone Number is required</div>
+              <div *ngIf="validationGroup('fatherGroup')['pno'].errors['maxlength']" class="error"> Max length can't be less then 10</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row" *ngIf="t.length && getFormGroup('Mother')" formGroupName="motherGroup">
+          <div class="col-4">
+            <div class="form-group">
+              <label>Mother Name<span class="title-primary">*</span></label>
+              <input
+                type="text"
+                class="form-control input-sm"
+                placeholder="Please enter Name"
+                formControlName="name"
+                (keypress)="textOnly($event)"
+              />
+            </div>
+            <div *ngIf="(validationGroup('motherGroup')['name'].touched || submitted) && validationGroup('motherGroup')['name'].errors">
+              <div *ngIf="validationGroup('motherGroup')['name'].errors['required']" class="error">Mother Name is required</div>
+              <div *ngIf="validationGroup('motherGroup')['name'].errors['maxlength']" class="error"> Max length can't be less then 25</div>
+            </div>
+          </div>
+          <div class="col-4">
+            <div class="form-group">
+              <label >Email Id<span class="title-primary">*</span></label>
+              <input
+                type="email"
+                class="form-control input-sm"
+                placeholder="Please enter email"
+                formControlName="email"
+              />
+            </div>
+            <div *ngIf="(validationGroup('motherGroup')['email'].touched || submitted) && validationGroup('motherGroup')['email']?.errors">
+              <div *ngIf="validationGroup('motherGroup')['email']?.errors['required']" class="error">Email is required</div>
+              <div *ngIf="validationGroup('motherGroup')['email'].errors['maxlength']" class="error"> Max length can't be less then 25</div>
+              <div *ngIf="validationGroup('motherGroup')['email']?.errors['pattern']" class="error">Email is not Valid</div>
+            </div>
+          </div>
+          <div class="col-4">
+            <div class="form-group">
+              <label>Phone Number<span class="title-primary">*</span></label>
+              <input
+                type="text"
+                class="form-control input-sm"
+                placeholder="Please enter mobile Number"
+                formControlName="pno"
+                (keypress)="numberOnly($event)"
+              />
+            </div>
+            <div *ngIf="(validationGroup('motherGroup')['pno'].touched || submitted) && validationGroup('motherGroup')['pno'].errors">
+              <div *ngIf="validationGroup('motherGroup')['pno'].errors['required']" class="error">Phone Number is required</div>
+              <div *ngIf="validationGroup('motherGroup')['pno'].errors['maxlength']" class="error"> Max length can't be less then 10</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row" *ngIf="t.length && getFormGroup('Others')" formGroupName="otherGroup">
+          <div class="col-4">
+            <div class="form-group">
+              <label>Others Name<span class="title-primary">*</span></label>
+              <input
+                type="text"
+                class="form-control input-sm"
+                placeholder="Please enter Name"
+                formControlName="name"
+                (keypress)="textOnly($event)"
+              />
+            </div>
+            <div *ngIf="(validationGroup('otherGroup')['name'].touched || submitted) && validationGroup('otherGroup')['name'].errors">
+              <div *ngIf="validationGroup('otherGroup')['name'].errors['required']" class="error">Name is required</div>
+              <div *ngIf="validationGroup('otherGroup')['name'].errors['maxlength']" class="error">Max length can't be less then 25</div>
+            </div>
+          </div>
+          <div class="col-4">
+            <div class="form-group">
+              <label >Email Id<span class="title-primary">*</span></label>
+              <input
+                type="email"
+                class="form-control input-sm"
+                placeholder="Please enter email"
+                formControlName="email"
+              />
+            </div>
+            <div *ngIf="(validationGroup('otherGroup')['email'].touched || submitted) && validationGroup('otherGroup')['email']?.errors">
+              <div *ngIf="validationGroup('otherGroup')['email']?.errors['required']" class="error">Email is required</div>
+              <div *ngIf="validationGroup('otherGroup')['email'].errors['maxlength']" class="error">Max length can't be less then 25</div>
+              <div *ngIf="validationGroup('otherGroup')['email']?.errors['pattern']" class="error">Email is not Valid</div>
+            </div>
+          </div>
+          <div class="col-4">
+            <div class="form-group">
+              <label>Phone Number<span class="title-primary">*</span></label>
+              <input
+                type="text"
+                class="form-control input-sm"
+                placeholder="Please enter mobile Number"
+                formControlName="pno"
+                (keypress)="numberOnly($event)"
+              />
+            </div>
+            <div *ngIf="(validationGroup('otherGroup')['pno'].touched || submitted) && validationGroup('otherGroup')['pno'].errors">
+              <div *ngIf="validationGroup('otherGroup')['pno'].errors['required']" class="error">Phone Number is required</div>
+              <div *ngIf="validationGroup('otherGroup')['pno'].errors['maxlength']" class="error">Max length can't be less then 10</div>
+            </div>
+          </div>
+        </div>
+
+          <div class="row mt-2">
+            <div class="col-12">
+              <button class="btn btn-primary w-10" type="submit">Submit</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  

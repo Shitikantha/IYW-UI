@@ -1,0 +1,62 @@
+<div class="row mt-3">
+  <div class="col-12">
+    <div class="table-responsive">
+      <table class="users-table table table-striped">
+        <thead>
+          <tr>
+            <ng-container *ngFor="let col of tableHeader">
+              <ng-container *ngIf="col.visible">
+                <th class="users-table-cell text-center">{{ col.name }}</th>
+              </ng-container>
+            </ng-container>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let data of tableAllData;index as i">
+            <ng-container *ngFor="let col of tableHeader">
+              <ng-container *ngIf="col.visible">
+                <td class="users-table-cell text-center">
+                  <div *ngIf="col.name == 'Sl_No'">
+                    {{i+1}}
+                  </div>
+                  <div *ngIf="col.name != 'Sl_No'">
+                    {{ data[col.dataKey] }}
+                  </div>
+                  <div>
+                    <!-- disabled-icons -->
+                    <!-- [class.disabled-icons]="data.edit" -->
+                    <ng-container *ngIf="col.name == 'Action'">
+                      <ng-container *ngFor="let action of col.action;index as j">
+                        <ng-container *ngIf="action.visible">
+                          <span (click)="takeAction(action,data)">
+
+                              <!-- For icon -->
+                              <span [class.disabled-icons]="data.disabledIcon && data.disabledIcon[action.name]" *ngIf="action.icon">
+                                <i class="mx-1 title-primary pointer" 
+                                [ngClass]="action.style.class" *ngIf="action.icon && action.style"
+                                data-toggle="tooltip" data-placement="top" [title]="action.name"></i>
+                              </span>
+
+                              <!-- for btn -->
+                              <ng-container *ngIf="action.type">
+                                <button class="btn btn-primary btn-sm" type="button" *ngIf="data.disabledIcon && data.disabledIcon[action.name]">{{action.name}}</button>
+                              </ng-container>
+                          </span>
+                        </ng-container>
+                      </ng-container>
+                    </ng-container>
+                  </div>
+                </td>
+              </ng-container>
+            </ng-container>
+          </tr>
+          <tr *ngIf="tableAllData && tableAllData.length == 0">
+            <td [attr.colspan]="tableHeader.length" class="text-center">
+              No Record Found
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

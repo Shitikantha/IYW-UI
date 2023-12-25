@@ -1,0 +1,31 @@
+<div class="container-fluid primary-bg p-4">
+    <div class="row">
+        <div class="col-6">
+          <h3 class="title-primary">Assignment Details</h3>
+        </div>
+        <div class="col-6 mb-3 text-end">
+          <button class="btn btn-link" (click)="goBack()">
+            <i class="bi bi-arrow-left title-primary mx-2"></i>Back
+          </button>
+        </div>
+        <hr />
+      </div>
+      <!-- <div class="row">
+        <div class="col-3 mb-2">
+         
+        </div>
+        <div class="col-3 mb-2">
+          
+        </div>
+       </div> -->
+    <app-data-table [tableHeader]="assignmentHeader" [tableData]="assignmentData"  (emitAction)="getAction($event)"></app-data-table>
+
+<!-- <button (click)="toggleFullScreen()">Go full screen</button> -->
+</div>
+
+<app-modal
+  [modalSetting]="assignmentSetting"
+  (close)="closeModal($event)"
+  *ngIf="assignmentSetting?.isOpen">
+  <app-assigned-assessment (sendAssessment)="getAssessment($event)"></app-assigned-assessment>
+</app-modal>

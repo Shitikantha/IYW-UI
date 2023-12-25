@@ -1,0 +1,55 @@
+<div class="container-fluid primary-bg mt-2">
+  <form [formGroup]="addClass" (ngSubmit)="onSubmit()">
+    <div class="row">
+      <div class="form-group">
+        <label for="mobile"
+          >Select a Class<span class="title-primary">*</span></label
+        >
+        <select
+          class="form-select"
+          aria-label="Default select example"
+          formControlName="className"
+          (ngModelChange)="selectedClass($event)"
+        >
+          <option value="" selected disabled>select class</option>
+          <option value="{{ cla.dropdownKey }}" *ngFor="let cla of allClasses">
+            {{ cla.dropdownValue }}
+          </option>
+        </select>
+      </div>
+      <div *ngIf="submitted && f['className'].errors">
+        <div *ngIf="f['className'].errors['required']" class="error">
+          Please select a class
+        </div>
+      </div>
+    </div>
+    <div class="row" *ngIf="t.length">
+      <div class="col-12">
+        <label for="mobile">Select a Subject<span class="title-primary">*</span></label>
+        <ng-container formArrayName="subject" *ngFor="let order of t.controls; let i = index"> 
+        <div class="form-check">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                value=""
+                id="flexCheckDefault"
+                [formControlName]="i"
+              />
+              <label class="form-check-label" for="flexCheckDefault">
+                {{subjectList[i].dropdownValue}}
+              </label>
+            </div>
+        </ng-container>
+      </div>
+      <div *ngIf="submitted && f['subject'].errors">
+        <div *ngIf="f['subject'].errors['required']" class="error">select a subject</div>
+      </div>
+    </div>
+    <div class="row mt-2">
+        <div class="col-12">
+          <button class="btn btn-primary mx-1" type="submit">Save</button>
+          <button class="btn btn-primary" type="button" (click)="cancel()">Cancel</button>
+        </div>
+      </div>
+  </form>
+</div>

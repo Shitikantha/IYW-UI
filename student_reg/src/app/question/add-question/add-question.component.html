@@ -1,0 +1,185 @@
+<div class="container-fluid primary-bg mt-2 p-4">
+  <div class="row" *ngIf="!editRecords">
+    <div class="col-6 mb-3">
+      <h3 class="title-primary">Add Question</h3>
+    </div>
+    <div class="col-6 mb-3 text-end">
+      <button class="btn btn-link" (click)="goBack()">
+        <i class="bi bi-arrow-left title-primary mx-2"></i>Back
+      </button>
+    </div>
+    <hr />
+  </div>
+  <div class="row">
+    <div class="col-12">
+      <form [formGroup]="questionForm" (ngSubmit)="onSubmit()">
+        <div class="row">
+          <div class="col-6 mb-2">
+            <div class="form-group">
+              <label for="mobile"
+                >Select a Class<span class="title-primary">*</span></label
+              >
+              <select
+                class="form-select"
+                aria-label="Default select example"
+                formControlName="className"
+                (ngModelChange)="selectedClass()"
+              >
+                <option value="" selected disabled>select class</option>
+                <option value="{{ cla.dropdownKey }}" *ngFor="let cla of allClasses">
+                  {{ cla.dropdownValue }}
+                </option>
+              </select>
+            </div>
+            <div *ngIf="submitted && f['className'].errors">
+              <div *ngIf="f['className'].errors['required']" class="error">
+                Please select a class name
+              </div>
+            </div>
+          </div>
+          <div class="col-6 mb-2">
+            <div class="form-group">
+              <label for="mobile"
+                >Select a Subject <span class="title-primary">*</span></label
+              >
+              <select class="form-select" aria-label="Default select example" 
+              (ngModelChange)="selectedSubject()" formControlName="subject">
+                <option value="" selected disabled>select Subject</option>
+                <option value="{{ cla.dropdownKey }}" *ngFor="let cla of subjectList">
+                  {{ cla.dropdownValue }}
+                </option>
+              </select>
+            </div>
+            <div *ngIf="submitted && f['subject'].errors">
+              <div *ngIf="f['subject'].errors['required']" class="error">
+                Please select a subject
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-6 mb-2">
+            <div class="form-group">
+              <label for="mobile"
+                >Select a Chapter <span class="title-primary">*</span></label
+              >
+              <select
+                class="form-select"
+                aria-label="Default select example"
+                formControlName="chapterName"
+              >
+                <option value="" selected disabled>select chapter</option>
+                <option value="{{ cla.dropdownKey }}" *ngFor="let cla of chapterDetails">
+                  {{ cla.dropdownValue }}
+                </option>
+              </select>
+            </div>
+            <div *ngIf="submitted && f['chapterName'].errors">
+              <div *ngIf="f['chapterName'].errors['required']" class="error">
+                Please select a chapter name
+              </div>
+            </div>
+          </div>
+          <div class="col-6 mb-2">
+            <div class="form-group">
+              <label for="mobile"
+                >Select a Levels <span class="title-primary">*</span></label
+              >
+              <select class="form-select" aria-label="Default select example" formControlName="levels">
+                <option value="" selected disabled>select levels</option>
+                <option value="{{ cla.dropdownKey }}" *ngFor="let cla of levels">
+                  {{ cla.dropdownValue }}
+                </option>
+              </select>
+            </div>
+            <div *ngIf="submitted && f['levels'].errors">
+              <div *ngIf="f['levels'].errors['required']" class="error">
+                Please select a level
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-6 mb-2">
+            <div class="form-group">
+              <label for="mobile"
+                >Select a Question Type
+                <span class="title-primary">*</span></label
+              >
+              <select
+                class="form-select"
+                aria-label="Default select example"
+                formControlName="questionType"
+                (ngModelChange)="selectedQuestionType($event)"
+              >
+                <option value="" selected disabled>select type</option>
+                <option value="{{ cla.dropdownKey }}" *ngFor="let cla of questionTypeArr">
+                  {{ cla.dropdownValue }}
+                </option>
+              </select>
+            </div>
+            <div *ngIf="submitted && f['questionType'].errors">
+              <div *ngIf="f['questionType'].errors['required']" class="error">
+                Please select a question type
+              </div>
+            </div>
+          </div>
+          <div class="col-6 mb-2"></div>
+        </div>
+        <div class="row">
+          <div class="col-12">
+            <button
+              class="btn btn-primary"
+              type="button"
+              *ngIf="!!selectedType && !editRecords"
+              (click)="open()"
+            >
+              Add {{ selectedType }} Question
+            </button>
+          </div>
+        </div>
+
+        <div class="row" *ngIf="allQuestions.length">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th scope="col">Question</th>
+                <th scope="col">Options</th>
+                <th scope="col">Selected Value</th>
+                <th scope="col" *ngIf="!!editRecords">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let i of allQuestions">
+                <td>{{i.questionText}}</td>
+                <td>{{selectedOption(i.options)}}</td>
+                <td>{{selectedValue(i.options)}}</td>
+                <td *ngIf="!!editRecords">
+                  <i class="bi bi-pencil-square mx-1 title-primary pointer" (click)="edit(i)"
+                        data-toggle="tooltip" data-placement="top" title="edit" ></i>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="row">
+          <div class="col-12 mt-4">
+            <button class="btn btn-primary mx-2" type="submit" [disabled]="!isSubmitted">Save</button>
+            <button class="btn btn-primary mx-2" type="button" *ngIf="!!editRecords" (click)="cancel()">Cancel</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<app-modal
+  [modalSetting]="mChoiceModalSetting"
+  (close)="closeModal($event)"
+  *ngIf="mChoiceModalSetting?.isOpen"
+>
+  <app-multiple-choice
+    (close)="closeModal($event)"
+    (sendQuestions)="getAllQuestions($event)" [editData]="editData"
+  ></app-multiple-choice>
+</app-modal>

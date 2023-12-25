@@ -1,0 +1,131 @@
+{
+  "Student": [
+    {
+      "StudentId": "1111",
+      "studentName": "Anil Gauda",
+      "rollNum": "R-123",
+      "contactNo": "9776889842",
+      "cardType": "Aadhaar card",
+      "cardNumber": "1233445677888",
+      "address": "Anil Gouda,\nSite 08 first floor,\nMuniveera Reddy layout, Near GM reside\nnce Channasandra Whitefield,\nBengaluru - 560067, IN-KA",
+      "id": 1,
+      "contactNumber": "9776889842",
+      "disabledIcon": {
+        "edit": false,
+        "view": true
+      }
+    },
+    {
+      "StudentId": "12",
+      "studentName": "Asutosh",
+      "rollNum": "R123",
+      "contactNo": "7008093734",
+      "cardType": "Aadhaar card",
+      "cardNumber": "1233455667888",
+      "address": "aaaaaaaa ggggggg ",
+      "id": 2,
+      "contactNumber": "7008093734"
+    }
+  ],
+  "Teacher": [
+    {
+      "teacherId": "101",
+      "teacherName": "Anil",
+      "rollNum": "T-1456",
+      "contactNo": "3457865980",
+      "cardType": "Aadhaar card",
+      "cardNumber": "11111111112567",
+      "address": "Anil Gouda,\nSite 08 first floor,\nMuniveera Reddy layout, Near GM reside\nnce Channasandra Whitefield,\nBengaluru - 560067, IN-KA",
+      "id": 1,
+      "contactNumber": "3457865980"
+    },
+    {
+      "teacherId": "1111",
+      "teacherName": "asutosh",
+      "rollNum": "T-1111",
+      "contactNo": "1234567890",
+      "cardType": "Aadhaar card",
+      "cardNumber": "11111111156777",
+      "address": "derffcffc fggfgg",
+      "id": 2
+    }
+  ],
+  "ClassName": [
+    {
+      "cid": 1,
+      "cname": "10th",
+      "chapter": [
+        {
+          "chapterId": "1",
+          "chapterName": "Number Series"
+        },
+        {
+          "chapterId": "2",
+          "chapterName": "Coding Decoding"
+        },
+        {
+          "chapterId": "3",
+          "chapterName": "Profit and Loss"
+        },
+        {
+          "chapterId": "4",
+          "chapterName": "Trigonometry"
+        }
+      ]
+    },
+    {
+      "cid": 2,
+      "cname": "12th",
+      "chapter": [
+        {
+          "chapterId": "1",
+          "chapterName": "Physics"
+        },
+        {
+          "chapterId": "2",
+          "chapterName": "Chemistry"
+        },
+        {
+          "chapterId": "3",
+          "chapterName": "Life Sciences"
+        }
+      ]
+    },
+    {
+      "cid": 3,
+      "cname": "ssc",
+      "chapter": [
+        {
+          "chapterId": "1",
+          "chapterName": "Current Affairs Science & Technology"
+        },
+        {
+          "chapterId": "2",
+          "chapterName": "Sports"
+        },
+        {
+          "chapterId": "3",
+          "chapterName": "Culture"
+        },
+        {
+          "chapterId": "4",
+          "chapterName": "Personalities"
+        },
+        {
+          "chapterId": "5",
+          "chapterName": "Economics"
+        },
+        {
+          "chapterId": "6",
+          "chapterName": "Politics"
+        }
+      ]
+    }
+  ],
+  "headerInfo": [
+    {
+      "logo_url": "./../../../assets/img/logo.png",
+      "title": "STUDENT REG"
+    }
+  ]
+}

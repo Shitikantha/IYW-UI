@@ -1,0 +1,16 @@
+	<div class="modal" *ngIf="modalSetting.isOpen">
+		<div class="modal-overlay" ></div>
+		<div class="modal--modal-content" [ngClass]="screenSize">
+			<div class="modal-header modal-primary bro-r-n">
+				<h4 class="modal-title" id="modal-basic-title">{{modalSetting.title}}</h4>
+				<button type="button" class="btn-close" aria-label="Close" (click)="closeModal()"></button>
+			</div>
+			<div class="modal-body">
+				<ng-content></ng-content>
+			</div>
+			<div class="modal-footer" *ngIf="modalSetting.isFooter">
+				<button type="button" class="btn btn-outline-dark" (click)="closeModal()">Cancel</button>
+			</div>
+		</div>
+	</div>
+  

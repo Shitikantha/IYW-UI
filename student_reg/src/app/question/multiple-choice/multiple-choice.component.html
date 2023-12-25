@@ -1,0 +1,118 @@
+<div class="container-fluid primary-bg mt-2">
+  <form [formGroup]="questionForm" (ngSubmit)="onSubmit()">
+    <ng-container
+      *ngFor="let item of t['controls']; let i = index"
+      formArrayName="multipleChoice"
+    >
+      <ng-container [formGroupName]="i">
+        <div class="row">
+          <div class="col-6 mb-2">
+            <div class="form-group">
+              <label for="question">Question{{ i + 1 }}</label>
+              <textarea
+                formControlName="questionText"
+                class="form-control input-sm"
+                id="question"
+                rows="2"
+              ></textarea>
+            </div>
+            <div
+              class="error"
+              *ngIf="
+                submitted &&
+                getReferralsFormArr(i).controls['questionText'].hasError('required')
+              "
+            >
+              Question Required
+            </div>
+          </div>
+          <div class="col-6 mb-2">
+            <label for="option">Add Options for Question{{ i + 1 }}</label>
+            <div class="row">
+              <ng-container
+                *ngFor="
+                  let item of optionsControl(i)['controls'];
+                  let j = index
+                "
+                formArrayName="options"
+              >
+                <ng-container [formGroupName]="j">
+                  <div class="col-8">
+                    <div class="form-group m-1">
+                      <input
+                        type="text"
+                        class="form-control input-sm"
+                        id="mobile"
+                        placeholder="Please add option"
+                        formControlName="optionText"
+                      />
+                    </div>
+                    <div
+                      class="error"
+                      *ngIf="
+                        submitted &&
+                        getReferralsOption(i, j).controls[
+                          'optionText'
+                        ].hasError('required')
+                      "
+                    >
+                      add option
+                    </div>
+                  </div>
+                  <div class="col-4 p-2">
+                    <div class="form-check">
+                      <input
+                        class="form-check-input border border-primary"
+                        type="radio"
+                        formControlName="isCorrect"
+                        [value]="true"
+                        (change)="onRadioChange(i, j)"
+                        id="isCorrect{{ i }}"
+                      />
+                      <ng-container *ngIf="optionsControl(i)['controls'].length >= 2">
+                        <i class="bi bi-trash mx-1 title-primary pointer" (click)="deleteOption(i,j)"
+                        data-toggle="tooltip" data-placement="top" title="delete" ></i>
+                      </ng-container>
+                    </div>
+                    <div
+                      class="error"  *ngIf="submitted &&
+                      getReferralsFormArr(i).controls['options'].hasError('customError') &&
+                      this.optionsControl(i).length == j + 1" >
+                      select a option 
+                    </div>
+                  </div>
+                </ng-container>
+              </ng-container>
+              <div class="row mt-4">
+                <div class="col-12">
+                  <button
+                    class="btn btn-primary"
+                    type="button"
+                    (click)="addOptions(i)"
+                  >
+                    Add Options+
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+    </ng-container>
+    <div class="row" *ngIf="!editData">
+      <div class="col-12">
+        <button class="btn btn-primary" type="button" (click)="addQuestion()">
+          Add a new Question+
+        </button>
+      </div>
+    </div>
+    <div class="row mb-2 mt-3">
+      <div class="col-12 text-end">
+        <button class="btn btn-primary mx-2" type="submit">Submit</button>
+        <button class="btn btn-primary" type="button" (click)="cancel()">
+          Cancel
+        </button>
+      </div>
+    </div>
+  </form>
+</div>

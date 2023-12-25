@@ -1,0 +1,58 @@
+<div class="container-fluid primary-bg mt-2 p-4">
+    <div class="row">
+        <div class="col-6 mb-3">
+          <h3 class="title-primary">Course Status</h3>
+        </div>
+        <div class="col-6 mb-3 text-end">
+          <button class="btn btn-link" (click)="goBack()">
+            <i class="bi bi-arrow-left title-primary mx-2"></i>Back
+          </button>
+        </div>
+        <hr />
+      </div>
+    <div cdkDropListGroup class="d-flex justify-content-center">
+        <div class="example-container">
+          <div class="form-group d-flex justify-content-evenly">
+            <label for="mobile" class="p-2">Class</label>
+            <select
+              class="form-select w-50"
+              aria-label="Default select example" (change)="selectedClass($event)">
+              <option value="" selected disabled>select class</option>
+              <option value="{{ cla.dropdownKey }}" *ngFor="let cla of allClasses">
+                {{ cla.dropdownValue }}
+              </option>
+            </select>
+          </div>
+          <h5 class="text-center mt-2">Pending</h5>
+          <div
+            cdkDropList
+            [cdkDropListData]="todo"
+            class="example-list"
+            (cdkDropListDropped)="drop($event)">
+            <div class="example-box" *ngFor="let item of todo" cdkDrag>{{item}}</div>
+          </div>
+        </div>
+      
+        <div class="example-container">
+          <div class="form-group d-flex justify-content-evenly">
+            <label for="mobile" class="p-2">Subject</label>
+            <select
+              class="form-select w-50"
+              aria-label="Default select example" (change)="selectedSubject($event)">
+              <option value="" selected disabled>select subject</option>
+              <option value="{{ cla.dropdownKey }}" *ngFor="let cla of subjectList">
+                {{ cla.dropdownValue }}
+              </option>
+            </select>
+          </div>
+          <h5 class="text-center mt-2">Completed</h5>
+          <div
+            cdkDropList
+            [cdkDropListData]="done"
+            class="example-list"
+            (cdkDropListDropped)="drop($event)">
+            <div class="example-box" *ngFor="let item of done" cdkDrag>{{item}}</div>
+          </div>
+        </div>
+      </div>
+</div>
