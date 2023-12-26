@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, ElementRef, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, OnDestroy, ViewChild} from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import {WebcamImage, WebcamInitError, WebcamUtil} from 'ngx-webcam';
 import { Observable, Subject } from 'rxjs';
@@ -8,7 +8,7 @@ import { Observable, Subject } from 'rxjs';
   templateUrl: './web-cam.component.html',
   styleUrls: ['./web-cam.component.css']
 })
-export class WebCamComponent implements AfterViewInit{
+export class WebCamComponent implements AfterViewInit,OnDestroy{
   public showWebcam = true;
   public allowCameraSwitch = true;
   public multipleWebcamsAvailable = false;
@@ -32,6 +32,7 @@ export class WebCamComponent implements AfterViewInit{
   constructor(private activeModal : NgbActiveModal){
     this.captures = [];
   }
+ 
 
   ngAfterViewInit(): void {
     if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
@@ -41,32 +42,21 @@ export class WebCamComponent implements AfterViewInit{
       });
     }
   }
+  
 
   public capture() {
     var context = this.canvas.nativeElement
       .getContext("2d")
-      .drawImage(this.video.nativeElement, 0, 0, 640, 480);
-    this.video.nativeElement.pause();
-    this.captures.push(this.canvas.nativeElement.toDataURL("image/png"));
-    const file = this.dataURLtoFile(this.captures[0], 'a1.png');
-    console.log(file);
+      .drawImage(this.video.nativeElement, 0, 0, 480, 480);
+      this.captures.push(this.canvas.nativeElement.toDataURL("image/png"));
+      this.video.nativeElement.pause();
+      (this.video.nativeElement.srcObject as MediaStream).getVideoTracks()[0].stop();
+      this.activeModal.close(this.captures[0]);
   }
 
   reCapture(){
     this.captures = []
     this.video.nativeElement.play();
-  }
-
-  public dataURLtoFile(dataurl:any, filename:any) {
-    var arr = dataurl.split(","),
-      mime = arr[0].match(/:(.*?);/)[1],
-      bstr = atob(arr[1]),
-      n = bstr.length,
-      u8arr = new Uint8Array(n);
-    while (n--) {
-      u8arr[n] = bstr.charCodeAt(n);
-    }
-    return new File([u8arr], filename, { type: mime });
   }
 
   public ngOnInit(): void {
@@ -102,5 +92,11 @@ export class WebCamComponent implements AfterViewInit{
 
   public get nextWebcamObservable(): Observable<boolean|string> {
     return this.nextWebcam.asObservable();
+  }
+
+  ngOnDestroy(): void {
+    this.trigger.unsubscribe();
+    this.nextWebcam.unsubscribe();
+    (this.video.nativeElement.srcObject as MediaStream).getVideoTracks()[0].stop();
   }
 }

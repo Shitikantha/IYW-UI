@@ -73,7 +73,7 @@ export class AddVisitorComponent implements OnInit, OnDestroy {
         checkIn: new Date().toLocaleDateString(),
         checkOut: null,
         image: !!this.webcamImage
-          ? window.btoa(this.webcamImage._imageAsDataUrl)
+          ? window.btoa(this.webcamImage)
           : null,
       };
       this.visitorDetails(payload);

@@ -1,6 +1,6 @@
 	<div class="modal-header modal-primary">
 		<h4 class="modal-title" id="modal-basic-title">{{AlertData.name}}</h4>
-		<button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+		<button type="button" class="btn-close" aria-label="Close" (click)="close()"></button>
 	</div>
 	<div class="modal-body p-0">
    <ng-container *ngIf="AlertData?.data == '1'">

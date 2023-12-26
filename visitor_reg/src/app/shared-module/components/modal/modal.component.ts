@@ -7,9 +7,13 @@ import { ModalDismissReasons, NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-
 })
 export class ModalComponent implements OnInit {
   @Input() AlertData:any
-  constructor(public modal : NgbActiveModal) { }
+  constructor(public modal : NgbActiveModal,private activeModal : NgbActiveModal) { }
 
   ngOnInit(): void {
+  }
+
+  close(){
+    this.activeModal.close();
   }
 
 }
