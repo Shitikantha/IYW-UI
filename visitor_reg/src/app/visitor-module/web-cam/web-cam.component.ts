@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, ViewChild} from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import {WebcamImage, WebcamInitError, WebcamUtil} from 'ngx-webcam';
 import { Observable, Subject } from 'rxjs';
@@ -8,8 +8,7 @@ import { Observable, Subject } from 'rxjs';
   templateUrl: './web-cam.component.html',
   styleUrls: ['./web-cam.component.css']
 })
-export class WebCamComponent {
-  
+export class WebCamComponent implements AfterViewInit{
   public showWebcam = true;
   public allowCameraSwitch = true;
   public multipleWebcamsAvailable = false;
@@ -19,13 +18,56 @@ export class WebCamComponent {
     height: {ideal: 576}
   };
   public errors: WebcamInitError[] = [];
-
-  // webcam snapshot trigger
   private trigger: Subject<void> = new Subject<void>();
-  // switch to next / previous / specific webcam; true/false: forward/backwards, string: deviceId
   private nextWebcam: Subject<boolean|string> = new Subject<boolean|string>();
 
-  constructor(private activeModal : NgbActiveModal){}
+
+  // other implements
+  @ViewChild("video")
+  public video!: ElementRef;
+  @ViewChild("canvas")
+  public canvas!: ElementRef;
+  public captures!: Array<any>;
+
+  constructor(private activeModal : NgbActiveModal){
+    this.captures = [];
+  }
+
+  ngAfterViewInit(): void {
+    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+      navigator.mediaDevices.getUserMedia({ video: true }).then(stream => {
+        this.video.nativeElement.srcObject = stream;
+        this.video.nativeElement.play();
+      });
+    }
+  }
+
+  public capture() {
+    var context = this.canvas.nativeElement
+      .getContext("2d")
+      .drawImage(this.video.nativeElement, 0, 0, 640, 480);
+    this.video.nativeElement.pause();
+    this.captures.push(this.canvas.nativeElement.toDataURL("image/png"));
+    const file = this.dataURLtoFile(this.captures[0], 'a1.png');
+    console.log(file);
+  }
+
+  reCapture(){
+    this.captures = []
+    this.video.nativeElement.play();
+  }
+
+  public dataURLtoFile(dataurl:any, filename:any) {
+    var arr = dataurl.split(","),
+      mime = arr[0].match(/:(.*?);/)[1],
+      bstr = atob(arr[1]),
+      n = bstr.length,
+      u8arr = new Uint8Array(n);
+    while (n--) {
+      u8arr[n] = bstr.charCodeAt(n);
+    }
+    return new File([u8arr], filename, { type: mime });
+  }
 
   public ngOnInit(): void {
     WebcamUtil.getAvailableVideoInputs()
@@ -47,13 +89,10 @@ export class WebCamComponent {
   }
 
   public handleImage(webcamImage: WebcamImage): void {
-    // console.info('received webcam image', webcamImage);
-    // this.pictureTaken.emit(webcamImage);
     this.activeModal.close(webcamImage);
   }
 
   public cameraWasSwitched(deviceId: string): void {
-    // console.log('active device: ' + deviceId);
     this.deviceId = deviceId;
   }
 
