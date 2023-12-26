@@ -10,7 +10,6 @@ export class AssignedAssessmentComponent implements OnInit,OnDestroy{
   @Output() sendAssessment: EventEmitter<any> = new EventEmitter();
   countDown!: Subscription;
   counter = 20 * 60;
-  selectedQuestionId:any;
 
   allQuestionArray:any=[
     {id:1,questionText:'Text-1',options:[{optId:1,optLabel:'Option1'},
@@ -30,11 +29,6 @@ export class AssignedAssessmentComponent implements OnInit,OnDestroy{
         this.countDown.unsubscribe();
       }
     });
-    this.selectedQuestionId = this.allQuestionArray[0].id
-  }
-
-  selectedQues(item:any){
-    this.selectedQuestionId = item.id;
   }
 
   checkQuestionValue(opt:any){

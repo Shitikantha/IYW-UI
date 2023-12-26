@@ -19,7 +19,8 @@ export class HeaderComponent implements OnInit {
     this.getHeaderInfo();
   }
   getHeaderInfo(){
-    this.studentService.getHeaderInfo().subscribe((res:any)=>{
+    let orgId = sessionStorage.getItem('orgId')
+    this.studentService.getHeaderInfo(orgId).subscribe((res:any)=>{
       this.headerInfo = res;
     })
   }

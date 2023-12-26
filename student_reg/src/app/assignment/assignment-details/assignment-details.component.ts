@@ -71,6 +71,8 @@ export class AssignmentDetailsComponent implements OnInit {
       ...this.assignmentSetting,
       isOpen: false,
     };
+    document.exitFullscreen();
+    this.isFullScreen = false;
   }
 
   openAssessment(){
@@ -78,9 +80,9 @@ export class AssignmentDetailsComponent implements OnInit {
       ...this.assignmentSetting,
       isOpen: true,
       size: 'xl',
-      title: 'Edit Question',
+      title: 'Assessment',
     };
-    // this.toggleFullScreen();
+    this.toggleFullScreen();
     // this.alertService.showConfirmMsg();
   }
 
@@ -101,7 +103,7 @@ export class AssignmentDetailsComponent implements OnInit {
     if (!document.fullscreenElement) {
       document.exitFullscreen;
     this.isFullScreen = false;
-    console.log(this.isFullScreen);
+    // console.log(this.isFullScreen);
   }
 }
 
@@ -120,5 +122,7 @@ export class AssignmentDetailsComponent implements OnInit {
       ...this.assignmentSetting,
       isOpen: false,
     };
+    document.exitFullscreen();
+    this.isFullScreen = false;
   }
 }

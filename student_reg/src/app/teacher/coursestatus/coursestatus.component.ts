@@ -14,8 +14,9 @@ import { TeacherService } from 'src/app/services/teacher.service';
   styleUrls: ['./coursestatus.component.css'],
 })
 export class CoursestatusComponent implements OnInit{
-  todo = ['Get to work', 'Pick up groceries', 'Go home', 'Fall asleep'];
-  done = ['Get up', 'Brush teeth', 'Take a shower', 'Check e-mail', 'Walk dog'];
+  pending:any = [];
+  completed:any = [];
+  chapterDetails:any = [];
 
   allClasses: any = [];
   subjectList: any = [];
@@ -38,7 +39,8 @@ export class CoursestatusComponent implements OnInit{
     }
     this.teacherService.getChapterStatus(payload).subscribe({
       next:(res:any)=>{
-        console.log(res);
+        console.log(res.data);
+        this.chapterDetails = res.data;
       },
       error: (err: any) => {
       },
@@ -73,7 +75,7 @@ export class CoursestatusComponent implements OnInit{
     this.questionService.getSubjectList(payload).subscribe({
       next: (res: any) => {
         this.subjectList = res.data;
-        console.log(this.subjectList);
+        // console.log(this.subjectList);
       },
     });
   }
@@ -93,8 +95,8 @@ export class CoursestatusComponent implements OnInit{
         event.currentIndex
       );
     }
-    console.log(this.todo);
-    console.log(this.done);
+    // console.log(this.todo);
+    // console.log(this.done);
   }
 
   goBack(){

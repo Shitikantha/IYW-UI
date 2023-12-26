@@ -19,7 +19,11 @@ export class StudentService extends BaseService{
   updateStudent(payload:any):Observable<any>{
     return this.patch(`${this.apiUrl}Student/${payload.id}`,payload);
   }
-  getHeaderInfo(){
+  getHeaderInfo(orgId:any){
     return this.get(`${this.apiUrl}headerInfo`);
   }
+
+  // getHeaderInfo(orgId:any){
+  //   return this.get(`${this.url}getOrgByOrgId?orgId=${orgId}`);
+  // }
 }
