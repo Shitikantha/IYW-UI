@@ -1,6 +1,19 @@
-<div class="container-fluid">
+  <ul class="nav nav-tabs">
+    <li class="nav-item" (click)="tabDetails('basic')">
+      <a class="nav-link" [ngClass]="{ active: currentTab === 'basic' }"
+        >Basic Details</a
+      >
+    </li>
+    <li class="nav-item" (click)="tabDetails('subject')">
+      <a class="nav-link" [ngClass]="{ active: currentTab === 'subject' }"
+        >Subject</a
+      >
+    </li>
+  </ul>
+
+  <div class="container-fluid">
     <div class="panel panel-primary" style="margin: 20px">
-      <div class="panel-body">
+      <div *ngIf="currentTab === 'basic'">
         <form [formGroup]="updateProfile" (ngSubmit)="onSubmit()">
           <div class="row">
             <div class="col-6">
@@ -50,52 +63,124 @@
           <div class="row">
             <div class="col-6">
               <div class="form-group">
-                <label for="mobile"
-                  >Select a Class<span class="title-primary">*</span></label
-                >
-                <select
-                  class="form-select"
-                  aria-label="Default select example"
-                  formControlName="className"
-                  (ngModelChange)="selectedClass($event)"
-                >
-                  <option value="" selected disabled>select class</option>
-                  <option value="{{ cla.dropdownKey }}" *ngFor="let cla of allClasses">
-                    {{ cla.dropdownValue }}
-                  </option>
-                </select>
-              </div>
-              <div *ngIf="(f['className'].touched || submitted) && f['className'].errors">
-                <div *ngIf="f['className'].errors['required']" class="error">
-                  Please select a class
-                </div>
+                <label> Contact Number <span class="title-primary"></span></label>
+                <input
+                  type="text"
+                  class="form-control input-sm"
+                  id="studentNo"
+                  placeholder="Please enter Contact Number"
+                  formControlName="teacherNo"
+                  (keypress)="numberOnly($event)"
+                  maxlength="10"
+                />
               </div>
             </div>
             <div class="col-6">
-              <label for="mobile">Select a Subject<span class="title-primary">*</span></label>
-              <ng-container formArrayName="subject" *ngFor="let order of t.controls; let i = index"> 
-              <div class="form-check">
-                    <input
-                      class="form-check-input"
-                      type="checkbox"
-                      id="flexCheckDefault"
-                      [formControlName]="i"
-                    />
-                    <label class="form-check-label" for="flexCheckDefault">
-                      {{subjectList[i].dropdownValue}}
-                    </label>
-                  </div>
-              </ng-container>
-              <div *ngIf="submitted && f['subject'].errors">
-                <div *ngIf="f['subject'].errors['required']" class="error">select a subject</div>
-              </div>
+              
             </div>
           </div>
-          <div class="d-flex justify-content-end m-2">
-            <button class="btn btn-primary btn-sm mx-1" type="submit">Save</button>
-            <button class="btn btn-danger btn-sm" type="button" (click)="cancel()">Cancel</button>
+          <div class="row">
+            <div class="col-12 text-center mt-2">
+              <button class="btn btn-primary w-10" type="submit">Submit</button>
+            </div>
           </div>
         </form>
+      </div>
+
+      <div *ngIf="currentTab === 'subject'">
+        <form [formGroup]="subjectForm">
+          <table class="table">
+            <thead>
+              <th width="40%">Class</th>
+              <th width="40%">Subject</th>
+              <th>Action</th>
+            </thead>
+            <tbody>
+                  <tr *ngFor="let data of classSubject;let i = index" formArrayName="cla_group">
+                    <ng-container *ngIf="!data.isAdd">
+                      <td>{{ data.className}}</td>
+                      <td>{{ data.subjectName}}</td>
+                      <td><i
+                        class="mx-1 title-primary pointer bi bi-trash"
+                        (click)="deleteClass(data)"
+                        data-toggle="tooltip"
+                        data-placement="top"
+                        title="delete"
+                      ></i></td>
+                    </ng-container>
+                    <ng-container *ngIf="data.isAdd" [formGroupName]="i">
+                      <td>
+                        <select
+                        class="form-select"
+                        aria-label="Default select example"
+                        formControlName="class"
+                        (ngModelChange)="selectedClass($event)"
+                      >
+                        <option value="" selected disabled>select class</option>
+                        <option
+                          value="{{ cla.dropdownKey }}"
+                          *ngFor="let cla of allClasses"
+                        >
+                          {{ cla.dropdownValue }}
+                        </option>
+                      </select>
+                      <div
+                        class="error"
+                        *ngIf="
+                          getReferrals(i).controls['class'].touched &&
+                          getReferrals(i).controls['class'].hasError(
+                            'required'
+                          )
+                        "
+                      >
+                        Relation Required
+                      </div>
+                      </td>
+                      <td>
+                        <ng-multiselect-dropdown [data]="subjectList" [settings]="settings"
+                         formControlName="subject"></ng-multiselect-dropdown>
+                         <div
+                        class="error"
+                        *ngIf="
+                          getReferrals(i).controls['subject'].touched &&
+                          getReferrals(i).controls['subject'].hasError(
+                            'required'
+                          )
+                        "
+                      >
+                        Relation Required
+                      </div>
+                      </td>
+                      <td>
+                        <span class="d-flex">
+                          <i
+                            class="mx-1 title-primary pointer bi bi-save2-fill"
+                            data-toggle="tooltip"
+                            (click)="saveSubject(data,i)"
+                            data-placement="top"
+                            title="save"
+                          ></i>
+                          <i *ngIf="!data.userId"
+                            class="mx-1 title-primary pointer bi bi-x-circle"
+                            (click)="cancelSubject(data,i)"
+                            data-toggle="tooltip"
+                            data-placement="top"
+                            title="cancel"
+                          ></i>
+                        </span>
+                      </td>
+                    </ng-container>
+                  </tr>
+                </tbody>
+              </table>
+            </form>
+            <div class="row">
+              <div class="col-12">
+                <button type="button" class="btn btn-primary" (click)="addClassSubject()">
+                  Add
+                </button>
+              </div>
+            </div>
       </div>
     </div>
   </div>

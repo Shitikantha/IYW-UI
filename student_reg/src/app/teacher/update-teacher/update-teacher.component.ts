@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { AlertService } from 'src/app/services/alert.service';
 import { QuestionService } from 'src/app/services/question.service';
+import { StudentService } from 'src/app/services/student.service';
 import { TeacherService } from 'src/app/services/teacher.service';
 import { UtilsService } from 'src/app/utils/common-methods.service';
 
@@ -14,19 +15,32 @@ export class UpdateTeacherComponent {
   @Input() updateData:any;
   @Output() close:EventEmitter<any>= new EventEmitter();
   updateProfile:FormGroup;
+  subjectForm!:FormGroup;
   submitted:boolean = false;
   email_pattern:string = '^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$';
   allClasses: any = [];
   subjectList: any = [];
+  currentTab:any = 'basic';
+  classSubject:any = [];
+  settings = {
+    singleSelection: false,
+    idField: 'dropdownKey',
+    textField: 'dropdownValue',
+    enableCheckAll: true,
+    limitSelection: -1,
+    maxHeight: 197,
+    itemsShowLimit: 3,
+    defaultOpen: false,
+  };
 
   constructor(private fb:FormBuilder,
     private alertService:AlertService,private teacherService : TeacherService,
-    private utilsService:UtilsService,private questionService: QuestionService) { 
+    private utilsService:UtilsService,private questionService: QuestionService,
+    private studentService : StudentService,) { 
     this.updateProfile = this.fb.group({
       teacherName:['',[Validators.required,Validators.maxLength(25)]],
       email:['',[Validators.required,Validators.maxLength(25),Validators.pattern(this.email_pattern),]],
-      className:['',Validators.required],
-      subject: new FormArray([],this.utilsService.minSelectedCheckboxes(1)),
+      teacherNo:['']
     })
   }
 
@@ -36,7 +50,103 @@ export class UpdateTeacherComponent {
 
 
   ngOnInit(): void {
+    this.subjectForm = this.fb.group({
+      cla_group: new FormArray([])
+    });
     this.getClasses();
+  }
+
+  get clsGroup() { return this.subjectForm.controls['cla_group'] as FormArray; };
+  
+  getReferrals(index: any): FormGroup {
+    const formGroup = this.clsGroup.controls[index] as FormGroup;
+    return formGroup;
+  }
+
+  addClassSubject(){
+    this.clsGroup.push(
+      this.fb.group({
+        class: ['', Validators.required],
+        subject: ['', Validators.required],
+      })
+    );
+    this.classSubject.push({className:'',subjectName:'',isAdd:true});
+    console.log(this.classSubject);
+  }
+
+  saveSubject(item:any,index:number){
+    if(this.clsGroup.controls[index].valid){
+      let classData:any = this.allClasses.find((item:any)=>
+      item.dropdownKey == this.clsGroup.controls[index].get('class')?.value).dropdownValue
+      item.isAdd = false;
+      item.className = classData;
+      item.subjectName = this.clsGroup.controls[index].get('subject')?.value.map((val:any)=>val.dropdownValue).join(',');
+      let subject = this.clsGroup.controls[index].get('subject')?.value;
+      let payload = subject.map((item:any)=>{
+        return {
+          "classId": this.clsGroup.controls[index].get('class')?.value,
+          "subjectId": item.dropdownKey
+        }
+      });
+      this.addClaSubject(payload,this.updateData.userId);
+    }
+  }
+
+  addClaSubject(payload:any,id:any){
+    this.studentService.addClassSubject(payload,id).subscribe({
+      next: (result: any) => {
+        console.log(result);
+        this.alertService.showSuccessToast({msg:'ClassSubject Added ....!'});
+        this.getUserDetails();
+        },
+        error: (err: any) => {
+          this.alertService.showErrorToast({msg:'Something went wrong....!'});
+        },
+     });
+  }
+
+  getUserDetails(){
+    this.studentService.getUserDetails(this.updateData.userId).subscribe({
+      next: (result: any) => {
+        console.log(result);
+        this.updateData = result.data;
+        this.basicReload();
+        },
+     });
+  }
+
+  basicReload(){
+    this.classSubject = this.updateData.classSubjects.map((val:any)=>{
+      return {...val,className:val.classes.name,
+        subjectName:!Array.isArray(val.subject)?val.subject.name:val.subject.map((ele:any)=>ele.name).join(',')}
+    });
+
+    this.classSubject.forEach((val:any)=>{
+      this.clsGroup.push(
+        this.fb.group({
+          class: [val.className, Validators.required],
+          subject: [val.subjectName, Validators.required],
+        })
+      );
+    });
+  }
+
+  deleteClass(item:any){
+    this.studentService.deleteClassSubject(item.id).subscribe({
+      next: (result: any) => {
+        this.alertService.showSuccessToast({msg:'Relation Deleted Success Fully ....!'});
+        this.getUserDetails();
+        },
+        error: (err: any) => {
+          this.alertService.showErrorToast({msg:'Something went wrong....!'});
+        },
+     });
+  }
+
+  cancelSubject(item:any,index:number){
+    const controls = this.subjectForm.get('cla_group') as FormArray
+    controls.removeAt(index);
+    this.classSubject.splice(index,1);
   }
 
   onSubmit(){
@@ -46,41 +156,28 @@ export class UpdateTeacherComponent {
     }
   }
 
-  patchValue(formValue:any){
-    let classDetails = formValue.classSubjects[0]?.classes;
-    this.updateProfile.patchValue({
-      teacherName:formValue?.userName,
-      email:formValue?.emailId,
-      className:this.allClasses.find((val:any)=>val.dropdownKey == classDetails.classId).dropdownKey,
-    });
-  }
-
   cancel(){
     this.close.emit(false);
   }
 
   updateTeacher(){
-    const selectedOrderIds = this.updateProfile.value.subject
-      .map((checked:any, i:any) => checked ? this.subjectList[i]: null)
-      .filter((v:any) => v !== null);
-    console.log(selectedOrderIds);
     let payload ={
-      teacherName:this.updateProfile.controls['teacherName'].value,
-      email:this.updateProfile.controls['email'].value,
-      className:this.updateProfile.controls['className'].value,
-      userId:this.updateData.userId
+      userName:this.updateProfile.controls['teacherName'].value,
+      emailId:this.updateProfile.controls['email'].value,
+      userId:this.updateData.userId,
+      mobileNo: this.updateProfile.controls['teacherNo'].value,
     }
     console.log(payload);
    
-    //  this.teacherService.updateTeacher(payload).subscribe({
-    //   next: (result: any) => {
-    //     this.alertService.showSuccessToast({msg:'Teacher Details Updated ....!'});
-    //     this.close.emit(true);
-    //     },
-    //     error: (err: any) => {
-    //       this.alertService.showErrorToast({msg:'Something went wrong....!'});
-    //     },
-    //  });
+     this.teacherService.updateTeacher(payload).subscribe({
+      next: (result: any) => {
+        this.alertService.showSuccessToast({msg:'Teacher Details Updated ....!'});
+        this.close.emit(true);
+        },
+        error: (err: any) => {
+          this.alertService.showErrorToast({msg:'Something went wrong....!'});
+        },
+     });
   }
 
   getClasses() {
@@ -88,7 +185,7 @@ export class UpdateTeacherComponent {
     this.questionService.getAllClasses(orgId).subscribe({
       next: (res: any) => {
         this.allClasses = res.data;
-        // console.log(this.allClasses);
+        this.basicReload()
         if(this.updateData){
           if(Object.keys(this.updateData).length > 0){
             this.patchValue(this.updateData);
@@ -98,9 +195,16 @@ export class UpdateTeacherComponent {
     });
   }
 
+  patchValue(formValue:any){
+    this.updateProfile.patchValue({
+      teacherName:formValue?.userName,
+      email:formValue?.emailId,
+      teacherNo :formValue?.mobileNo
+    });
+  }
+
   selectedClass(value: any) {
     this.subjectList = [];
-    this.t.clear();
     this.getSubject(value);
   }
 
@@ -113,26 +217,15 @@ export class UpdateTeacherComponent {
       next: (res: any) => {
         this.subjectList = res.data;
         // console.log(this.subjectList);
-        this.addCheckboxes();
-
-        if(this.updateData){
-          let subject = [this.updateData.classSubjects[0]?.subject].map((val:any)=>val.subjectId);
-          const selectedOrderIds = this.subjectList.map((checked:any) => subject.includes(checked.dropdownKey));
-          this.updateProfile.patchValue({
-            subject: selectedOrderIds,
-          });
-        }
       },
     });
   }
 
-  addCheckboxes() {
-    if (this.subjectList && this.subjectList.length > 0) {
-      this.subjectList.forEach(() => this.t.push(new FormControl(false)));
-    }
+  tabDetails(tab:any){
+    this.currentTab = tab
   }
 
-  get t() {
-    return this.updateProfile.controls['subject'] as FormArray;
+  numberOnly(event:any){
+    return this.utilsService.numberOnly(event);
   }
 }

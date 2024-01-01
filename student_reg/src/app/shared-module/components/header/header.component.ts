@@ -10,6 +10,7 @@ import { StudentService } from 'src/app/services/student.service';
 export class HeaderComponent implements OnInit {
   userName:any;
   headerInfo:any = [];
+  logo_url:any = '/assets/img/school.png'
   constructor(private router: Router,private studentService : StudentService) { }
 
   ngOnInit(): void {

@@ -134,7 +134,7 @@ export class UpdateStudentComponent implements OnInit{
 
   onDelete(item:any,index:number){
     // console.log('delete',item);
-    this.studentService.deleteRelation(item.userId).subscribe({
+    this.studentService.deleteRelation(item.id).subscribe({
       next: (result: any) => {
         this.alertService.showSuccessToast({msg:'Relation Deleted Success Fully ....!'});
         this.getUserDetails();
@@ -175,6 +175,9 @@ export class UpdateStudentComponent implements OnInit{
       cla_group: new FormArray([])
     });
     this.getClasses();
+  }
+
+  basicReload(){
     this.relationTableData = this.updateData.relationships.map((val:any)=>{
       return {...val,...val.relatedUserDetail}
     });
@@ -182,7 +185,6 @@ export class UpdateStudentComponent implements OnInit{
       return {...val,className:val.classes.name,
         subjectName:!Array.isArray(val.subject)?val.subject.name:val.subject.map((ele:any)=>ele.name).join(',')}
     });
-    console.log(this.classSubject);
 
     this.relationTableData.forEach((val:any)=>{
       this.relGroup.push(
@@ -248,6 +250,8 @@ export class UpdateStudentComponent implements OnInit{
     this.studentService.getUserDetails(this.updateData.userId).subscribe({
       next: (result: any) => {
         console.log(result);
+        this.updateData = result.data;
+        this.basicReload();
         },
      });
   }
@@ -284,6 +288,7 @@ export class UpdateStudentComponent implements OnInit{
       next: (res: any) => {
         this.allClasses = res.data;
         // console.log(this.allClasses);
+        this.basicReload();
         if(this.updateData){
           if(Object.keys(this.updateData).length > 0){
             this.patchValue(this.updateData);
@@ -316,7 +321,7 @@ export class UpdateStudentComponent implements OnInit{
   }
 
   deleteClass(item:any){
-    this.studentService.deleteClassSubject(item.userId).subscribe({
+    this.studentService.deleteClassSubject(item.id).subscribe({
       next: (result: any) => {
         this.alertService.showSuccessToast({msg:'Relation Deleted Success Fully ....!'});
         this.getUserDetails();

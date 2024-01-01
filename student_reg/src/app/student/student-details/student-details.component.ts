@@ -38,6 +38,7 @@ export class StudentDetailsComponent implements OnInit{
     let payload = {
       orgId: sessionStorage.getItem('orgId'),
       classId:this.selectedClassId,
+      name:'',
       role: 'Student',
     }
     this.studentService.getAllStudents(payload).subscribe({

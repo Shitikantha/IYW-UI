@@ -14,7 +14,7 @@ export class StudentService extends BaseService{
     return this.post(`${this.url}user/addUser`,payload);
   }
   getAllStudents(payload:any){
-    return this.get(`${this.url}user/listUserDetail?classId=${payload.classId}&name=Suh&orgId=${payload.orgId}&role=${payload.role}`);
+    return this.get(`${this.url}user/listUserDetail?classId=${payload.classId}&name=${payload.name}&orgId=${payload.orgId}&role=${payload.role}`);
   }
   updateStudent(payload:any):Observable<any>{
     return this.put(`${this.url}user/updateUserDetail`,payload);
@@ -48,6 +48,6 @@ export class StudentService extends BaseService{
   }
 
   getUserDetails(id:any){
-    return this.delete(`${this.url}user/getUserDetail/${id}`);
+    return this.get(`${this.url}user/getUserDetail?userId=${id}`);
   }
 }

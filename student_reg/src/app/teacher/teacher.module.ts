@@ -7,6 +7,7 @@ import { ViewTeacherComponent } from './view-teacher/view-teacher.component';
 import { TeacherDetailsComponent } from './teacher-details/teacher-details.component';
 import { AssignClassToTeacherComponent } from './assign-class-to-teacher/assign-class-to-teacher.component';
 import { CoursestatusComponent } from './coursestatus/coursestatus.component';
+import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { CoursestatusComponent } from './coursestatus/coursestatus.component';
   ],
   imports: [
     SharedModuleModule,
-    TeacherRoutingModule
+    TeacherRoutingModule,
+    NgMultiSelectDropDownModule
   ],
 })
 export class TeacherModule {}

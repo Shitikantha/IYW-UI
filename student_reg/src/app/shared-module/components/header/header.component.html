@@ -4,7 +4,7 @@
       <!-- Navigation -->
       <nav class="navbar navbar-expand-lg shadow">
         <div class="container-fluid">
-          <img [src]="headerInfo[0]?.logo_url" class="logo" alt="logo" />
+          <img [src]="headerInfo[0]?.logo_url || logo_url" class="logo" alt="logo" />
           <h3 class="title-primary mt-30">{{headerInfo[0]?.title}}</h3>
           <button
             class="navbar-toggler"
