@@ -4,13 +4,15 @@ import { AssignmentRoutingModule } from './assignment-routing.module';
 import { AssignmentDetailsComponent } from './assignment-details/assignment-details.component';
 import { AssignedAssessmentComponent } from './assigned-assessment/assigned-assessment.component';
 import { TimerFormatePipe } from './assigned-assessment/timer-formate.pipe';
+import { ViewAssignmentComponent } from './view-assignment/view-assignment.component';
 
 
 @NgModule({
   declarations: [
     AssignmentDetailsComponent,
     AssignedAssessmentComponent,
-    TimerFormatePipe
+    TimerFormatePipe,
+    ViewAssignmentComponent
   ],
   imports: [
     SharedModuleModule,

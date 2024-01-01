@@ -45,14 +45,14 @@ export const AssignmentMeta: Object[] = [
         seq: 5,
         name: 'Assigned Date',
         visible: true,
-        dataKey: 'contactNo',
+        dataKey: 'assignedDate',
         action: Actions
     },
     {
         seq: 6,
         name: 'Completed Date',
         visible: true,
-        dataKey: 'contactNo',
+        dataKey: 'completedDate',
         action: Actions
     },
     {
@@ -73,7 +73,7 @@ export const AssignmentMeta: Object[] = [
         seq: 9,
         name: 'Time Taken',
         visible: true,
-        dataKey: 'time',
+        dataKey: 'duration',
         action: Actions
     }
 ]

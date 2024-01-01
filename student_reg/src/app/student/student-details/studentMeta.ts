@@ -37,7 +37,7 @@ export const StudentMeta: Object[] = [
         seq: 2,
         name: 'Name',
         visible: true,
-        dataKey: 'studentName',
+        dataKey: 'userName',
         action: Actions
     },
     {

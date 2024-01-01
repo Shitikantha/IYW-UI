@@ -59,3 +59,7 @@ hr{
 .w-10{
     width: 10% !important;
 }
+
+.no-scroll{
+    overflow: hidden;
+}

@@ -170,8 +170,6 @@ export class QuestionDetailsComponent implements OnInit {
   getAction(action: any) {
     // console.log(action);
     switch (action.type) {
-      case 'view':
-        break;
       case 'edit':
         this.editQuestion(action.data);
         break;

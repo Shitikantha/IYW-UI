@@ -1,74 +1,335 @@
+<ul class="nav nav-tabs">
+  <li class="nav-item" (click)="tabDetails('basic')">
+    <a class="nav-link" [ngClass]="{ active: currentTab === 'basic' }"
+      >Basic Details</a
+    >
+  </li>
+  <li class="nav-item" (click)="tabDetails('subject')">
+    <a class="nav-link" [ngClass]="{ active: currentTab === 'subject' }"
+      >Subject</a
+    >
+  </li>
+  <li class="nav-item" (click)="tabDetails('relation')">
+    <a class="nav-link" [ngClass]="{ active: currentTab === 'relation' }"
+      >RelationShip</a
+    >
+  </li>
+</ul>
 <div class="container-fluid">
-    <div class="panel panel-primary" style="margin: 20px">
-      <div class="panel-body">
-        <form [formGroup]="updateProfile" (ngSubmit)="onSubmit()">
-          <div class="row">
-            <div class="col-6">
-              <label for="visitorid">Student Name </label>
-              <input
-                type="text"
-                class="form-control input-sm"
-                id="visitorid"
-                placeholder="Please enter student name"
-                formControlName="studentName"
-              />
-              <div *ngIf="submitted && f['studentName'].errors">
-                <div *ngIf="f['studentName'].errors['required']" class="error">
-                  Please enter Student name
-                </div>
-                <div *ngIf="f['studentName'].errors['maxlength']" class="error">
-                  Max length can't be less then 25
-                </div>
+  <div class="panel panel-primary" style="margin: 20px">
+    <div *ngIf="currentTab === 'basic'">
+      <form [formGroup]="updateProfile" (ngSubmit)="onSubmit()">
+        <div class="row">
+          <div class="col-6">
+            <label for="visitorid">Student Name </label>
+            <input
+              type="text"
+              class="form-control input-sm"
+              id="visitorid"
+              placeholder="Please enter student name"
+              formControlName="studentName"
+              (keypress)="textOnly($event)"
+            />
+            <div
+              *ngIf="
+                (f['studentName'].touched || submitted) &&
+                f['studentName'].errors
+              "
+            >
+              <div *ngIf="f['studentName'].errors['required']" class="error">
+                Please enter Student name
               </div>
-            </div>
-            <div class="col-6">
-              <label for="visitorid">Roll No</label>
-              <input
-                type="text"
-                class="form-control input-sm"
-                id="visitorid"
-                placeholder="Please enter contact Person"
-                formControlName="rollNum"
-              />
-              <div *ngIf="submitted && f['rollNum'].errors">
-                <div *ngIf="f['rollNum'].errors['required']" class="error">
-                  Please enter Roll No
-                </div>
-                <div *ngIf="f['rollNum'].errors['maxlength']" class="error">
-                  Max length can't be less then 25
-                </div>
+              <div *ngIf="f['studentName'].errors['maxlength']" class="error">
+                Max length can't be less then 25
               </div>
             </div>
           </div>
-          <div class="row">
-            <div class="col-6">
-              <label for="visitorid">Contact Number </label>
+
+          <div class="col-6">
+            <div class="form-group">
+              <label for="name"
+                >Email Id<span class="title-primary">*</span></label
+              >
+              <input
+                type="email"
+                class="form-control input-sm"
+                placeholder="Please enter email"
+                formControlName="email"
+                id="email"
+                name="email"
+              />
+            </div>
+            <div *ngIf="(f['email'].touched || submitted) && f['email'].errors">
+              <div *ngIf="f['email'].errors['required']" class="error">
+                Please enter email
+              </div>
+              <div *ngIf="f['email'].errors['pattern']" class="error">
+                Email is not Valid
+              </div>
+              <div *ngIf="f['email'].errors['maxlength']" class="error">
+                Max length can't be less then 25
+              </div>
+            </div>
+          </div>
+          <div class="col-6 mb-2">
+            <div class="form-group">
+              <label> Contact Number <span class="title-primary"></span></label>
               <input
                 type="text"
                 class="form-control input-sm"
-                id="visitorid"
-                placeholder="Please enter contact number"
-                formControlName="contactNumber"
+                id="studentNo"
+                placeholder="Please enter Contact Number"
+                formControlName="studentNo"
+                (keypress)="numberOnly($event)"
+                maxlength="10"
               />
-              <div *ngIf="submitted && f['contactNumber'].errors">
-                <div *ngIf="f['contactNumber'].errors['required']" class="error">
-                  Please enter Contact Number
-                </div>
-                <div *ngIf="f['contactNumber'].errors['maxlength']" class="error">
-                  Max length can't be less then 25
-                </div>
-              </div>
-            </div>
-            <div class="col-6">
-           
             </div>
           </div>
-          <div class="d-flex justify-content-end m-2">
-            <button class="btn btn-primary btn-sm mx-1" type="submit">Save</button>
-            <button class="btn btn-danger btn-sm" type="button" (click)="cancel()">Cancel</button>
+        </div>
+        <div class="row">
+          <div class="col-12 text-center">
+            <button class="btn btn-primary w-10" type="submit">Submit</button>
           </div>
+        </div>
+      </form>
+    </div>
+
+    <div *ngIf="currentTab === 'subject'">
+      <form [formGroup]="subjectForm">
+      <table class="table">
+        <thead>
+          <th width="40%">Class</th>
+          <th width="40%">Subject</th>
+          <th>Action</th>
+        </thead>
+        <tbody>
+              <tr *ngFor="let data of classSubject;let i = index" formArrayName="cla_group">
+                <ng-container *ngIf="!data.isAdd">
+                  <td>{{ data.className}}</td>
+                  <td>{{ data.subjectName}}</td>
+                  <td><i
+                    class="mx-1 title-primary pointer bi bi-trash"
+                    (click)="deleteClass(data)"
+                    data-toggle="tooltip"
+                    data-placement="top"
+                    title="delete"
+                  ></i></td>
+                </ng-container>
+                <ng-container *ngIf="data.isAdd" [formGroupName]="i">
+                  <td>
+                    <select
+                    class="form-select"
+                    aria-label="Default select example"
+                    formControlName="class"
+                    (ngModelChange)="selectedClass($event)"
+                  >
+                    <option value="" selected disabled>select class</option>
+                    <option
+                      value="{{ cla.dropdownKey }}"
+                      *ngFor="let cla of allClasses"
+                    >
+                      {{ cla.dropdownValue }}
+                    </option>
+                  </select>
+                  <div
+                    class="error"
+                    *ngIf="
+                      getReferrals(i).controls['class'].touched &&
+                      getReferrals(i).controls['class'].hasError(
+                        'required'
+                      )
+                    "
+                  >
+                    Relation Required
+                  </div>
+                  </td>
+                  <td>
+                    <ng-multiselect-dropdown [data]="subjectList" [settings]="settings"
+                     formControlName="subject"></ng-multiselect-dropdown>
+                     <div
+                    class="error"
+                    *ngIf="
+                      getReferrals(i).controls['subject'].touched &&
+                      getReferrals(i).controls['subject'].hasError(
+                        'required'
+                      )
+                    "
+                  >
+                    Relation Required
+                  </div>
+                  </td>
+                  <td>
+                    <span class="d-flex">
+                      <i
+                        class="mx-1 title-primary pointer bi bi-save2-fill"
+                        data-toggle="tooltip"
+                        (click)="saveSubject(data,i)"
+                        data-placement="top"
+                        title="save"
+                      ></i>
+                      <i *ngIf="!data.userId"
+                        class="mx-1 title-primary pointer bi bi-x-circle"
+                        (click)="cancelSubject(data,i)"
+                        data-toggle="tooltip"
+                        data-placement="top"
+                        title="cancel"
+                      ></i>
+                    </span>
+                  </td>
+                </ng-container>
+              </tr>
+            </tbody>
+          </table>
         </form>
+      <div class="row">
+        <div class="col-12">
+          <button type="button" class="btn btn-primary" (click)="addClassSubject()">
+            Add
+          </button>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="currentTab === 'relation'">
+      <form [formGroup]="relationForm">
+        <table class="table">
+          <thead>
+            <th>Type</th>
+            <th>Name</th>
+            <th>Contact No</th>
+            <th>Email</th>
+            <th colspan="2">Action</th>
+          </thead>
+          <tbody>
+            <tr
+              *ngFor="let data of relationTableData; let i = index"
+              formArrayName="rel_group"
+            >
+              <ng-container *ngIf="!data.isEdit">
+                <td>{{ data.relationshipType }}</td>
+                <td>{{ data.userName }}</td>
+                <td>{{ data.mobileNo }}</td>
+                <td>{{ data.emailId }}</td>
+                <td colspan="2">
+                  <span class="d-flex">
+                    <i
+                      class="mx-1 title-primary pointer bi bi-pencil-square"
+                      (click)="onEdit(data, i)"
+                      data-toggle="tooltip"
+                      data-placement="top"
+                      title="edit"
+                    ></i>
+  
+                    <i
+                        class="mx-1 title-primary pointer bi bi-trash"
+                        (click)="onDelete(data, i)"
+                        data-toggle="tooltip"
+                        data-placement="top"
+                        title="delete"
+                      ></i>
+                  </span>
+                </td>
+              </ng-container>
+              <ng-container *ngIf="data.isEdit" [formGroupName]="i">
+                <td>
+                  <select
+                    class="form-select"
+                    aria-label="Default select example"
+                    formControlName="type"
+                  >
+                    <option value="" selected disabled>select class</option>
+                    <option
+                      value="{{ cla.relationshipType }}"
+                      *ngFor="let cla of relationArray"
+                    >
+                      {{ cla.relationshipType }}
+                    </option>
+                  </select>
+                  <div
+                    class="error"
+                    *ngIf="
+                      getReferralsFormArr(i).controls['type'].touched &&
+                      getReferralsFormArr(i).controls['type'].hasError(
+                        'required'
+                      )
+                    "
+                  >
+                    Relation Required
+                  </div>
+                </td>
+                <td>
+                  <input type="text" formControlName="Name" class="form-control" (keypress)="textOnly($event)" maxlength="25"/>
+                  <div
+                    class="error"
+                    *ngIf="
+                      getReferralsFormArr(i).controls['Name'].touched &&
+                      getReferralsFormArr(i).controls['Name'].hasError(
+                        'required'
+                      )
+                    "
+                  >
+                    Name Required
+                  </div>
+                </td>
+                <td>
+                  <input type="text" formControlName="mobile" class="form-control" (keypress)="numberOnly($event)"
+                  maxlength="10" />
+                  <div
+                    class="error"
+                    *ngIf="
+                      getReferralsFormArr(i).controls['mobile'].touched &&
+                      getReferralsFormArr(i).controls['mobile'].hasError(
+                        'required'
+                      )
+                    "
+                  >
+                    Email Required
+                  </div>
+                </td>
+                <td>
+                  <input type="text" formControlName="Email" class="form-control" maxlength="25"/>
+                  <div
+                    class="error"
+                    *ngIf="
+                      getReferralsFormArr(i).controls['Email'].touched &&
+                      getReferralsFormArr(i).controls['Email'].hasError(
+                        'required'
+                      )
+                    "
+                  >
+                    email Required
+                  </div>
+                </td>
+                <td>
+
+                  <span class="d-flex">
+                    <i
+                      class="mx-1 title-primary pointer bi bi-save2-fill"
+                      (click)="onSave(data, i)"
+                      data-toggle="tooltip"
+                      data-placement="top"
+                      title="save"
+                    ></i>
+                    <i *ngIf="!data.userId"
+                      class="mx-1 title-primary pointer bi bi-x-circle"
+                      (click)="onCancel(data, i)"
+                      data-toggle="tooltip"
+                      data-placement="top"
+                      title="cancel"
+                    ></i>
+                  </span>
+                </td>
+              </ng-container>
+            </tr>
+          </tbody>
+        </table>
+      </form>
+      <div class="row">
+        <div class="col-12">
+          <button type="button" class="btn btn-primary" (click)="addRow()">
+            Add
+          </button>
+        </div>
       </div>
     </div>
   </div>
-  
+</div>

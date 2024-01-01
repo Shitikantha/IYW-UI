@@ -1,13 +1,5 @@
 export const Actions: Object[] = [
     {
-        name: 'view',
-        visible: true,
-        icon: true,
-        style:{
-            class:'bi bi-eye'
-        }
-    },
-    {
         name: 'edit',
         visible: true,
         icon: true,

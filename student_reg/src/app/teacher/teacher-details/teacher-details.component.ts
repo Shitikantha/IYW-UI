@@ -17,6 +17,7 @@ export class TeacherDetailsComponent implements OnInit{
   editData:any;
   viewData:any;
   allClasses: any = [];
+  selectedClassId:any
 
   constructor(
     private router: Router,
@@ -26,14 +27,16 @@ export class TeacherDetailsComponent implements OnInit{
 
   ngOnInit(): void {
     this.teacherHeader = TeacherMeta;
-    this.allTeacherList();
+    // this.allTeacherList();
     this.getClasses();
    }
 
    allTeacherList() {
     let payload = {
       orgId: sessionStorage.getItem('orgId'),
+      classId:this.selectedClassId,
       role: 'Teacher',
+      name:''
     }
     this.teacherService.getAllTeacher(payload).subscribe({
       next:(res:any)=>{
@@ -55,20 +58,26 @@ export class TeacherDetailsComponent implements OnInit{
     });
   }
 
+  SelectClass(event:any){
+    // console.log(event.target.value);
+    this.selectedClassId = event.target.value;
+    this.allTeacherList()
+  }
+
   goBack(){
     this.router.navigate(['/dashboard']);
   }
 
   editStudent(data:any){
     this.editModalSetting = {...this.editModalSetting,
-      isOpen:true,size: 'md',
+      isOpen:true,size: 'lg',
     title:'Edit Teacher'};
     this.editData = data;
   }
 
   viewStudent(data:any){
     this.viewModalSetting = {...this.viewModalSetting,
-      isOpen:true,size: 'md',isFooter:true,
+      isOpen:true,size: 'lg',isFooter:true,
     title:'View Teacher'};
     this.viewData = data;
   }

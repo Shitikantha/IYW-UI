@@ -1,11 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import {
-  AbstractControl,
   FormArray,
   FormBuilder,
   FormControl,
   FormGroup,
-  ValidatorFn,
   Validators,
 } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -48,7 +46,8 @@ export class AddStudentComponent implements OnInit {
       email: ['', [Validators.required,Validators.pattern(this.email_pattern),Validators.maxLength(25)]],
       rollNum: ['', [Validators.required,Validators.maxLength(10)]],
       className: ['', Validators.required],
-      subject: new FormArray([], this.minSelectedCheckboxes(1)),
+      studentNo: [''],
+      subject: new FormArray([], this.utilService.minSelectedCheckboxes(1)),
       relationStatus: new FormArray([], [Validators.required]),
       fatherGroup: this.fb.group({
         name: [''],
@@ -105,12 +104,13 @@ export class AddStudentComponent implements OnInit {
         }
       });
       let payload = {
-        name: this.registrationForm.controls['name'].value,
+        userName: this.registrationForm.controls['name'].value,
         extId: this.registrationForm.controls['rollNum'].value,
         emailId: this.registrationForm.controls['email'].value,
+        mobileNo: this.registrationForm.controls['studentNo'].value,
         orgId: sessionStorage.getItem('orgId'),
         role: 'Student',
-        userName: sessionStorage.getItem('userName'),
+        // userName: sessionStorage.getItem('userName'),
         classSubjectCreateDTOs: api_data,
         relationships: relData,
       };
@@ -189,20 +189,6 @@ export class AddStudentComponent implements OnInit {
 
   get t() {
     return this.registrationForm.controls['subject'] as FormArray;
-  }
-
-  minSelectedCheckboxes(min = 1) {
-    const validator: ValidatorFn = (formArray: AbstractControl) => {
-      if (formArray instanceof FormArray) {
-        const totalSelected = formArray.controls
-          .map((control) => control.value)
-          .reduce((prev, next) => (next ? prev + next : prev), 0);
-        return totalSelected >= min ? null : { required: true };
-      }
-      throw new Error('formArray is not an instance of FormArray');
-    };
-
-    return validator;
   }
 
   onCheckboxChange(e: any) {

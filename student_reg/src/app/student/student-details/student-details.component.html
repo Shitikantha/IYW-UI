@@ -16,7 +16,7 @@
             <label for="mobile" class="p-2">Class</label>
             <select
               class="form-select"
-              aria-label="Default select example"          
+              aria-label="Default select example"  (change)="SelectClass($event)"        
             >
               <option value="" selected disabled>select class</option>
               <option value="{{ cla.dropdownKey }}" *ngFor="let cla of allClasses">

@@ -21,12 +21,12 @@ import { AssignmentModule } from './assignment/assignment.module';
     BrowserModule,
     AppRoutingModule,
     UserModuleModule,
+    SharedModuleModule,
     StudentModule,
     NgbModule,
     NgbPaginationModule, 
     NgbAlertModule,
     BrowserAnimationsModule,
-    SharedModuleModule,
     TeacherModule,
     QuestionModule,
     AssignmentModule

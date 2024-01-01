@@ -24,7 +24,7 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
     FormsModule,
     ToastrModule.forRoot(),
     NgbDatepickerModule,
-    DragDropModule
+    DragDropModule,
   ],
   exports:[
     CommonModule,
@@ -36,7 +36,7 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
     HeaderComponent,
     FooterComponent,
     DataTableComponent,
-    DragDropModule
+    DragDropModule,
   ]
   
 })

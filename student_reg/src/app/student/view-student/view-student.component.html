@@ -1,33 +1,53 @@
 <div class="container">
     <div class="card p-3 text-center">
       <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-4">
           <div class="inputs">
             <label>Name</label>
-            <label class="fw-bold">{{ viewData.studentName}}</label>
+            <label class="fw-bold">{{ viewData.userName}}</label>
           </div>
           <hr />
         </div>
-        <div class="col-md-6">
+        <div class="col-md-4">
           <div class="inputs">
             <label>Roll No</label>
-            <label class="fw-bold">{{ viewData.rollNum}} </label>
+            <label class="fw-bold">{{ viewData.extId}} </label>
           </div>
           <hr />
         </div>
-        <div class="col-md-6">
+        <div class="col-md-4">
           <div class="inputs">
-            <label>Address</label>
-            <label class="fw-bold">{{ viewData.address}} </label>
+            <label>Email</label>
+            <label class="fw-bold">{{ viewData.emailId}} </label>
           </div>
           <hr />
         </div>
-        <div class="col-md-6">
+        <div class="col-md-4">
           <div class="inputs">
-            <label>Contact Number</label>
-            <label class="fw-bold">{{ viewData.contactNo }} </label>
+            <label>Student Mobile Number</label>
+            <label class="fw-bold">{{ viewData.mobileNo}} </label>
           </div>
           <hr />
+        </div>
+        <div class="col-md-4">
+          <div class="inputs">
+            <label>Class</label>
+            <label class="fw-bold">{{className}} </label>
+          </div>
+          <hr />
+        </div> 
+        <div class="col-md-4">
+          <div class="inputs">
+            <label>Subject</label>
+            <label class="fw-bold">{{subjectList}} </label>
+          </div>
+          <hr />
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <h6 class="fw-bold">Parents Details</h6>
+          <app-data-table [tableHeader]="parentHeader" [tableData]="parentData"></app-data-table>
         </div>
       </div>
     </div>

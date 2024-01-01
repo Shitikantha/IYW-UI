@@ -1,8 +1,18 @@
-import { AfterContentInit, AfterViewChecked, AfterViewInit, Component, HostListener, Inject, OnInit } from '@angular/core';
+import {
+  AfterContentInit,
+  AfterViewChecked,
+  AfterViewInit,
+  Component,
+  HostListener,
+  Inject,
+  OnInit,
+} from '@angular/core';
 import { Router } from '@angular/router';
 import { QuestionService } from 'src/app/services/question.service';
 import { AssignmentMeta } from './assignmentMeta';
 import { AlertService } from 'src/app/services/alert.service';
+import { AssignmentService } from 'src/app/services/assignment.service';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-assignment-details',
@@ -11,55 +21,32 @@ import { AlertService } from 'src/app/services/alert.service';
 })
 export class AssignmentDetailsComponent implements OnInit {
   assignmentHeader: any;
-  assignmentData: any = [
-    {
-      subject: 'Math',
-      chapter: 'Increment',
-      level: 'Easy',
-      status: 'Completed',
-      score: '97%',
-      time: '12 min',
-    },
-    {
-      subject: 'Math',
-      chapter: 'Increment',
-      level: 'Hard',
-      status: 'Pending',
-      score: null,
-      time: null,
-    },
-    {
-      subject: 'Math',
-      chapter: 'Increment',
-      level: 'Hard',
-      status: 'Pending',
-      score: null,
-      time: null,
-    },
-  ];
+  assignmentData: any = [];
   isFullScreen: boolean = false;
   docElement!: HTMLElement;
-  assignmentSetting:any
+  assignmentSetting: any;
+  viewAssignmentSetting: any;
+  viewData:any;
+  status: string = 'Pending';
+  selectedAssignment: any;
+  levelStatus: any = {
+    Easy: false,
+    Moderate: false,
+    Challenging: false,
+    Hard: false,
+  };
 
   constructor(
     private router: Router,
     private questionService: QuestionService,
-    private alertService:AlertService,
+    private alertService: AlertService,
+    private assignService: AssignmentService
   ) {}
 
   ngOnInit(): void {
     this.assignmentHeader = AssignmentMeta;
-    const result = this.assignmentData.map((val: any) => {
-      return {
-        ...val,
-        disabledIcon: {
-          'Start-test': val.status == 'Pending',
-          view: val.status == 'Completed',
-        },
-      };
-    });
-    this.assignmentData = [...result];
     this.docElement = document.documentElement;
+    this.getAssignment();
   }
 
   goBack() {
@@ -71,41 +58,130 @@ export class AssignmentDetailsComponent implements OnInit {
       ...this.assignmentSetting,
       isOpen: false,
     };
+   
     document.exitFullscreen();
     this.isFullScreen = false;
+    if(event){
+      this.getAssignment();
+    }
   }
 
-  openAssessment(){
+  closeViewAssignment(event:any){
+    this.viewAssignmentSetting = {
+      ...this.viewAssignmentSetting,
+      isOpen: false,
+    };
+  }
+
+  openAssessment(item: any) {
     this.assignmentSetting = {
       ...this.assignmentSetting,
       isOpen: true,
       size: 'xl',
       title: 'Assessment',
     };
+    this.selectedAssignment = item;
     this.toggleFullScreen();
-    // this.alertService.showConfirmMsg();
+    // console.log(item)
+  }
+
+  viewAssessment(item:any){
+    // console.log(item);
+    this.viewAssignmentSetting = {
+      ...this.viewAssignmentSetting,
+      isOpen: true,
+      size: 'xl',
+      title: 'View Assessment',
+    }
+    this.viewData = item;
+  }
+
+  getAssignment() {
+    let payload = {
+      orgId: sessionStorage.getItem('orgId'),
+      status: this.status,
+      studentId: sessionStorage.getItem('userId'),
+    };
+    this.assignService.getAssignmentsDetails(payload).subscribe({
+      next: (res: any) => {
+        const result = res.data.map((val: any) => {
+          this.isLevelCondition(val);
+            return {
+              ...val,
+              assignedDate: val.assignedDate
+                ? new DatePipe('en-US').transform(
+                    val.assignedDate,
+                    'd MMM y,h:mm a'
+                  )
+                : null,
+              completedDate: val.assignedDate
+                ? new DatePipe('en-US').transform(
+                    val.completedDate,
+                    'd MMM y,h:mm a'
+                  )
+                : null,
+                duration:val.duration ? this.convertStoMs(val.duration):null,
+              disabledIcon: {
+                'Start-test': val.status == 'Pending' && this.levelStatus[val.level],
+                view: val.status == 'Completed',
+              },
+            };
+        });
+        this.assignmentData = [...result];
+        console.log(this.assignmentData);
+      },
+    });
+  }
+
+  isLevelCondition(item:any){
+    switch (item.level) {
+        case 'Easy':
+          if(item.status === 'Pending'){
+            this.levelStatus = {...this.levelStatus,'Easy':true};
+          }
+        break;
+        case 'Moderate':
+          if(!this.levelStatus.Easy && item.status === 'Pending'){
+            this.levelStatus = {...this.levelStatus,'Moderate':true};
+          }
+        break;
+        case 'Challenging':
+          if(!this.levelStatus.Easy && !this.levelStatus.Moderate && item.status === 'Pending'){
+            this.levelStatus = {...this.levelStatus,'Challenging':true};
+          }
+        break;
+        case 'Hard':
+          if(!this.levelStatus.Easy && !this.levelStatus.Moderate
+             && !this.levelStatus.Challenging && item.status === 'Pending'){
+            this.levelStatus = {...this.levelStatus,'Hard':true};
+          }
+        break;
+    }
   }
 
   getAction(action: any) {
     console.log(action);
     switch (action.type) {
       case 'view':
+        this.viewAssessment(action.data)
         break;
       case 'Start-test':
-        this.openAssessment();
+        this.openAssessment(action.data);
         break;
       default:
         console.log('default');
     }
   }
 
-  @HostListener('document:fullscreenchange', ['$event']) onKeydownHandler(event: KeyboardEvent) {
+  @HostListener('document:fullscreenchange', ['$event']) onKeydownHandler(
+    event: KeyboardEvent
+  ) {
     if (!document.fullscreenElement) {
       document.exitFullscreen;
-    this.isFullScreen = false;
-    // console.log(this.isFullScreen);
+      this.isFullScreen = false;
+      // console.log(this.isFullScreen);
+    }
   }
-}
 
   toggleFullScreen() {
     if (!this.isFullScreen) {
@@ -117,7 +193,7 @@ export class AssignmentDetailsComponent implements OnInit {
     // console.log(this.isFullScreen);
   }
 
-  getAssessment(event:any){
+  getAssessment(event: any) {
     this.assignmentSetting = {
       ...this.assignmentSetting,
       isOpen: false,
@@ -125,4 +201,17 @@ export class AssignmentDetailsComponent implements OnInit {
     document.exitFullscreen();
     this.isFullScreen = false;
   }
+
+  statusChange(btnValue: string) {
+    this.status = btnValue;
+    this.getAssignment();
+  }
+
+  convertStoMs(seconds:any) {
+    let minutes:any = Math.floor(seconds / 60);
+    let extraSeconds:any = seconds % 60;
+    minutes = minutes < 10 ? "0" + minutes : minutes;
+    extraSeconds = extraSeconds< 10 ? "0" + extraSeconds : extraSeconds;
+    return `${minutes}  : ${extraSeconds} `
+ }
 }

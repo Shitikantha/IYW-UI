@@ -1,7 +1,7 @@
 <div class="container-fluid primary-bg">
   <div class="row mb-3">
     <div class="col-12 text-end">
-      <h6>
+      <h6 *ngIf="allQuestionArray.length">
         Remaining time : 
         <span class="fw-bold">{{counter | formatTime}} MM</span>
       </h6>
@@ -11,13 +11,13 @@
     <div class="col-6">
       <div class="d-flex justify-content-center">
         <h6>Subject&nbsp;&nbsp;:</h6>
-        <h6 class="mx-3">Math</h6>
+        <h6 class="mx-3">{{assignment.subject}}</h6>
       </div>
     </div>
     <div class="col-6">
       <div class="d-flex justify-content-center">
         <h6>Chapter&nbsp;&nbsp;:</h6>
-        <h6 class="mx-3">Increment</h6>
+        <h6 class="mx-3">{{assignment.chapter}}</h6>
       </div>
     </div>
   </div>
@@ -25,17 +25,18 @@
     <div class="col-6">
       <div class="d-flex justify-content-center">
         <h6>Level&nbsp;&nbsp;:</h6>
-        <h6 class="mx-3">Easy</h6>
+        <h6 class="mx-3">{{assignment.level}}</h6>
       </div>
     </div>
     <div class="col-6">
       <h6 class="text-center">Total No</h6>
       <div class="d-flex justify-content-center">
         <h6>Of Questions&nbsp;&nbsp;:</h6>
-        <h6 class="mx-3">20</h6>
+        <h6 class="mx-3">{{allQuestionArray.length}}</h6>
       </div>
     </div>
   </div>
+  <ng-container *ngIf="allQuestionArray.length">
   <div class="row mb-3 border mx-5">
     <div class="col-1 p-0 border">
       <nav class="navbar p-0">
@@ -61,9 +62,9 @@
                   <div class="form-check" *ngFor="let opt of que.options">
                     <input class="form-check-input border border-primary" type="radio"
                      name="flexRadioDefault{{i+1}}" id="flexRadioDefault{{i+1}}"
-                      [value]="opt.optId" (click)="checkQuestionValue(opt)" [checked]="opt.isChecked">
+                      [value]="opt.questionOptionId" (click)="checkQuestionValue(opt)" [checked]="opt.isCorrect">
                     <label class="form-check-label" for="flexRadioDefault{{i+1}}">
-                     {{opt.optLabel}}
+                     {{opt.optionText}}
                     </label>
                   </div>
                 </div>
@@ -78,4 +79,8 @@
       </button>
     </div>
   </div>
+</ng-container>
+<div *ngIf="allQuestionArray.length == 0" class="text-center fw-bold">
+  No Assessment Available
+</div>
 </div>

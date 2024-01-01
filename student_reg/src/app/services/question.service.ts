@@ -46,4 +46,9 @@ export class QuestionService extends BaseService{
     return this.post(`${this.url}Question/getQuestionList?chapterId=${payload.chapterId}
     &classId=${payload.classId}&orgId=${payload.orgId}&subjectId=${payload.subjectId}`,payload.body);
   }
+
+  generateQuestionSet(payload:any){
+    return this.get(`${this.url}Question/generatequestionSet?assignmentId=${payload.assignmentId}&classSubjectChapterId=${payload.classSubjectChapterId}&level=${payload.level}&orgId=${payload.orgId}`);
+  }
+
 }

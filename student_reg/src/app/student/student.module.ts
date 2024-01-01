@@ -5,6 +5,7 @@ import { StudentRoutingModule } from './student-routing.module';
 import { SharedModuleModule } from '../shared-module/shared-module.module';
 import { UpdateStudentComponent } from './update-student/update-student.component';
 import { ViewStudentComponent } from './view-student/view-student.component';
+import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 
 
 
@@ -18,6 +19,7 @@ import { ViewStudentComponent } from './view-student/view-student.component';
   imports: [
     SharedModuleModule,
     StudentRoutingModule,
+    NgMultiSelectDropDownModule
   ]
 })
 export class StudentModule { }

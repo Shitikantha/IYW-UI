@@ -10,22 +10,29 @@
         </div>
         <hr />
       </div>
-      <!-- <div class="row">
-        <div class="col-3 mb-2">
-         
+      <div class="row">
+        <div class="col-12 mb-2 text-center">
+          <div class="btn-group" role="group" aria-label="Basic outlined example">
+            <button type="button" class="btn btn-outline-primary" [class.active]="status == 'Pending'" (click)="statusChange('Pending')">Assigned</button>
+            <button type="button" class="btn btn-outline-primary" [class.active]="status == 'Completed'" (click)="statusChange('Completed')">Completed</button>
+          </div>
         </div>
-        <div class="col-3 mb-2">
-          
-        </div>
-       </div> -->
+       </div>
     <app-data-table [tableHeader]="assignmentHeader" [tableData]="assignmentData"  (emitAction)="getAction($event)"></app-data-table>
 
-<!-- <button (click)="toggleFullScreen()">Go full screen</button> -->
 </div>
 
 <app-modal
   [modalSetting]="assignmentSetting"
   (close)="closeModal($event)"
   *ngIf="assignmentSetting?.isOpen">
-  <app-assigned-assessment (sendAssessment)="getAssessment($event)"></app-assigned-assessment>
+  <app-assigned-assessment (sendAssessment)="getAssessment($event)" [assignment]="selectedAssignment"></app-assigned-assessment>
 </app-modal>
+
+<app-modal
+  [modalSetting]="viewAssignmentSetting"
+  (close)="closeViewAssignment($event)"
+  *ngIf="viewAssignmentSetting?.isOpen">
+  <app-view-assignment [viewData]="viewData"></app-view-assignment>
+</app-modal>
+

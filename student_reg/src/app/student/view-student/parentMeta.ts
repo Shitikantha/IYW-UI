@@ -1,5 +1,13 @@
 export const Actions: Object[] = [
     {
+        name: 'view',
+        visible: true,
+        icon: true,
+        style:{
+            class:'bi bi-eye'
+        }
+    },
+    {
         name: 'edit',
         visible: true,
         icon: true,
@@ -8,15 +16,16 @@ export const Actions: Object[] = [
         }
     },
     {
-        name: 'view',
+        name: 'delete',
         visible: true,
         icon: true,
         style:{
-            class:'bi bi-eye'
+            class:'bi bi-trash'
         }
     }
+    
 ]
-export const TeacherMeta: Object[] = [
+export const ParentMeta: Object[] = [
     {
         seq: 1,
         name: 'Name',
@@ -26,24 +35,23 @@ export const TeacherMeta: Object[] = [
     },
     {
         seq: 2,
+        name: 'Relation',
+        visible: true,
+        dataKey: 'relationshipType',
+        action: Actions
+    },
+    {
+        seq: 3,
         name: 'Email',
         visible: true,
         dataKey: 'emailId',
         action: Actions
     },
     {
-        seq: 3,
-        name: 'Status',
-        visible: true,
-        dataKey: 'contactNo',
-        type:'input',
-        action: Actions
-    },
-    {
         seq: 4,
-        name: 'Action',
+        name: 'Mobile No',
         visible: true,
-        dataKey: '',
+        dataKey: 'mobileNo',
         action: Actions
     },
 ]

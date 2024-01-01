@@ -15,7 +15,7 @@ export class LoginService extends BaseService{
   }
 
   signIn(payload:any):Observable<any>{
-    return this.post(`${this.url}/user/signIn`,payload);
+    return this.post(`${this.url}user/signIn`,payload);
 }
 
 }

@@ -1,0 +1,79 @@
+<div class="container-fluid primary-bg">
+    <!-- <div class="row mb-3">
+        <div class="col-12 text-end">
+          <h6 *ngIf="allQuestionArray.length">
+            Remaining time : 
+            <span class="fw-bold">{{counter | formatTime}} MM</span>
+          </h6>
+        </div>
+      </div> -->
+      <div class="row mb-3">
+        <div class="col-6">
+          <div class="d-flex justify-content-center">
+            <h6>Subject&nbsp;&nbsp;:</h6>
+            <h6 class="mx-3">{{viewData.subject}}</h6>
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="d-flex justify-content-center">
+            <h6>Chapter&nbsp;&nbsp;:</h6>
+            <h6 class="mx-3">{{viewData.chapter}}</h6>
+          </div>
+        </div>
+      </div>
+      <div class="row mb-3">
+        <div class="col-6">
+          <div class="d-flex justify-content-center">
+            <h6>Level&nbsp;&nbsp;:</h6>
+            <h6 class="mx-3">{{viewData.level}}</h6>
+          </div>
+        </div>
+        <div class="col-6">
+          <h6 class="text-center">Total No</h6>
+          <div class="d-flex justify-content-center">
+            <h6>Of Questions&nbsp;&nbsp;:</h6>
+            <h6 class="mx-3">{{allAssignedQuestions.length}}</h6>
+          </div>
+        </div>
+      </div>
+      <div class="row mb-3 border mx-5">
+        <div class="col-1 p-0 border">
+          <nav class="navbar p-0">
+            <ul class="navbar-nav border w-100 custom-scroll">
+              <ng-container *ngFor="let que of allAssignedQuestions;let i = index">
+                <li class="nav-item border-bottom pointer">
+                  <a class="nav-link">Q{{i+1}}</a>
+                </li>
+              </ng-container>
+            </ul>
+          </nav>
+        </div>
+        <div class="col-11">
+              <div class="row mt-4 custom-scroll">
+                <ng-container *ngFor="let que of allAssignedQuestions;let i = index">
+                    <div class="col-1 text-center">
+                      Q{{i+1}}.
+                      <i class="bi fs-1 mt-5 pt-3 d-block"
+                       [ngClass]="isCorrectAnswer(que.options,que.givenoption)?'bi-check2-circle text-success':'bi-x-circle text-danger'"></i>
+                    </div>
+                    <div class="col-11 disabled-icons">
+                      <p>{{que.questionText}}</p>
+                      <p>Question description.</p>
+                      <div class="form-check" *ngFor="let opt of que.options">
+                        <input class="form-check-input border border-primary" type="radio"
+                         name="flexRadioDefault{{i+1}}" id="flexRadioDefault{{i+1}}"
+                          [value]="opt.questionOptionId" [checked]="opt.questionOptionId == que.givenoption">
+                        <label class="form-check-label" for="flexRadioDefault{{i+1}}">
+                         {{opt.optionText}}
+                        </label>
+                      </div>
+                      <div class="form-check">
+                      <p class="m-0">  Answer Given : <span class="fw-bold">{{getGivenOptionsName(que.options,que.givenoption)}}</span></p>
+                      <p class="text-success"> Correct Answer is : <span class="fw-bold">{{getCorrectAnswerName(que.options)}}</span></p>
+                      </div>
+                    </div>
+                </ng-container>
+              </div>
+        </div>
+      </div>
+</div>

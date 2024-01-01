@@ -5,6 +5,7 @@ import {
 } from '@angular/cdk/drag-drop';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { AlertService } from 'src/app/services/alert.service';
 import { QuestionService } from 'src/app/services/question.service';
 import { TeacherService } from 'src/app/services/teacher.service';
 
@@ -25,7 +26,8 @@ export class CoursestatusComponent implements OnInit{
 
   constructor(private router: Router,
     private teacherService : TeacherService,
-    private questionService: QuestionService){}
+    private questionService: QuestionService,
+    private alertService:AlertService){}
 
   ngOnInit(): void {
     this.getClasses();
@@ -41,6 +43,8 @@ export class CoursestatusComponent implements OnInit{
       next:(res:any)=>{
         console.log(res.data);
         this.chapterDetails = res.data;
+        this.pending = this.chapterDetails.filter((val:any)=>val.status == 'Pending').map((ele:any)=>ele.name);
+        this.completed = this.chapterDetails.filter((val:any)=>val.status == 'Completed').map((ele:any)=>ele.name);
       },
       error: (err: any) => {
       },
@@ -101,5 +105,23 @@ export class CoursestatusComponent implements OnInit{
 
   goBack(){
     this.router.navigate(['/dashboard']);
+  }
+
+  update(){
+    // console.log(this.completed);
+   let data = this.chapterDetails.filter((val:any)=>this.completed.some((ele:any)=>val.name == ele));
+   let payload:any = [];
+   data.forEach((val:any)=>{
+    payload.push({classSubjectChapterId:val.classSubjectChapterId,status:"Completed"});
+   });
+   console.log(payload);
+    this.teacherService.updateChapter(payload).subscribe({
+      next:(res:any)=>{
+        this.alertService.showSuccessToast({msg:'Chapter Updated successfully....!'});
+      },
+      error: (err: any) => {
+        this.alertService.showErrorToast({msg:'Something went wrong....!'});
+      },
+    });
   }
 }

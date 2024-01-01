@@ -19,6 +19,7 @@ export class StudentDetailsComponent implements OnInit{
   editData:any;
   viewData:any;
   allClasses: any = [];
+  selectedClassId:any
 
   constructor(
     private alertService:AlertService,
@@ -29,13 +30,14 @@ export class StudentDetailsComponent implements OnInit{
 
   ngOnInit(): void {
    this.studentHeader = StudentMeta;
-   this.allStudentList();
+  //  this.allStudentList();
    this.getClasses();
   }
 
   allStudentList() {
     let payload = {
       orgId: sessionStorage.getItem('orgId'),
+      classId:this.selectedClassId,
       role: 'Student',
     }
     this.studentService.getAllStudents(payload).subscribe({
@@ -54,14 +56,14 @@ export class StudentDetailsComponent implements OnInit{
 
   editStudent(data:any){
     this.editModalSetting = {...this.editModalSetting,
-      isOpen:true,size: 'md',
+      isOpen:true,size: 'lg',
     title:'Edit Student'};
     this.editData = data;
   }
 
   viewStudent(data:any){
     this.viewModalSetting = {...this.viewModalSetting,
-      isOpen:true,size: 'md',isFooter:true,
+      isOpen:true,size: 'lg',isFooter:true,
     title:'View Student'};
     this.viewData = data;
   }
@@ -75,13 +77,16 @@ export class StudentDetailsComponent implements OnInit{
   }
 
   getAction(action: any) {
-    console.log(action);
+    // console.log(action);
     switch (action.type) {
       case 'view':
         this.viewStudent(action.data);
         break;
       case 'edit':
         this.editStudent(action.data);
+        break;
+      case 'delete':
+        this.deleteStudent(action.data);
         break;
       default:
         console.log('default');
@@ -96,6 +101,23 @@ export class StudentDetailsComponent implements OnInit{
         // console.log(this.allClasses);
       },
     });
+  }
+
+  SelectClass(event:any){
+    // console.log(event.target.value);
+    this.selectedClassId = event.target.value;
+    this.allStudentList()
+  }
+
+  deleteStudent(item:any){
+    this.studentService.deleteUser(item.userId).subscribe({
+      next: (result: any) => {
+        this.alertService.showSuccessToast({msg:'Student Deleted Success Fully ....!'});
+        },
+        error: (err: any) => {
+          this.alertService.showErrorToast({msg:'Something went wrong....!'});
+        },
+     });
   }
 
 }

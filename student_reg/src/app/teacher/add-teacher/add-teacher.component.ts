@@ -46,12 +46,12 @@ export class AddTeacherComponent implements OnInit{
     this.submitted = true;
     if(this.registrationForm.valid){
       let payload = {
-        name:this.registrationForm.controls['name'].value,
+        userName:this.registrationForm.controls['name'].value,
         emailId:this.registrationForm.controls['email'].value,
         mobileNo:this.registrationForm.controls['contactNo'].value,
         orgId: sessionStorage.getItem('orgId'),
         role: "Teacher",
-        userName: sessionStorage.getItem('userName'),
+        // userName: sessionStorage.getItem('userName'),
         classSubjectCreateDTOs:this.api_dataForClass
       }
       console.log(payload);
