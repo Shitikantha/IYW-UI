@@ -1,12 +1,16 @@
 import { CanActivateFn } from '@angular/router';
 
 export const roleGuard: CanActivateFn = (route, state) => {
-  console.log(state.url)
+  let url = state.url.split('/')[1];
+  let student = ['teacher','question','student'];
+  let teacher = ['question','student'];
   let role:any = sessionStorage.getItem('userRole')?.toLowerCase();
-  console.log(role);
-  if(state.url.includes(role) || role =='admin'){
-    return true
+  if(role == 'student' || role == 'guardian'){
+    return !student.includes(url);
   }
-  return false;
+  if(role == 'teacher'){
+    return teacher.includes(url);
+  }
+  return true;
 };
 

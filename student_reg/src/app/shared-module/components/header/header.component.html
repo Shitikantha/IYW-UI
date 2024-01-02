@@ -25,6 +25,9 @@
               <li class="nav-item">
                 <a class="nav-link pointer title" (click)="logout()">Logout <i class="bi bi-box-arrow-right mx-2"></i></a>
               </li>
+              <li class="nav-item">
+                <a class="nav-link pointer title" (click)="openReset()">Reset Password</a>
+              </li>
             </ul>
           </div>
         </div>
@@ -32,3 +35,28 @@
     </div>
   </div>
 </div>
+
+<app-modal
+  [modalSetting]="resetSetting"
+  (close)="close($event)"
+  *ngIf="resetSetting?.isOpen">
+  <form [formGroup]="resetForm" (ngSubmit)="onSubmit()">
+    <div class="row">
+      <div class="form-group">
+        <label for="name">Password<span class="title-primary">*</span></label>
+        <input
+          type="text"
+          class="form-control input-sm"
+          id="name"
+          placeholder="Please enter Password"
+          formControlName="pwd"
+        />
+      </div>
+     </div>
+     <div class="row mt-2">
+      <div class="col-12 text-center">
+        <button class="btn btn-primary" type="submit">Update</button>
+      </div>
+    </div>
+  </form>
+</app-modal>

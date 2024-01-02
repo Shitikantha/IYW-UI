@@ -37,7 +37,7 @@ export class StudentDetailsComponent implements OnInit{
   allStudentList() {
     let payload = {
       orgId: sessionStorage.getItem('orgId'),
-      classId:this.selectedClassId,
+      classId:this.selectedClassId || '',
       name:'',
       role: 'Student',
     }
@@ -100,6 +100,7 @@ export class StudentDetailsComponent implements OnInit{
       next: (res: any) => {
         this.allClasses = res.data;
         // console.log(this.allClasses);
+        this.allStudentList();
       },
     });
   }

@@ -1,15 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { TeacherMeta } from './teacherMeta';
 import { Router } from '@angular/router';
 import { TeacherService } from 'src/app/services/teacher.service';
 import { QuestionService } from 'src/app/services/question.service';
+import { Subject, debounceTime} from 'rxjs';
 
 @Component({
   selector: 'app-teacher-details',
   templateUrl: './teacher-details.component.html',
   styleUrls: ['./teacher-details.component.css']
 })
-export class TeacherDetailsComponent implements OnInit{
+export class TeacherDetailsComponent implements OnInit,OnDestroy{
   teacherHeader:any;
   teacherData:any = [];
   editModalSetting:any = {};
@@ -17,7 +18,9 @@ export class TeacherDetailsComponent implements OnInit{
   editData:any;
   viewData:any;
   allClasses: any = [];
-  selectedClassId:any
+  selectedClassId:any;
+  text = new Subject<string>();
+  term:any;
 
   constructor(
     private router: Router,
@@ -25,18 +28,28 @@ export class TeacherDetailsComponent implements OnInit{
     private questionService: QuestionService
   ){}
 
+  ngOnDestroy(): void {
+    this.text.complete();
+  }
+
   ngOnInit(): void {
     this.teacherHeader = TeacherMeta;
     // this.allTeacherList();
     this.getClasses();
+    this.text.pipe(
+      debounceTime(400))
+      .subscribe(value => {
+        this.term = value;
+        this.allTeacherList();
+      });
    }
 
    allTeacherList() {
     let payload = {
       orgId: sessionStorage.getItem('orgId'),
-      classId:this.selectedClassId,
+      classId:this.selectedClassId || '',
       role: 'Teacher',
-      name:''
+      name:this.term || ''
     }
     this.teacherService.getAllTeacher(payload).subscribe({
       next:(res:any)=>{
@@ -53,7 +66,7 @@ export class TeacherDetailsComponent implements OnInit{
     this.questionService.getAllClasses(orgId).subscribe({
       next: (res: any) => {
         this.allClasses = res.data;
-        // console.log(this.allClasses);
+        this.allTeacherList();
       },
     });
   }
@@ -102,5 +115,17 @@ export class TeacherDetailsComponent implements OnInit{
       default:
         console.log('default');
     }
+  }
+
+  debounce(func:any, timeout = 300){
+    let timer:any;
+    return (...args:any) => {
+      clearTimeout(timer);
+      timer = setTimeout(() => { func.apply(this, args); }, timeout);
+    };
+  }
+
+  getText(event:any){
+    this.text.next(event.target.value);
   }
 }
