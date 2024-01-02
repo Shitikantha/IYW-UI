@@ -1,0 +1,74 @@
+<ul class="nav nav-tabs">
+    <li class="nav-item" (click)="tabDetails('Course')">
+      <a class="nav-link" [ngClass]="{ active: currentTab === 'Course' }"
+        >Course Status</a>
+    </li>
+    <li class="nav-item" (click)="tabDetails('Assignment')">
+      <a class="nav-link" [ngClass]="{ active: currentTab === 'Assignment' }"
+        >Assignment Status</a>
+    </li>
+    <li class="nav-item" (click)="tabDetails('Monthly')">
+      <a class="nav-link" [ngClass]="{ active: currentTab === 'Monthly' }"
+        >Monthly Assignment Completed</a>
+    </li>
+    <li class="nav-item" (click)="tabDetails('report')">
+      <a class="nav-link" [ngClass]="{ active: currentTab === 'report' }"
+        >Progress Report</a>
+    </li>
+  </ul>
+
+  <div class="container-fluid">
+    <div class="panel panel-primary" style="margin: 20px">
+        <div *ngIf="currentTab === 'Course'">
+          <div class="row">
+            <div class="col-6"></div>
+            <div class="col-6">
+              <div class="form-group d-flex justify-content-evenly">
+                <label for="mobile" class="p-2">Subject</label>
+                <select
+                  class="form-select w-50"
+                  aria-label="Default select example" (change)="selectedSubject($event)">
+                  <option value="" selected disabled>select subject</option>
+                  <option value="{{ cla.dropdownKey }}" *ngFor="let cla of subjectList">
+                    {{ cla.dropdownValue }}
+                  </option>
+                </select>
+              </div>
+            </div>
+          </div>
+            <div cdkDropListGroup class="d-flex justify-content-center">
+                <div class="example-container">
+                  <h5 class="text-center mt-2">Pending</h5>
+                  <div
+                    cdkDropList
+                    [cdkDropListData]="pending"
+                    class="example-list"
+                    (cdkDropListDropped)="drop($event)">
+                    <div class="example-box" *ngFor="let item of pending" cdkDrag [cdkDragDisabled]="true">{{item}}</div>
+                  </div>
+                </div>
+              
+                <div class="example-container">
+                  <h5 class="text-center mt-2">Completed</h5>
+                  <div
+                    cdkDropList
+                    [cdkDropListData]="completed"
+                    class="example-list"
+                    (cdkDropListDropped)="drop($event)">
+                    <div class="example-box" *ngFor="let item of completed" cdkDrag [cdkDragDisabled]="true">{{item}}</div>
+                  </div>
+                </div>
+              </div>
+        </div>
+
+        <div *ngIf="currentTab === 'Assignment'">
+          <app-assignment-details [isView]="true"></app-assignment-details>
+        </div>
+        <div *ngIf="currentTab === 'Monthly'">
+          <app-data-table [tableHeader]="monthlyHeader" [tableData]="monthlyData"></app-data-table>
+        </div>
+        <div *ngIf="currentTab === 'report'">
+          <app-data-table [tableHeader]="progressHeader" [tableData]="progressData"></app-data-table>
+        </div>
+    </div>
+</div>

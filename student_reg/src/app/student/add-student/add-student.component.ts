@@ -46,7 +46,7 @@ export class AddStudentComponent implements OnInit {
       email: ['', [Validators.required,Validators.pattern(this.email_pattern),Validators.maxLength(25)]],
       rollNum: ['', [Validators.required,Validators.maxLength(10)]],
       className: ['', Validators.required],
-      studentNo: [''],
+      studentNo: ['',[Validators.minLength(10)]],
       subject: new FormArray([], this.utilService.minSelectedCheckboxes(1)),
       relationStatus: new FormArray([], [Validators.required]),
       fatherGroup: this.fb.group({
@@ -78,7 +78,7 @@ export class AddStudentComponent implements OnInit {
 
   onSubmit() {
     this.submitted = true;
-    console.log(this.registrationForm);
+    // console.log(this.registrationForm);
     if (this.registrationForm.valid) {
       const selectedOrderIds = this.registrationForm.value.subject
         .map((checked: any, i: any) => (checked ? this.subjectList[i] : null))
@@ -218,7 +218,7 @@ export class AddStudentComponent implements OnInit {
       }else{
           this.validationGroup(ele.group)['name'].addValidators([Validators.required,Validators.maxLength(25)])
           this.validationGroup(ele.group)['email'].addValidators([Validators.required,Validators.maxLength(25),Validators.pattern(this.email_pattern)])
-          this.validationGroup(ele.group)['pno'].addValidators([Validators.required,Validators.maxLength(10)])
+          this.validationGroup(ele.group)['pno'].addValidators([Validators.required,Validators.maxLength(10),Validators.minLength(10)])
       }
         this.validationGroup(ele.group)['name'].updateValueAndValidity();
         this.validationGroup(ele.group)['email'].updateValueAndValidity();

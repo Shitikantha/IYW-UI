@@ -1,38 +1,62 @@
-import {
-  CdkDrag,
-  CdkDragDrop,
-  CdkDropList,
-  moveItemInArray,
-  transferArrayItem,
-} from '@angular/cdk/drag-drop';
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { AlertService } from 'src/app/services/alert.service';
+import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
+import { Component, Input, OnInit } from '@angular/core';
 import { QuestionService } from 'src/app/services/question.service';
+import { ReportService } from 'src/app/services/report.service';
 import { TeacherService } from 'src/app/services/teacher.service';
+import { MonthlyMeta } from './monthlyMeta';
+import { ProgressMeta } from './progressMeta';
 
 @Component({
-  selector: 'app-coursestatus',
-  templateUrl: './coursestatus.component.html',
-  styleUrls: ['./coursestatus.component.css'],
+  selector: 'app-view-report',
+  templateUrl: './view-report.component.html',
+  styleUrls: ['./view-report.component.css']
 })
-export class CoursestatusComponent implements OnInit{
+export class ViewReportComponent implements OnInit{
+  @Input() viewData:any;
+  currentTab:any = 'Monthly';
   pending:any = [];
   completed:any = [];
   chapterDetails:any = [];
 
-  allClasses: any = [];
+  // allClasses: any = [];
   subjectList: any = [];
   selectedClassId:any;
   selectedSubjectId:any;
 
-  constructor(private router: Router,
+  monthlyHeader:any = [];
+  monthlyData:any = [];
+  progressHeader:any = [];
+  progressData:any = [];
+
+  constructor(
     private teacherService : TeacherService,
     private questionService: QuestionService,
-    private alertService:AlertService){}
+    private reportService:ReportService){}
 
   ngOnInit(): void {
-    this.getClasses();
+    this.tabDetails(this.currentTab);
+  }
+
+  tabDetails(tab:any){
+    this.currentTab = tab;
+    switch (tab) {
+      case 'Course':
+        this.selectedClassId = this.viewData.classId;
+        this.getSubject();
+        break;
+      case 'Assignment':
+        break;
+      case 'Monthly':
+        this.monthlyHeader = MonthlyMeta;
+        this.getAssessmentMonthlyDetails();
+        break;
+      case 'report':
+        this.progressHeader = ProgressMeta;
+        this.getPercentageReport();
+        break;
+      default:
+        console.log('default');
+    }
   }
 
   allCourseStatus() {
@@ -43,6 +67,7 @@ export class CoursestatusComponent implements OnInit{
     }
     this.teacherService.getChapterStatus(payload).subscribe({
       next:(res:any)=>{
+        console.log(res.data);
         this.chapterDetails = res.data;
         this.pending = this.chapterDetails.filter((val:any)=>val.status == 'Pending').map((ele:any)=>ele.name);
         this.completed = this.chapterDetails.filter((val:any)=>val.status == 'Completed').map((ele:any)=>ele.name);
@@ -50,20 +75,6 @@ export class CoursestatusComponent implements OnInit{
       error: (err: any) => {
       },
     });
-  }
-
-  getClasses() {
-    let orgId: any = sessionStorage.getItem('orgId');
-    this.questionService.getAllClasses(orgId).subscribe({
-      next: (res: any) => {
-        this.allClasses = res.data;
-      },
-    });
-  }
-
-  selectedClass(event:any){
-    this.selectedClassId = event.target.value;
-    this.getSubject();
   }
 
   selectedSubject(event:any){
@@ -79,6 +90,7 @@ export class CoursestatusComponent implements OnInit{
     this.questionService.getSubjectList(payload).subscribe({
       next: (res: any) => {
         this.subjectList = res.data;
+        // console.log(this.subjectList);
       },
     });
   }
@@ -100,29 +112,20 @@ export class CoursestatusComponent implements OnInit{
     }
   }
 
-  goBack(){
-    this.router.navigate(['/dashboard']);
-  }
-
-  update(){
-   let data = this.chapterDetails.filter((val:any)=>this.completed.some((ele:any)=>val.name == ele));
-   let payload:any = [];
-   data.forEach((val:any)=>{
-    payload.push({classSubjectChapterId:val.classSubjectChapterId,status:"Completed"});
-   });
-   console.log(payload);
-    this.teacherService.updateChapter(payload).subscribe({
-      next:(res:any)=>{
-        this.alertService.showSuccessToast({msg:'Chapter Updated successfully....!'});
-      },
-      error: (err: any) => {
-        this.alertService.showErrorToast({msg:'Something went wrong....!'});
+  getAssessmentMonthlyDetails(){
+    this.reportService.getMonthlyAssessmentReport(this.viewData.userId).subscribe({
+      next: (res: any) => {
+        console.log(res.data);
+        this.monthlyData = res.data;
       },
     });
   }
-
-  isChanged(){
-    let res = this.chapterDetails.filter((item:any)=>this.completed.includes(item.name));
-    return res.every((item:any)=>item.status == 'Completed');
+  getPercentageReport(){
+    this.reportService.getPercentageReport(this.viewData.userId).subscribe({
+      next: (res: any) => {
+        console.log(res.data);
+        this.progressData = res.data;
+      },
+    });
   }
 }

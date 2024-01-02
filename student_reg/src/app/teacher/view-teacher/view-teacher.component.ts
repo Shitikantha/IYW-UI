@@ -13,6 +13,7 @@ export class ViewTeacherComponent implements OnInit{
 
   ngOnInit(): void {
     this.className = this.viewData.classSubjects[0]?.classes?.name;
-    this.subjectList = [this.viewData.classSubjects[0]?.subject].map((val:any)=>val.name).join(',');
+    this.subjectList = !Array.isArray(this.viewData.classSubjects)?
+    this.viewData.classSubjects[0].subject:this.viewData.classSubjects.map((ele:any)=>ele.subject.name).join(',');
   }
 }

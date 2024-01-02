@@ -90,6 +90,14 @@
               formControlName="studentNo" (keypress)="numberOnly($event)" maxlength="10"
             />
             </div>
+            <div *ngIf="(f['studentNo'].touched || submitted) && f['studentNo'].errors">
+              <div *ngIf="f['studentNo'].errors['required']" class="error">
+                Please Enter a contact No
+              </div>
+              <div *ngIf="f['studentNo'].errors['minlength']" class="error">
+                Min length is 10
+              </div>
+            </div>
           </div>
          </div>
 
@@ -205,6 +213,7 @@
             <div *ngIf="(validationGroup('fatherGroup')['pno'].touched || submitted) && validationGroup('fatherGroup')['pno'].errors">
               <div *ngIf="validationGroup('fatherGroup')['pno'].errors['required']" class="error">Phone Number is required</div>
               <div *ngIf="validationGroup('fatherGroup')['pno'].errors['maxlength']" class="error"> Max length can't be less then 10</div>
+              <div *ngIf="validationGroup('fatherGroup')['pno'].errors['minlength']" class="error"> Min length can't be less then 10</div>
             </div>
           </div>
         </div>
@@ -256,6 +265,7 @@
             <div *ngIf="(validationGroup('motherGroup')['pno'].touched || submitted) && validationGroup('motherGroup')['pno'].errors">
               <div *ngIf="validationGroup('motherGroup')['pno'].errors['required']" class="error">Phone Number is required</div>
               <div *ngIf="validationGroup('motherGroup')['pno'].errors['maxlength']" class="error"> Max length can't be less then 10</div>
+              <div *ngIf="validationGroup('motherGroup')['pno'].errors['minlength']" class="error"> Min length can't be less then 10</div>
             </div>
           </div>
         </div>
@@ -307,6 +317,7 @@
             <div *ngIf="(validationGroup('otherGroup')['pno'].touched || submitted) && validationGroup('otherGroup')['pno'].errors">
               <div *ngIf="validationGroup('otherGroup')['pno'].errors['required']" class="error">Phone Number is required</div>
               <div *ngIf="validationGroup('otherGroup')['pno'].errors['maxlength']" class="error">Max length can't be less then 10</div>
+              <div *ngIf="validationGroup('otherGroup')['pno'].errors['minlength']" class="error"> Min length can't be less then 10</div>
             </div>
           </div>
         </div>

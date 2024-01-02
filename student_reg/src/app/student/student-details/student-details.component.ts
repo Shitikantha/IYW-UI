@@ -113,6 +113,7 @@ export class StudentDetailsComponent implements OnInit{
   deleteStudent(item:any){
     this.studentService.deleteUser(item.userId).subscribe({
       next: (result: any) => {
+        this.allStudentList();
         this.alertService.showSuccessToast({msg:'Student Deleted Success Fully ....!'});
         },
         error: (err: any) => {

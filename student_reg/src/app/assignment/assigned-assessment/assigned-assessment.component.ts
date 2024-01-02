@@ -25,15 +25,6 @@ export class AssignedAssessmentComponent implements OnInit,OnDestroy{
   ngOnInit(): void {
     console.log(this.assignment);
     this.getQuestionSet();
-    if(this.allQuestionArray.length){
-      this.countDown = timer(0, 1000).subscribe((res) => {
-        --this.counter;
-        if (this.counter === 0) {
-          this.countDown.unsubscribe();
-          this.save();
-        }
-      });
-    }
   }
 
   checkQuestionValue(opt:any){
@@ -58,7 +49,16 @@ export class AssignedAssessmentComponent implements OnInit,OnDestroy{
     this.questionService.generateQuestionSet(payload).subscribe({
       next: (res: any) => {
         console.log(res.data);
-        this.allQuestionArray = res.data.questionDTOs
+        this.allQuestionArray = res.data.questionDTOs;
+        if(this.allQuestionArray.length){
+          this.countDown = timer(0, 1000).subscribe((res) => {
+            --this.counter;
+            if (this.counter === 0) {
+              this.countDown.unsubscribe();
+              this.save();
+            }
+          });
+        }
       },
     });
   }

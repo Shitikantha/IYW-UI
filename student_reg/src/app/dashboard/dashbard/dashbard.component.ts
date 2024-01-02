@@ -7,8 +7,11 @@ import { Router } from '@angular/router';
   styleUrls: ['./dashbard.component.css'],
 })
 export class DashbardComponent {
+  userRole:any;
   constructor(private router: Router) {}
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.userRole = sessionStorage.getItem('userRole');
+  }
 
   navigateRout(path: string) {
     switch (path) {
@@ -36,8 +39,28 @@ export class DashbardComponent {
       case 'assign-details':
         this.router.navigate(['assignment/assign-details']);
         break;
+      case 'report':
+        this.router.navigate(['assignment/report']);
+        break;
       default:
         console.log('default');
     }
   }
+
+  get studentRole(){
+    return this.userRole === 'Student';
+  }
+
+  get teacherRole(){
+    return this.userRole === 'Teacher';
+  }
+
+  get adminRole(){
+    return this.userRole === 'Admin';
+  }
+
+  get parentRole(){
+    return this.userRole === 'guardian';
+  }
+
 }

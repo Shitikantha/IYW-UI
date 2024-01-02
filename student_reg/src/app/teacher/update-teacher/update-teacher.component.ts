@@ -27,10 +27,10 @@ export class UpdateTeacherComponent {
     idField: 'dropdownKey',
     textField: 'dropdownValue',
     enableCheckAll: true,
-    limitSelection: -1,
     maxHeight: 197,
     itemsShowLimit: 3,
-    defaultOpen: false,
+    defaultOpen:false,
+    noDataAvailablePlaceholderText: 'No Data Available',
   };
 
   constructor(private fb:FormBuilder,
@@ -215,8 +215,14 @@ export class UpdateTeacherComponent {
     };
     this.questionService.getSubjectList(payload).subscribe({
       next: (res: any) => {
-        this.subjectList = res.data;
+        // this.subjectList = res.data;
+        let subjectList:any = res.data;
         // console.log(this.subjectList);
+        // console.log(this.classSubject);
+        let allSelectedSub = [...new Set(this.classSubject.map((val:any)=>val.subjectName))];
+        let remainingSub = this.subjectList.filter((ele:any)=>!allSelectedSub.includes(ele.dropdownValue));
+        this.subjectList = [...remainingSub];
+        this.settings = {...this.settings,noDataAvailablePlaceholderText: 'You Selected All The Subject',}
       },
     });
   }

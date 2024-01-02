@@ -5,6 +5,7 @@ import {
   Component,
   HostListener,
   Inject,
+  Input,
   OnInit,
 } from '@angular/core';
 import { Router } from '@angular/router';
@@ -20,6 +21,7 @@ import { DatePipe } from '@angular/common';
   styleUrls: ['./assignment-details.component.css'],
 })
 export class AssignmentDetailsComponent implements OnInit {
+  @Input() isView:boolean = false;
   assignmentHeader: any;
   assignmentData: any = [];
   isFullScreen: boolean = false;
@@ -122,7 +124,7 @@ export class AssignmentDetailsComponent implements OnInit {
                 : null,
                 duration:val.duration ? this.convertStoMs(val.duration):null,
               disabledIcon: {
-                'Start-test': val.status == 'Pending' && this.levelStatus[val.level],
+                'Start-test': val.status == 'Pending' && this.levelStatus[val.level] && !this.isView,
                 view: val.status == 'Completed',
               },
             };
@@ -200,6 +202,9 @@ export class AssignmentDetailsComponent implements OnInit {
     };
     document.exitFullscreen();
     this.isFullScreen = false;
+      if (event) {
+        this.getAssignment();
+      }
   }
 
   statusChange(btnValue: string) {
