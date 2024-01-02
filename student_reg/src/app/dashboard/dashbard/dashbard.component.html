@@ -19,7 +19,7 @@
           </button>
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-              <li class="nav-item dropdown" *ngIf="!studentRole && !parentRole">
+              <li class="nav-item dropdown">
                 <a
                   class="nav-link dropdown-toggle"
                   id="student"
@@ -38,7 +38,7 @@
                   </li>
                 </ul>
               </li>
-              <li class="nav-item dropdown" *ngIf="!studentRole && !parentRole">
+              <li class="nav-item dropdown">
                 <a
                   class="nav-link dropdown-toggle"
                   id="Teacher"
@@ -57,7 +57,7 @@
                   </li>
                 </ul>
               </li>
-              <li class="nav-item dropdown" *ngIf="!studentRole && !parentRole">
+              <li class="nav-item dropdown">
                 <a
                   class="nav-link dropdown-toggle"
                   id="Question"
@@ -76,17 +76,17 @@
                   </li>
                 </ul>
               </li>
-              <li class="nav-item pointer" (click)="navigateRout('courseStatus')" *ngIf="!studentRole && !parentRole">
+              <li class="nav-item pointer" (click)="navigateRout('courseStatus')">
                 <a class="nav-link" tabindex="-1" aria-disabled="true"
                   >Course Status</a
                 >
               </li>
-              <li class="nav-item pointer" (click)="navigateRout('assign-details')" *ngIf="studentRole && !parentRole">
+              <li class="nav-item pointer" (click)="navigateRout('assign-details')">
                 <a class="nav-link" tabindex="-1" aria-disabled="true"
                   >Assignment Details</a
                 >
               </li>
-              <li class="nav-item pointer" (click)="navigateRout('report')" *ngIf="!studentRole && parentRole">
+              <li class="nav-item pointer" (click)="navigateRout('report')">
                 <a class="nav-link" tabindex="-1" aria-disabled="true"
                   >Report</a
                 >
