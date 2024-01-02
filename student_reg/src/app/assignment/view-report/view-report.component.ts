@@ -27,6 +27,7 @@ export class ViewReportComponent implements OnInit{
   monthlyData:any = [];
   progressHeader:any = [];
   progressData:any = [];
+  dataForAssessment:any;
 
   constructor(
     private teacherService : TeacherService,
@@ -45,6 +46,7 @@ export class ViewReportComponent implements OnInit{
         this.getSubject();
         break;
       case 'Assignment':
+        this.dataForAssessment = this.viewData;
         break;
       case 'Monthly':
         this.monthlyHeader = MonthlyMeta;

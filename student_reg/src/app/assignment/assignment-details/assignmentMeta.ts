@@ -57,7 +57,7 @@ export const AssignmentMeta: Object[] = [
     },
     {
         seq: 7,
-        name: 'Score',
+        name: 'Score (%)',
         visible: true,
         dataKey: 'score',
         action: Actions

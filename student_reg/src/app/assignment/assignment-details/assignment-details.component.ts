@@ -1,10 +1,6 @@
 import {
-  AfterContentInit,
-  AfterViewChecked,
-  AfterViewInit,
   Component,
   HostListener,
-  Inject,
   Input,
   OnInit,
 } from '@angular/core';
@@ -21,7 +17,7 @@ import { DatePipe } from '@angular/common';
   styleUrls: ['./assignment-details.component.css'],
 })
 export class AssignmentDetailsComponent implements OnInit {
-  @Input() isView:boolean = false;
+  @Input() isView:any;
   assignmentHeader: any;
   assignmentData: any = [];
   isFullScreen: boolean = false;
@@ -102,7 +98,7 @@ export class AssignmentDetailsComponent implements OnInit {
     let payload = {
       orgId: sessionStorage.getItem('orgId'),
       status: this.status,
-      studentId: sessionStorage.getItem('userId'),
+      studentId: this.isView?.userId || sessionStorage.getItem('userId'),
     };
     this.assignService.getAssignmentsDetails(payload).subscribe({
       next: (res: any) => {

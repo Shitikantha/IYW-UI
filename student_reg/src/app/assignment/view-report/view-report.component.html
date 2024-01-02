@@ -62,7 +62,7 @@
         </div>
 
         <div *ngIf="currentTab === 'Assignment'">
-          <app-assignment-details [isView]="true"></app-assignment-details>
+          <app-assignment-details [isView]="dataForAssessment"></app-assignment-details>
         </div>
         <div *ngIf="currentTab === 'Monthly'">
           <app-data-table [tableHeader]="monthlyHeader" [tableData]="monthlyData"></app-data-table>
