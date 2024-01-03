@@ -45,8 +45,8 @@ export class UpdateStudentComponent implements OnInit{
     private questionService: QuestionService, private utilsService:UtilsService) { 
     this.updateProfile = this.fb.group({
       studentName:['',[Validators.required,Validators.maxLength(25)]],
-      studentNo:[''],
-      email:['',[Validators.required,Validators.maxLength(25),Validators.pattern(this.email_pattern),]],
+      studentNo:['',Validators.minLength(10)],
+      email:['',[Validators.required,Validators.maxLength(25),Validators.pattern(this.email_pattern)]],
     });
 
   }
@@ -71,8 +71,8 @@ export class UpdateStudentComponent implements OnInit{
     this.relGroup.push(
       this.fb.group({
         Name: ['', Validators.required],
-        Email: ['', Validators.required],
-        mobile: ['', Validators.required],
+        Email: ['', [Validators.required,Validators.pattern(this.email_pattern)]],
+        mobile: ['', [Validators.required,Validators.minLength(10)]],
         type: ['',Validators.required],
       })
     );
@@ -105,12 +105,22 @@ export class UpdateStudentComponent implements OnInit{
       item.mobileNo = this.relGroup.controls[index].get('mobile')?.value;
       item.relationshipType = this.relGroup.controls[index].get('type')?.value;
       this.patchRelValue(item,index);
-      this.addRelation({
-        "emailId": item.emailId,
-        "mobileNo": item.mobileNo,
-        "name": item.userName,
-        "relationshipType": item.relationshipType
-    },this.updateData.userId);
+      if(item?.id){
+        let payload ={
+          userName:item.userName,
+          emailId:item.emailId,
+          userId:item?.id,
+          mobileNo: item.mobileNo,
+        }
+        this.updateStudent(payload);
+      }else{
+        this.addRelation({
+          "emailId": item.emailId,
+          "mobileNo": item.mobileNo,
+          "name": item.userName,
+          "relationshipType": item.relationshipType,
+      },this.updateData.userId);
+      }
     }
   }
 
@@ -210,7 +220,13 @@ export class UpdateStudentComponent implements OnInit{
   onSubmit(){
     this.submitted = true;
     if(this.updateProfile.valid){
-      this.updateStudent();
+      let payload ={
+        userName:this.updateProfile.controls['studentName'].value,
+        emailId:this.updateProfile.controls['email'].value,
+        userId:this.updateData.userId,
+        mobileNo: this.updateProfile.controls['studentNo'].value,
+      }
+      this.updateStudent(payload);
     }
   }
 
@@ -226,19 +242,14 @@ export class UpdateStudentComponent implements OnInit{
     this.close.emit(false);
   }
 
-  updateStudent(){
-    let payload ={
-      userName:this.updateProfile.controls['studentName'].value,
-      emailId:this.updateProfile.controls['email'].value,
-      userId:this.updateData.userId,
-      mobileNo: this.updateProfile.controls['studentNo'].value,
-    }
-    console.log(payload);
+  updateStudent(payload:any){
+    
+    // console.log(payload);
    
      this.studentService.updateStudent(payload).subscribe({
       next: (result: any) => {
         this.alertService.showSuccessToast({msg:'Student Details Updated ....!'});
-        this.close.emit(true);
+        // this.close.emit(true);
         },
         error: (err: any) => {
           this.alertService.showErrorToast({msg:'Something went wrong....!'});

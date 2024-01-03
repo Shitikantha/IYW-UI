@@ -40,7 +40,7 @@ export class UpdateTeacherComponent {
     this.updateProfile = this.fb.group({
       teacherName:['',[Validators.required,Validators.maxLength(25)]],
       email:['',[Validators.required,Validators.maxLength(25),Validators.pattern(this.email_pattern),]],
-      teacherNo:['']
+      teacherNo:['',Validators.minLength(10)]
     })
   }
 

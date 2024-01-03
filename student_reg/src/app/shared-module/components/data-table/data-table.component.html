@@ -1,7 +1,7 @@
 <div class="row mt-3">
   <div class="col-12">
-    <div class="table-responsive">
-      <table class="users-table table table-striped">
+    <div class="table-responsive overflow-auto">
+      <table class="table table-striped">
         <thead>
           <tr>
             <ng-container *ngFor="let col of tableHeader">
@@ -23,8 +23,7 @@
                     {{ data[col.dataKey] }}
                   </div>
                   <div>
-                    <!-- disabled-icons -->
-                    <!-- [class.disabled-icons]="data.edit" -->
+                    
                     <ng-container *ngIf="col.name == 'Action'">
                       <ng-container *ngFor="let action of col.action;index as j">
                         <ng-container *ngIf="action.visible">

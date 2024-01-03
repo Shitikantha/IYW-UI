@@ -102,7 +102,7 @@ export class QuestionDetailsComponent implements OnInit {
             return {
               ...val,
               disabledIcon: {
-                approve: true,
+                approve: false,
               },
             };
           });

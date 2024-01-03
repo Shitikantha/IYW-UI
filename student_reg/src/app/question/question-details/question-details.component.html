@@ -12,7 +12,7 @@
       </div>
       <form [formGroup]="questionDetailsForm" (ngSubmit)="onSubmit()">
       <div class="row">
-        <div class="col-3 mb-2">
+        <div class="col-12 col-xs-12 col-md-6 col-lg-3 mb-2">
           <div class="form-group d-flex">
             <label for="mobile" class="p-2">Class</label>
             <select
@@ -28,7 +28,7 @@
             </select>
           </div>
         </div>
-          <div class="col-3 mb-2">
+          <div class="col-12 col-xs-12 col-md-6 col-lg-3 mb-2">
             <div class="form-group d-flex">
               <label for="mobile" class="p-2">Subject</label>
               <select
@@ -44,7 +44,7 @@
               </select>
             </div>
           </div>
-          <div class="col-3 mb-2">
+          <div class="col-12 col-xs-12 col-md-6 col-lg-3 mb-2">
             <div class="form-group d-flex">
               <label for="mobile" class="p-2">Chapter</label>
               <select
@@ -59,7 +59,7 @@
               </select>
             </div>
           </div>
-          <div class="col-3 mb-2">
+          <div class="col-12 col-xs-12 col-md-6 col-lg-3 mb-2 ">
             <button class="btn btn-primary mx-2" type="submit" [disabled]="!questionDetailsForm.valid">Get Records</button>
           </div>
         </div>

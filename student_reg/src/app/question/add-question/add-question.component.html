@@ -14,7 +14,7 @@
     <div class="col-12">
       <form [formGroup]="questionForm" (ngSubmit)="onSubmit()">
         <div class="row">
-          <div class="col-6 mb-2">
+          <div class="col-lg-6 col-md-6 col-12 col-xs-12 mb-2">
             <div class="form-group">
               <label for="mobile"
                 >Select a Class<span class="title-primary">*</span></label
@@ -37,7 +37,7 @@
               </div>
             </div>
           </div>
-          <div class="col-6 mb-2">
+          <div class="col-lg-6 col-md-6 col-12 col-xs-12 mb-2">
             <div class="form-group">
               <label for="mobile"
                 >Select a Subject <span class="title-primary">*</span></label
@@ -58,7 +58,7 @@
           </div>
         </div>
         <div class="row">
-          <div class="col-6 mb-2">
+          <div class="col-lg-6 col-md-6 col-12 col-xs-12 mb-2">
             <div class="form-group">
               <label for="mobile"
                 >Select a Chapter <span class="title-primary">*</span></label
@@ -80,7 +80,7 @@
               </div>
             </div>
           </div>
-          <div class="col-6 mb-2">
+          <div class="col-lg-6 col-md-6 col-12 col-xs-12 mb-2">
             <div class="form-group">
               <label for="mobile"
                 >Select a Levels <span class="title-primary">*</span></label
@@ -100,7 +100,7 @@
           </div>
         </div>
         <div class="row">
-          <div class="col-6 mb-2">
+          <div class="col-lg-6 col-md-6 col-12 col-xs-12 mb-2">
             <div class="form-group">
               <label for="mobile"
                 >Select a Question Type
@@ -124,7 +124,7 @@
               </div>
             </div>
           </div>
-          <div class="col-6 mb-2"></div>
+          <div class="col-lg-6 col-md-6 col-12 col-xs-12 mb-2"></div>
         </div>
         <div class="row">
           <div class="col-12">
@@ -139,7 +139,7 @@
           </div>
         </div>
 
-        <div class="row" *ngIf="allQuestions.length">
+        <div class="row table-responsive overflow-auto" *ngIf="allQuestions.length">
           <table class="table table-striped">
             <thead>
               <tr>
@@ -163,7 +163,7 @@
           </table>
         </div>
         <div class="row">
-          <div class="col-12 mt-4">
+          <div class="col-lg-6 col-md-6 col-12 col-xs-12 mt-4">
             <button class="btn btn-primary mx-2" type="submit" [disabled]="!isSubmitted">Save</button>
             <button class="btn btn-primary mx-2" type="button" *ngIf="!!editRecords" (click)="cancel()">Cancel</button>
           </div>

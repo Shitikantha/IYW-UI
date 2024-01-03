@@ -20,7 +20,7 @@
     <div *ngIf="currentTab === 'basic'">
       <form [formGroup]="updateProfile" (ngSubmit)="onSubmit()">
         <div class="row">
-          <div class="col-6">
+          <div class="col-lg-6 col-md-6 col-12 col-xs-12">
             <label for="visitorid">Student Name </label>
             <input
               type="text"
@@ -45,7 +45,7 @@
             </div>
           </div>
 
-          <div class="col-6">
+          <div class="col-lg-6 col-md-6 col-12 col-xs-12">
             <div class="form-group">
               <label for="name"
                 >Email Id<span class="title-primary">*</span></label
@@ -71,7 +71,7 @@
               </div>
             </div>
           </div>
-          <div class="col-6 mb-2">
+          <div class="col-lg-6 col-md-6 col-12 col-xs-12 mb-2">
             <div class="form-group">
               <label> Contact Number <span class="title-primary"></span></label>
               <input
@@ -84,11 +84,16 @@
                 maxlength="10"
               />
             </div>
+            <div *ngIf="(f['studentNo'].touched || submitted) && f['studentNo'].errors">
+              <div *ngIf="f['studentNo'].errors['minlength']" class="error">
+                Min length is 10
+              </div>
+            </div>
           </div>
         </div>
         <div class="row">
-          <div class="col-12 text-center">
-            <button class="btn btn-primary w-10" type="submit">Submit</button>
+          <div class="col-lg-12 col-md-12 col-12 col-xs-12 text-center">
+            <button class="btn btn-primary" type="submit">Submit</button>
           </div>
         </div>
       </form>
@@ -237,7 +242,7 @@
                     formControlName="type"
                   >
                     <option value="" selected disabled>select class</option>
-                    <option
+                    <option [disabled] = '!!data.id'
                       value="{{ cla.relationshipType }}"
                       *ngFor="let cla of relationArray"
                     >
@@ -284,6 +289,17 @@
                   >
                     Email Required
                   </div>
+                  <div
+                    class="error"
+                    *ngIf="
+                      getReferralsFormArr(i).controls['mobile'].touched &&
+                      getReferralsFormArr(i).controls['mobile'].hasError(
+                        'minlength'
+                      )
+                    "
+                  >
+                  Min length is 10
+                  </div>
                 </td>
                 <td>
                   <input type="text" formControlName="Email" class="form-control" maxlength="25"/>
@@ -297,6 +313,17 @@
                     "
                   >
                     email Required
+                  </div>
+                  <div
+                    class="error"
+                    *ngIf="
+                      getReferralsFormArr(i).controls['Email'].touched &&
+                      getReferralsFormArr(i).controls['Email'].hasError(
+                        'pattern'
+                      )
+                    "
+                  >
+                  Email is not Valid
                   </div>
                 </td>
                 <td>
