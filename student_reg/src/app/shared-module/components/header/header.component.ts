@@ -55,6 +55,7 @@ openReset(){
     isOpen: true,
     size: 'md',
     title: 'Reset Password',
+    isFooter:true
   }
 }
 

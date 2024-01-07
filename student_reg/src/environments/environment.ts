@@ -5,7 +5,7 @@
 export const environment = {
   production: false
 };
-export const Api_Url = 'http://ec2-user@ec2-13-232-2-230.ap-south-1.compute.amazonaws.com:8081/api/'
+export const Api_Url = 'http://ec2-3-109-158-0.ap-south-1.compute.amazonaws.com:8081/api/'
 
 /*
  * For easier debugging in development mode, you can import the following file

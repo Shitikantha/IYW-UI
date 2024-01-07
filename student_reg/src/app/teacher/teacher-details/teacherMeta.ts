@@ -14,6 +14,14 @@ export const Actions: Object[] = [
         style:{
             class:'bi bi-eye'
         }
+    },
+    {
+        name: 'delete',
+        visible: true,
+        icon: true,
+        style:{
+            class:'bi bi-trash'
+        }
     }
 ]
 export const TeacherMeta: Object[] = [

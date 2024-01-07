@@ -10,9 +10,10 @@
         </div>
         <hr />
       </div>
-    <div cdkDropListGroup class="d-flex justify-content-center">
-        <div class="example-container">
-          <div class="form-group d-flex justify-content-evenly">
+
+      <div class="row">
+        <div class="col-12 col-lg-6 col-md-6 col-xs-12 mb-2">
+          <div class="form-group d-flex justify-content-center">
             <label for="mobile" class="p-2">Class</label>
             <select
               class="form-select w-50"
@@ -23,6 +24,23 @@
               </option>
             </select>
           </div>
+        </div>
+        <div class="col-12 col-lg-6 col-md-6 col-xs-12">
+          <div class="form-group d-flex justify-content-center">
+            <label for="mobile" class="p-2">Subject</label>
+            <select
+              class="form-select w-50"
+              aria-label="Default select example" (change)="selectedSubject($event)">
+              <option value="" selected disabled>select subject</option>
+              <option value="{{ cla.dropdownKey }}" *ngFor="let cla of subjectList">
+                {{ cla.dropdownValue }}
+              </option>
+            </select>
+          </div>
+        </div>
+      </div>
+    <div cdkDropListGroup class="d-flex justify-content-center">
+        <div class="example-container">
           <h5 class="text-center mt-2">Pending</h5>
           <div
             cdkDropList
@@ -35,17 +53,6 @@
         </div>
       
         <div class="example-container">
-          <div class="form-group d-flex justify-content-evenly">
-            <label for="mobile" class="p-2">Subject</label>
-            <select
-              class="form-select w-50"
-              aria-label="Default select example" (change)="selectedSubject($event)">
-              <option value="" selected disabled>select subject</option>
-              <option value="{{ cla.dropdownKey }}" *ngFor="let cla of subjectList">
-                {{ cla.dropdownValue }}
-              </option>
-            </select>
-          </div>
           <h5 class="text-center mt-2">Completed</h5>
           <div
             cdkDropList
@@ -58,7 +65,9 @@
         </div>
       </div>
 
-      <div class="row d-flex justify-content-center">
-        <button class="btn btn-primary w-10 btn-sm" type="button" (click)="update()" [disabled]="isChanged()">Update</button>
+      <div class="row">
+        <div class="col-12 col-lg-12 col-md-12 col-xs-12 text-center">
+          <button class="btn btn-primary btn-sm" type="button" (click)="update()" [disabled]="isChanged()">Update</button>
+        </div>
       </div>
 </div>

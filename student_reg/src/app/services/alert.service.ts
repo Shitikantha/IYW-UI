@@ -1,13 +1,17 @@
 import { Injectable } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
+import Swal from 'sweetalert2';
 
+interface sweetSetting { 
+  title:string, 
+  text:string, 
+  icon:any
+} 
 
 @Injectable({
   providedIn: 'root'
 })
 export class AlertService {
-
-  html = "<br /><br /><button type='button' class='btn clear'>Yes</button>";
 
   constructor(private toastr: ToastrService) { }
 
@@ -26,21 +30,14 @@ export class AlertService {
     });
   }
 
-  // showConfirmMsg(){
-  //   // return this.toastr.success(``,'Are You Sure?',
-  //   // {
-  //   //   enableHtml: true,
-  //   //   tapToDismiss: false,
-  //   //   disableTimeOut:false,
-  //   //   // onShown:()=>{
-        
-  //   //   // }
-    
-  //   // });
-  //   return this.toastr.show('Do You Want To Start the test ?','Are You Sure ?',{
-  //     disableTimeOut:true,
-  //     messageClass:'toast-success',
-  //     // toastClass:'toast-success'
-  //   });
-  // }
+  showConfirmMsg(setting:sweetSetting){
+    return Swal.fire({
+      title: setting.title,
+      text: setting.text,
+      icon: setting.icon,
+      showCancelButton: true,
+      confirmButtonText: 'Yes, delete it!',
+      cancelButtonText: 'No, keep it'
+    })
+  }
 }

@@ -77,6 +77,7 @@ export class AssignmentDetailsComponent implements OnInit {
       isOpen: true,
       size: 'xl',
       title: 'Assessment',
+      isFooter:true
     };
     this.selectedAssignment = item;
     this.toggleFullScreen();
@@ -90,6 +91,7 @@ export class AssignmentDetailsComponent implements OnInit {
       isOpen: true,
       size: 'xl',
       title: 'View Assessment',
+      isFooter:true
     }
     this.viewData = item;
   }
@@ -100,9 +102,36 @@ export class AssignmentDetailsComponent implements OnInit {
       status: this.status,
       studentId: this.isView?.userId || sessionStorage.getItem('userId'),
     };
+    this.levelStatus = {
+      Easy: false,
+      Moderate: false,
+      Challenging: false,
+      Hard: false,
+    };
+    if(this.isView){
+      let hideName = ['Completed Date','Score (%)','Action','Time Taken']
+      if(this.status == 'Pending'){
+        this.assignmentHeader = AssignmentMeta.map((val:any)=>{
+          if(hideName.includes(val.name)){
+            val.visible=false;
+          }
+          return val;
+        });
+      }else{
+        this.assignmentHeader = AssignmentMeta.map((val:any)=>{
+          val.visible=true;
+          return val;
+        });
+      }
+      
+    }
     this.assignService.getAssignmentsDetails(payload).subscribe({
       next: (res: any) => {
         const result = res.data.map((val: any) => {
+          let conditionKey = Object.keys(this.levelStatus);
+          if(!conditionKey.includes(val.level)){
+            this.levelStatus = {...this.levelStatus,[val.level]:true};
+          }
           this.isLevelCondition(val);
             return {
               ...val,

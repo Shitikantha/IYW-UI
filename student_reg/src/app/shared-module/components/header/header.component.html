@@ -4,8 +4,12 @@
       <!-- Navigation -->
       <nav class="navbar navbar-expand-lg shadow">
         <div class="container-fluid">
-          <img [src]="headerInfo[0]?.logo_url || logo_url" class="logo" alt="logo" />
-          <h3 class="title-primary mt-30">{{headerInfo[0]?.title}}</h3>
+          <img
+            [src]="headerInfo[0]?.logo_url || logo_url"
+            class="logo"
+            alt="logo"
+          />
+          <h3 class="title-primary mt-30">{{ headerInfo[0]?.title }}</h3>
           <button
             class="navbar-toggler"
             type="button"
@@ -17,18 +21,27 @@
           >
             <span class="navbar-toggler-icon"></span>
           </button>
-          <div class="collapse navbar-collapse" id="navbarResponsive">
-            <ul class="navbar-nav ms-auto">
-              <li class="nav-item active">
-                <a class="nav-link title pointer"> <i class="bi bi-person-circle mx-2"></i>{{ userName | titlecase }}</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link pointer title" (click)="openReset()">Reset Password</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link pointer title" (click)="logout()">Logout <i class="bi bi-box-arrow-right mx-2"></i></a>
-              </li>
-            </ul>
+          <div class="collapse navbar-collapse flex-grow-0 " id="navbarResponsive">
+            <div class="d-flex justify-content-end">
+              <ul class="navbar-nav ms-auto">
+                <li class="nav-item active">
+                  <a class="nav-link title pointer">
+                    <i class="bi bi-person-circle"></i
+                    ><span class="d-inline-block mx-2">{{ userName | titlecase }}</span></a
+                  >
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link pointer title" (click)="openReset()"
+                    >Reset Password</a
+                  >
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link pointer title" (click)="logout()"
+                    >Logout <i class="bi bi-box-arrow-right mx-2"></i
+                  ></a>
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
       </nav>
@@ -39,7 +52,8 @@
 <app-modal
   [modalSetting]="resetSetting"
   (close)="close($event)"
-  *ngIf="resetSetting?.isOpen">
+  *ngIf="resetSetting?.isOpen"
+>
   <form [formGroup]="resetForm" (ngSubmit)="onSubmit()">
     <div class="row px-5">
       <div class="form-group">
@@ -68,15 +82,24 @@
           <div *ngIf="f['cifPwd'].errors['required']" class="error">
             Please enter confirm password
           </div>
-          <div *ngIf="f['cifPwd'].errors['confirmPasswordValidator']" class="error">Password and
-            Confirm Password didn't match
-           </div>
+          <div
+            *ngIf="f['cifPwd'].errors['confirmPasswordValidator']"
+            class="error"
+          >
+            Password and Confirm Password didn't match
+          </div>
         </div>
       </div>
-     </div>
-     <div class="row mt-2">
+    </div>
+    <div class="row mt-2">
       <div class="col-12 text-center">
-        <button class="btn btn-primary" type="submit" [disabled]="!resetForm.valid">Save</button>
+        <button
+          class="btn btn-primary"
+          type="submit"
+          [disabled]="!resetForm.valid"
+        >
+          Save
+        </button>
       </div>
     </div>
   </form>

@@ -1,17 +1,18 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { StudentMeta } from './studentMeta';
 import { StudentService } from 'src/app/services/student.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Router } from '@angular/router';
 import { AlertService } from 'src/app/services/alert.service';
 import { QuestionService } from 'src/app/services/question.service';
+import { Subject, debounceTime } from 'rxjs';
 
 @Component({
   selector: 'app-student-details',
   templateUrl: './student-details.component.html',
   styleUrls: ['./student-details.component.css']
 })
-export class StudentDetailsComponent implements OnInit{
+export class StudentDetailsComponent implements OnInit , OnDestroy{
   studentHeader:any;
   studentData:any = [];
   editModalSetting:any = {};
@@ -19,7 +20,9 @@ export class StudentDetailsComponent implements OnInit{
   editData:any;
   viewData:any;
   allClasses: any = [];
-  selectedClassId:any
+  selectedClassId:any;
+  text = new Subject<string>();
+  term:any;
 
   constructor(
     private alertService:AlertService,
@@ -27,18 +30,27 @@ export class StudentDetailsComponent implements OnInit{
     private studentService : StudentService,
     private questionService: QuestionService
     ) {}
+  ngOnDestroy(): void {
+    this.text.complete();
+  }
 
   ngOnInit(): void {
    this.studentHeader = StudentMeta;
   //  this.allStudentList();
    this.getClasses();
+   this.text.pipe(
+    debounceTime(400))
+    .subscribe(value => {
+      this.term = value;
+      this.allStudentList();
+    });
   }
 
   allStudentList() {
     let payload = {
       orgId: sessionStorage.getItem('orgId'),
       classId:this.selectedClassId || '',
-      name:'',
+      name:this.term || '',
       role: 'Student',
     }
     this.studentService.getAllStudents(payload).subscribe({
@@ -58,7 +70,7 @@ export class StudentDetailsComponent implements OnInit{
   editStudent(data:any){
     this.editModalSetting = {...this.editModalSetting,
       isOpen:true,size: 'lg',
-    title:'Edit Student'};
+    title:'Edit Student',isFooter:true};
     this.editData = data;
   }
 
@@ -112,15 +124,29 @@ export class StudentDetailsComponent implements OnInit{
   }
 
   deleteStudent(item:any){
-    this.studentService.deleteUser(item.userId).subscribe({
-      next: (result: any) => {
-        this.allStudentList();
-        this.alertService.showSuccessToast({msg:'Student Deleted Success Fully ....!'});
-        },
-        error: (err: any) => {
-          this.alertService.showErrorToast({msg:'Something went wrong....!'});
-        },
-     });
+    this.alertService
+    .showConfirmMsg({
+      text: 'You Want to Delete',
+      title: 'Are you sure?',
+      icon: 'warning',
+    }).then((result)=>{
+      if(result.isConfirmed){
+        this.studentService.deleteUser(item.userId).subscribe({
+          next: (result: any) => {
+            this.allStudentList();
+            this.alertService.showSuccessToast({msg:'Student Deleted Success Fully ....!'});
+            },
+            error: (err: any) => {
+              this.alertService.showErrorToast({msg:'Something went wrong....!'});
+            },
+         });
+      }
+    })
+   
+  }
+
+  getText(event:any){
+    this.text.next(event.target.value);
   }
 
 }

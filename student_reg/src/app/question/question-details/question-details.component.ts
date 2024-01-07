@@ -127,17 +127,25 @@ export class QuestionDetailsComponent implements OnInit {
   }
 
   deleteQuestion(id: any) {
-    this.questionService.deleteQuestion(id).subscribe({
-      next: (res: any) => {
-        // console.log(res);
-        this.onSubmit();
-        this.alertService.showSuccessToast({
-          msg: 'Question Deleted Success Fully',
+    this.alertService
+    .showConfirmMsg({
+      text: 'You Want to Delete',
+      title: 'Are you sure?',
+      icon: 'warning',
+    }).then((result)=>{
+      if(result.isConfirmed){
+        this.questionService.deleteQuestion(id).subscribe({
+          next: (res: any) => {
+            this.onSubmit();
+            this.alertService.showSuccessToast({
+              msg: 'Question Deleted Success Fully',
+            });
+          },
+          error: () => {
+            this.alertService.showErrorToast({ msg: 'something went wrong' });
+          },
         });
-      },
-      error: () => {
-        this.alertService.showErrorToast({ msg: 'something went wrong' });
-      },
+      }
     });
   }
 
@@ -147,17 +155,25 @@ export class QuestionDetailsComponent implements OnInit {
       approvedBy: 'Subham1',
       questionId: item.questionId,
     };
-    this.questionService.approveQuestion([payload]).subscribe({
-      next: (res: any) => {
-        // console.log(res);
-        this.alertService.showSuccessToast({
-          msg: 'Question Approved Success Fully',
+    this.alertService
+    .showConfirmMsg({
+      text: 'You Want to Approve this Question',
+      title: 'Are you sure?',
+      icon: 'warning',
+    }).then((result)=>{
+      if(result.isConfirmed){
+        this.questionService.approveQuestion([payload]).subscribe({
+          next: (res: any) => {
+            this.alertService.showSuccessToast({
+              msg: 'Question Approved Success Fully',
+            });
+          },
+          error: () => {
+            this.alertService.showErrorToast({ msg: 'something went wrong' });
+          },
         });
-      },
-      error: () => {
-        this.alertService.showErrorToast({ msg: 'something went wrong' });
-      },
-    });
+      }
+    })
   }
 
   closeModal(event: any) {

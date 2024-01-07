@@ -4,6 +4,8 @@ import { Router } from '@angular/router';
 import { TeacherService } from 'src/app/services/teacher.service';
 import { QuestionService } from 'src/app/services/question.service';
 import { Subject, debounceTime} from 'rxjs';
+import { StudentService } from 'src/app/services/student.service';
+import { AlertService } from 'src/app/services/alert.service';
 
 @Component({
   selector: 'app-teacher-details',
@@ -25,7 +27,9 @@ export class TeacherDetailsComponent implements OnInit,OnDestroy{
   constructor(
     private router: Router,
     private teacherService : TeacherService,
-    private questionService: QuestionService
+    private questionService: QuestionService,
+    private studentService : StudentService,
+    private alertService:AlertService
   ){}
 
   ngOnDestroy(): void {
@@ -84,7 +88,7 @@ export class TeacherDetailsComponent implements OnInit,OnDestroy{
   editStudent(data:any){
     this.editModalSetting = {...this.editModalSetting,
       isOpen:true,size: 'lg',
-    title:'Edit Teacher'};
+    title:'Edit Teacher',isFooter:true};
     this.editData = data;
   }
 
@@ -112,20 +116,39 @@ export class TeacherDetailsComponent implements OnInit,OnDestroy{
       case 'edit':
         this.editStudent(action.data);
         break;
+        case 'delete':
+        this.deleteTeacher(action.data);
+        break;
       default:
         console.log('default');
     }
   }
 
-  debounce(func:any, timeout = 300){
-    let timer:any;
-    return (...args:any) => {
-      clearTimeout(timer);
-      timer = setTimeout(() => { func.apply(this, args); }, timeout);
-    };
-  }
-
   getText(event:any){
     this.text.next(event.target.value);
+  }
+
+  deleteTeacher(item:any){
+    this.alertService
+      .showConfirmMsg({
+        text: 'You Want to Delete',
+        title: 'Are you sure?',
+        icon: 'warning',
+      })
+      .then((result) => {
+        if(result.isConfirmed){
+          this.studentService.deleteUser(item.userId).subscribe({
+            next: (result: any) => {
+              this.allTeacherList();
+              this.alertService.showSuccessToast({msg:'Teacher Deleted Success Fully ....!'});
+              },
+              error: (err: any) => {
+                this.alertService.showErrorToast({msg:'Something went wrong....!'});
+              },
+           });
+        }
+      });
+   
+   
   }
 }
