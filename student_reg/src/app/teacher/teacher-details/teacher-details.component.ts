@@ -134,6 +134,8 @@ export class TeacherDetailsComponent implements OnInit,OnDestroy{
         text: 'You Want to Delete',
         title: 'Are you sure?',
         icon: 'warning',
+        confirmButtonText: 'Yes, delete it!',
+        cancelButtonText: 'No, keep it'
       })
       .then((result) => {
         if(result.isConfirmed){

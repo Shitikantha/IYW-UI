@@ -132,6 +132,8 @@ export class QuestionDetailsComponent implements OnInit {
       text: 'You Want to Delete',
       title: 'Are you sure?',
       icon: 'warning',
+      confirmButtonText: 'Yes, delete it!',
+      cancelButtonText: 'No, keep it'
     }).then((result)=>{
       if(result.isConfirmed){
         this.questionService.deleteQuestion(id).subscribe({
@@ -160,6 +162,8 @@ export class QuestionDetailsComponent implements OnInit {
       text: 'You Want to Approve this Question',
       title: 'Are you sure?',
       icon: 'warning',
+      confirmButtonText: 'Yes, Approve it!',
+      cancelButtonText: 'No, keep it'
     }).then((result)=>{
       if(result.isConfirmed){
         this.questionService.approveQuestion([payload]).subscribe({

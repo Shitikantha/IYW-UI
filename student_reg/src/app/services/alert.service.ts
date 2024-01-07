@@ -5,7 +5,9 @@ import Swal from 'sweetalert2';
 interface sweetSetting { 
   title:string, 
   text:string, 
-  icon:any
+  icon:any,
+  confirmButtonText:string,
+  cancelButtonText:string
 } 
 
 @Injectable({
@@ -36,8 +38,11 @@ export class AlertService {
       text: setting.text,
       icon: setting.icon,
       showCancelButton: true,
-      confirmButtonText: 'Yes, delete it!',
-      cancelButtonText: 'No, keep it'
+      confirmButtonText: setting.confirmButtonText,
+      cancelButtonText: setting.cancelButtonText
     })
   }
 }
+
+// confirmButtonText: 'Yes, delete it!',
+//       cancelButtonText: 'No, keep it'

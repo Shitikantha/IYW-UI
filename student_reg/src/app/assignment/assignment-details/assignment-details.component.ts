@@ -72,16 +72,26 @@ export class AssignmentDetailsComponent implements OnInit {
   }
 
   openAssessment(item: any) {
-    this.assignmentSetting = {
-      ...this.assignmentSetting,
-      isOpen: true,
-      size: 'xl',
-      title: 'Assessment',
-      isFooter:true
-    };
-    this.selectedAssignment = item;
-    this.toggleFullScreen();
-    // console.log(item)
+    this.alertService
+    .showConfirmMsg({
+      text: 'You Want to Start the Assessment',
+      title: 'Are you sure?',
+      icon: 'warning',
+      confirmButtonText: 'Yes, Start it!',
+      cancelButtonText: 'No, keep it'
+    }).then((result)=>{
+      if(result.isConfirmed){
+        this.assignmentSetting = {
+          ...this.assignmentSetting,
+          isOpen: true,
+          size: 'xl',
+          title: 'Assessment',
+          isFooter:true
+        };
+        this.selectedAssignment = item;
+        this.toggleFullScreen();
+      }
+    })
   }
 
   viewAssessment(item:any){
