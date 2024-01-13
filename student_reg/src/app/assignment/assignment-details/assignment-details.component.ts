@@ -106,6 +106,28 @@ export class AssignmentDetailsComponent implements OnInit {
     this.viewData = item;
   }
 
+  createAssessment(item:any){
+    console.log(item)
+    let payload = {
+      classSubjectChapterId: item.classSubjectChapterId,
+      createdBy: sessionStorage.getItem('userName'),
+      dificultLevelId: item.levelId,
+      userId: this.isView.userId,
+    };
+    this.assignService.createAssessment(payload).subscribe({
+      next:(res:any)=>{
+        console.log(res);
+        this.getAssignment();
+        this.alertService.showSuccessToast({
+          msg: 'Assessment Created SuccessFully',
+        });
+      },
+      error:()=>{
+        this.alertService.showErrorToast({ msg: 'something went wrong' });
+      }
+    })
+  }
+
   getAssignment() {
     let payload = {
       orgId: sessionStorage.getItem('orgId'),
@@ -160,7 +182,7 @@ export class AssignmentDetailsComponent implements OnInit {
                 duration:val.duration ? this.convertStoMs(val.duration):null,
               disabledIcon: {
                 'Start-test': val.status == 'Pending' && this.levelStatus[val.level] && !this.isView,
-                view: val.status == 'Completed',
+                view: val.status == 'Completed','Re-Test':val.status == 'Completed' && this.isView
               },
             };
         });
@@ -204,6 +226,9 @@ export class AssignmentDetailsComponent implements OnInit {
         break;
       case 'Start-test':
         this.openAssessment(action.data);
+        break;
+        case 'Re-Test':
+        this.createAssessment(action.data);
         break;
       default:
         console.log('default');

@@ -20,4 +20,7 @@ export class AssignmentService extends BaseService{
   viewAssignments(id:any){
     return this.get(`${this.url}Question/viewAssignmentTest?assignmentId=${id}`);
   }
+  createAssessment(payload:any){
+    return this.post(`${this.url}Question/createAssignment`,payload);
+  }
 }

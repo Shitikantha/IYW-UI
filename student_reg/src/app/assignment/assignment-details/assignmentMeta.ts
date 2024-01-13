@@ -10,7 +10,13 @@ export const Actions: Object[] = [
         visible: true,
         icon: false,
         type:'btn',
-    }
+    },
+    {
+        name: 'Re-Test',
+        visible: true,
+        icon: false,
+        type:'btn',
+    },
 ]
 export const AssignmentMeta: Object[] = [
     {
@@ -74,6 +80,13 @@ export const AssignmentMeta: Object[] = [
         name: 'Time Taken',
         visible: true,
         dataKey: 'duration',
+        action: Actions
+    },
+    {
+        seq: 10,
+        name: 'Created By',
+        visible: true,
+        dataKey: 'createdBy',
         action: Actions
     }
 ]
